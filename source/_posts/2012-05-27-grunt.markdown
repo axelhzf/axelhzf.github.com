@@ -1,0 +1,142 @@
+---
+layout: post
+title: "grunt"
+date: 2012-05-27 16:07
+comments: true
+categories: [grunt, javascript]
+---
+
+{% img center /images/posts/grunt.png %}
+
+[Grunt](https://github.com/cowboy/grunt) es una herramienta para construir proyectos javascript. Se encarga de las tareas básicas de la de compilación como puede ser concatenar y minimizar los ficheros, ejecutar los test, validar la sintaxis, etc. Es personalizable y se pueden definir nuevas tareas para cubrir las necesidades de nuestro proyecto.
+
+Lo primero que me llamo la atención es su rapidez. He probado algunas otras herramientas que tienen el mismo objetivo, como por ejemplo [wro4j](http://code.google.com/p/wro4j/), pero grunt es mucho más rápido.
+
+<!-- more -->
+
+Las tareas que trae grunt por defecto son:
+
+* `concat` - Concatena ficheros
+* `init` - Crea un proyecto a partir de una plantilla
+* `lint` - Valida los ficheros con JSHint
+* `min` - Minimiza con UglifyJS
+* `qunit` - Ejecuta test de QUnit
+* `server` - Ejecuta un servidor estático
+* `test` - Ejecuta test de nodeunit
+* `watch` - Ejecuta tareas automáticamente cuando los ficheros se han modificado
+
+## Instalación
+
+Para instalar grunt.js lo más sencillo es utilizar [npm](http://npmjs.org/) el gestor de paquetes de node. El comando es
+
+	npm install grunt	
+
+Opcionalmente se le puede pasar la opcion `-g` para que instale el paquete de forma global. Esto es particularmente interesante para poder ejecutar la tarea `init` en cualquier carpeta.
+
+	npm install -g grunt
+
+## Configuración
+
+Grunt se configura mediante el fichero `grunt.js` en la raíz del proyecto. En este fichero podremos configurar las diferentes tareas que van a intervenir en la compilación del proyecto.
+
+{% codeblock  grunt.js lang:js %}
+module.exports = function (grunt) {
+    grunt.initConfig({
+        lint : {
+            all : ['src/**/*.js', 'test/**/*.js']
+        },
+        jshint : {
+            options : {
+                browser : true
+            }
+        },
+        concat : {
+            dist : {
+                src : ['src/**/*.js'],
+                dest : 'dist/built.js',
+                separator : ';'
+            }
+        },
+        min : {
+            dist : {
+                src : ['dist/built.js'],
+                dest : 'dist/built.min.js'
+            }
+        }
+    });
+    grunt.registerTask('default', 'lint concat min');
+};
+{% endcodeblock %}
+
+Esta es una configuración básica de grunt en la que estamos validando los ficheros, concatenándolos y minimizánlos. La configuración se hace mediante javascript, nos evitamos problemas definiendo ficheros xml como se hace con otras herramientas.
+
+Al ejecutar el comando
+
+	grunt
+
+Se ejecuta la tarea `default` que tal como definimos, se encarga de ejecutar las otras tareas. Si queremos ejecutar una tarea en concreto
+
+	grunt lint
+
+Puedes ver cómo se configuran el resto de tareas en la [documentación](https://github.com/cowboy/grunt/tree/master/docs).
+
+Para utilizar una tarea que no viene por defecto, lo primero que debemos hacer es instarla. En este caso vamos a hacer las pruebas con [grunt-recess](https://github.com/sindresorhus/grunt-recess) una tarea que permite validar y minimizar archivos CSS y LESS. Para la instalación también se utiliza npm.
+
+	npm install grunt-recess
+
+Una vez instalado lo único que debemos hacer es añadir la configuración al fichero grunt.js
+
+{% codeblock grunt.js lang:js %}
+module.exports = function (grunt) {
+    grunt.initConfig({
+        //....
+        recess : {
+            dist : {
+                src : 'less/*.less',
+                dest : 'dist/all.css',
+                options : {
+                    compile : true,
+                    compress : true
+                }
+            }
+        }
+    });
+    grunt.loadNpmTasks('grunt-recess');
+    grunt.registerTask('default', 'lint concat min recess');
+};
+{% endcodeblock %}
+
+Lo primero que debemos hacer es incluir la tarea utilizando el comando `grunt.loadNpmTasks` y configurarla de la misma forma que las tareas básicas.
+
+Esta tarea se presta a combinarla con la tarea watch. De forma que cada vez que cada vez que se modifique un fichero less se compile automáticamente.
+
+{% codeblock grunt.jslang:js %}
+module.exports = function (grunt) {
+    grunt.initConfig({
+        //....
+        recess : {
+            dist : {
+                src : 'less/*.less',
+                dest : 'dist/all.css',
+                options : {
+                    compile : true,
+                    compress : true
+                }
+            }
+        },
+        watch : {
+            files : 'less/*.less',
+            tasks : 'recess'
+        }
+    });
+
+    grunt.loadNpmTasks('grunt-recess');
+    grunt.registerTask('default', 'lint concat min recess');
+};
+{% endcodeblock %}
+
+Después ejecutamos
+
+	grunt watch
+
+Y cada vez que modifiquemos un fichero less, se volverá a regerar el fichero css compilado y minimizado.		
