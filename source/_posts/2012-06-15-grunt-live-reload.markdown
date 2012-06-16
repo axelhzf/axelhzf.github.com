@@ -14,7 +14,7 @@ categories: [javascript, grunt, js, live-reload]
 
 <!-- more -->
 
-LiveReload trae incorporado varios preprocesadores como por ejemplo CoffeeScript, LESS o SASS. Esto ya se vuelve mucho más interesando, puedes estar modificando un fichero less y el cambio se refleja automáticamente en el navegador. Sin tener que compilar manualmente ese fichero. Esto es una clara ventaja a utilizar las herramientas de desarrollo del navegador para probar los cambios de diseño y luego llevar esos cambios al fichero.
+LiveReload trae incorporado varios preprocesadores como por ejemplo CoffeeScript, LESS o SASS. Esto ya se vuelve mucho más interesante, puedes estar modificando un fichero less y el cambio se refleja automáticamente en el navegador. Sin tener que compilar manualmente ese fichero. Esto es una clara ventaja a utilizar las herramientas de desarrollo del navegador para probar los cambios de diseño y luego llevar esos cambios al fichero.
 
 LiveReload está disponible para OS X en la App Store por $9.99 y para windows está en versión beta. 
 
