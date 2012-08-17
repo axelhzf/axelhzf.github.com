@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: color themes | axelhzf]]></title>
+  <link href="http://axelhzf.github.com/blog/categories/color-themes/atom.xml" rel="self"/>
+  <link href="http://axelhzf.github.com/"/>
+  <updated>2012-08-17T23:24:53+01:00</updated>
+  <id>http://axelhzf.github.com/</id>
+  <author>
+    <name><![CDATA[Axel Hernández Ferrera]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Eclipse Color Themes]]></title>
+    <link href="http://axelhzf.github.com/blog/2011/05/22/eclipse-color-themes/"/>
+    <updated>2011-05-22T20:48:00+01:00</updated>
+    <id>http://axelhzf.github.com/blog/2011/05/22/eclipse-color-themes</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/posts/eclipseColorThemes.jpeg"></p>
+
+<p><a href="http://www.eclipsecolorthemes.org/">Eclipse Color Themes</a> era algo que siempre había querido: Temas de colores oscuros en Eclipse.
+Algo fácil de instalar, nada de estar importando <a href="http://blog.codefront.net/2006/09/28/vibrant-ink-textmate-theme-for-eclipse/">preferencias completas</a>.
+Este plugin para Eclipse viene por defecto con un par de temas que no están nada mal
+(Ahora mismo estoy utilizando <a href="http://www.eclipsecolorthemes.org/?view=theme&amp;id=21">Obsidian</a>)
+y también puedes crearte tu propio tema desde su <a href="http://www.eclipsecolorthemes.org/?view=firsttheme">página web</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>
