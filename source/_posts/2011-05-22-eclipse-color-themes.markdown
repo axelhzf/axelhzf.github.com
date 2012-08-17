@@ -3,7 +3,7 @@ layout: post
 title: "Eclipse Color Themes"
 date: 2011-05-22 20:48
 comments: true
-categories: 
+categories: [eclipse, color themes]
 ---
 
 {% img center /images/posts/eclipseColorThemes.jpeg %}
