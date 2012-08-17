@@ -1,0 +1,10 @@
+{
+    "name": "com.axelhzf",
+    "author" : "Axel Hernández Ferrera <axelhzf@gmail.com>",
+    "version": "0.7.0",
+    "description": "Personal blog",
+    "dependencies": {
+        "grunt" : "*",
+        "grunt-less" : "*"
+    }
+}
