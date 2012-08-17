@@ -16,6 +16,7 @@ Además de la propia documentación del módulo, está este post de [@_felipera]
 
 [http://geeks.aretotally.in/dependency-injection-with-play-framework-and-google-guice]()
 
+<!-- more -->
 
 Los pasos para empezar a utilizar Guice en tu proyecto play son:
 
