@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: octopress | axelhzf]]></title>
+  <link href="http://axelhzf.github.com/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://axelhzf.github.com/"/>
+  <updated>2012-08-17T22:47:50+01:00</updated>
+  <id>http://axelhzf.github.com/</id>
+  <author>
+    <name><![CDATA[Axel Hernández Ferrera]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[octopress]]></title>
+    <link href="http://axelhzf.github.com/blog/2012/05/20/octopress/"/>
+    <updated>2012-05-20T11:00:00+01:00</updated>
+    <id>http://axelhzf.github.com/blog/2012/05/20/octopress</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/posts/octopress.png"></p>
+
+<p>Después de un tiempo utilizando <a href="http://axelhzf.tumblr.com">tumblr</a> traslado el blog a <a href="http://octopress.org/">Octopress</a> desplegado en github.</p>
+
+<p>Octopress es un sistema de blogging basado en <a href="https://github.com/mojombo/jekyll">Jekyll</a>. No es más que un generador estáticos de páginas escrito en ruby por <a href="https://github.com/mojombo">mojombo</a> cofundador de github y es el sistema que utiliza <a href="http://pages.github.com/">github:pages</a>. Octopress añade un conjunto de utilidades que facilitan el trabajo con jekyll.</p>
+
+<p>El principal motivo del cambio es poder escribir los posts de una forma más cómoda desde un editor de texto y no desde una web. A partir de ahora podré utilizar <a href="http://www.sublimetext.com">SublimeText</a> o <a href="http://www.iawriter.com/">iA Writer</a>. Con Octopress publicar trozos de código es mucho más sencillo. Tiene integración con <a href="http://pygments.org/">pygments</a> para el resaltado de sintaxis y algún otro plugin interesante como el de <a href="http://octopress.org/docs/plugins/gist-tag/">gist</a> o el de <a href="http://octopress.org/docs/plugins/jsfiddle-tag/">jsFiddle</a>. Todavía no estoy muy seguro de si voy a hacer una migración de los posts antiguos o no, todo depende de lo complicado que resulte.</p>
+]]></content>
+  </entry>
+  
+</feed>

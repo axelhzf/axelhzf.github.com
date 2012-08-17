@@ -1,0 +1,499 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Grunt Live-Reload - axelhzf</title>
+  <meta name="author" content="Axel Hernández Ferrera">
+
+  
+  <meta name="description" content="LiveReload LiveReload es una aplicación genial. Su funcionalidad es muy sencilla, se encarga de refrescar el navegador automáticamente mientras &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://axelhzf.github.com/blog/2012/06/15/grunt-live-reload">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+    <link href="/stylesheets/keys.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="axelhzf" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-31904298-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <nav role="navigation"><div class="container">
+    <ul class="subscription" data-subscription="rss">
+      <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+      
+    </ul>
+      
+    <form action="http://google.com/search" method="get">
+      <fieldset role="search">
+        <input type="hidden" name="q" value="site:axelhzf.github.com" />
+        <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+      </fieldset>
+    </form>
+      
+    <ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</div>
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Grunt Live-Reload</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-15T23:34:00+01:00" pubdate data-updated="true">Jun 15<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img class="center" src="/images/posts/grunt-reload.jpg"></p>
+
+<h2>LiveReload</h2>
+
+<p><a href="http://livereload.com/">LiveReload</a> es una aplicación genial. Su funcionalidad es muy sencilla, se encarga de refrescar el navegador automáticamente mientras estas desarrollando. Imagina que estas trabajando en el diseño de una web y estas haciendo pequeñas modificaciones en los estilos para ver cómo va quedando el diseño. Para visualizar cada pequeño cambio es necesario cambiar a la ventana del navegador y refrescar las página. Livereload elimina ese cambio de contexto, monitoriza los ficheros fuentes y cuando detecta que se ha modifica un fichero fuerza a que el navegador se actualice automáticamente.</p>
+
+<!-- more -->
+
+
+<p>LiveReload trae incorporado varios preprocesadores como por ejemplo CoffeeScript, LESS o SASS. Esto ya se vuelve mucho más interesante, puedes estar modificando un fichero less y el cambio se refleja automáticamente en el navegador. Sin tener que compilar manualmente ese fichero. Esto es una clara ventaja a utilizar las herramientas de desarrollo del navegador para probar los cambios de diseño y luego llevar esos cambios al fichero.</p>
+
+<p>LiveReload está disponible para OS X en la App Store por $9.99 y para windows está en versión beta.</p>
+
+<p>Si prefieres no utilizar una aplicación con GUI, en la página recomiendan utilizar <a href="https://github.com/guard/guard-livereload">guard-livereload</a>. Una librería escrita en ruby que permite hacer de servidor livereload. En este post explican cómo configurarlo: <a href="http://icoloma.blogspot.com.es/2012/06/using-livereload-on-linux.html">http://icoloma.blogspot.com.es/2012/06/using-livereload-on-linux.html</a></p>
+
+<h3>Desventajas de utilizar LiveReload</h3>
+
+<p>El principal problema que le encuentro a LiveReload es que no se integra con el ciclo de compilación de la aplicación. Es una aplicación externa que duplica la configuración de los preprocesadores. Por un lado está la configuración en grunt, para empaquetar la aplicación y por otro lado livereload para hacer el desarrollo más cómodo. Mantener la misma configuración en dos sitios distintos puede llevar a errores de sincronización.</p>
+
+<h2>grunt-reload</h2>
+
+<p>Buscando entre los plugins que tiene grunt encontré uno que hace una funcionalidad similar,  se llama <a href="https://github.com/webxl/grunt-reload">grunt-reload</a>. Para que funcione no hace falta instalar ninguna extensión en el navegador y lo mejor de todo es que es completamente gratis.</p>
+
+<h3>Configuración de un proyecto usando grunt-reload</h3>
+
+<p>Lo primero, ya que vamos a trabajar con grunt, debemos tener instalado <a href="http://nodejs.org/#download">node.js y NPM</a>.</p>
+
+<p>Para el proyecto de ejemplo vamos a ver como integrar <a href="https://github.com/jharding/grunt-less">grunt-less</a> y <a href="https://github.com/webxl/grunt-reload">grunt-reload</a>. Lo primero que vamos a hacer es crear un fichero <code>package.json</code> donde vamos a configurar las dependencias del proyecto. Para la gente que viene del mundo de Java, este fichero es el equivalente al <code>pom.xml</code> de maven.</p>
+
+<figure class='code'><figcaption><span>package.json  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;name&quot;</span> <span class="o">:</span> <span class="s2">&quot;post-grunt-reload&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;description&quot;</span> <span class="o">:</span> <span class="s2">&quot;Source code from post&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;author&quot;</span> <span class="o">:</span> <span class="s2">&quot;Axel Hernández Ferrera &lt;axelhzf@gmail.com&gt;&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;version&quot;</span> <span class="o">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;dependencies&quot;</span> <span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s2">&quot;grunt&quot;</span> <span class="o">:</span> <span class="s2">&quot;&gt;= 0.3.9&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s2">&quot;grunt-less&quot;</span> <span class="o">:</span> <span class="s2">&quot;&gt;= 0.1.5&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s2">&quot;grunt-reload&quot;</span> <span class="o">:</span> <span class="s2">&quot;&gt;= 0.1.2&quot;</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="s2">&quot;engine&quot;</span> <span class="o">:</span> <span class="s2">&quot;node 0.6.0&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ya tenemos las dependencias definidas, para instalarlas:</p>
+
+<pre><code>npm install
+</code></pre>
+
+<p>Ahora vamos a preparar un ejemplo sencillo que utilice less:</p>
+
+<figure class='code'><figcaption><span>index.html  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span><span class='line'><span class="nt">&lt;html&gt;</span>
+</span><span class='line'><span class="nt">&lt;head&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;style.css&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;/head&gt;</span>
+</span><span class='line'><span class="nt">&lt;body&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;msg&quot;</span><span class="nt">&gt;</span>This page reload automatically when a file is modified :D<span class="nt">&lt;/div&gt;</span>
+</span><span class='line'><span class="nt">&lt;/body&gt;</span>
+</span><span class='line'><span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>style.less  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="k">@bgColor</span><span class="o">:</span> <span class="nf">#ff5412</span><span class="p">;</span>
+</span><span class='line'><span class="k">@textColor</span><span class="o">:</span> <span class="nf">#fff</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nc">.msg</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">background-color</span><span class="o">:</span> <span class="o">@</span><span class="n">bgColor</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">color</span><span class="o">:</span> <span class="o">@</span><span class="n">textColor</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Por último nos queda configurar grunt para integrar las dos tasks.</p>
+
+<figure class='code'><figcaption><span>grunt.js  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Project configuration.</span>
+</span><span class='line'>    <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+</span><span class='line'>        <span class="nx">less</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nx">src</span><span class="o">:</span> <span class="s1">&#39;style.less&#39;</span><span class="p">,</span>
+</span><span class='line'>                <span class="nx">dest</span><span class="o">:</span> <span class="s1">&#39;style.css&#39;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">},</span>
+</span><span class='line'>        <span class="nx">watch</span> <span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">files</span> <span class="o">:</span> <span class="s1">&#39;&lt;config:less.all.src&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="nx">tasks</span> <span class="o">:</span> <span class="s1">&#39;less reload&#39;</span>
+</span><span class='line'>        <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">reload</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">proxy</span><span class="o">:</span> <span class="p">{}</span>
+</span><span class='line'>        <span class="p">},</span>
+</span><span class='line'>        <span class="nx">server</span> <span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">port</span> <span class="o">:</span> <span class="mi">8000</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// External tasks</span>
+</span><span class='line'>    <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-less&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-reload&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Custom tasks names</span>
+</span><span class='line'>    <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="s1">&#39;less&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;dev&#39;</span><span class="p">,</span> <span class="s1">&#39;server reload watch&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ejecutando el comando</p>
+
+<pre><code>grunt dev
+</code></pre>
+
+<p>Se arrancará un servidor en el puerto 8000 y un proxy en el 8001. Accediendo a <a href="http://localhost:8001/">http://localhost:8001/</a> con un navegador que tenga soporte para websockets, los cambios que hagamos en el fichero .less producieran que se actualice la página automáticamente. El último paso y más importante es buscar un monitor lo suficientemente grande donde quepa el editor de texto y el navegador a la vez.</p>
+
+<h2>¿Cómo funciona?</h2>
+
+<p><img src="https://docs.google.com/drawings/pub?id=1cDIetWqZmVvZzag7ec1QhhbNGkbUa-wCCFNWz2cFvL4&amp;w=960&amp;h=720"></p>
+
+<p>El funcionamiento es muy sencillo. Al ejecutar el comando <code>grunt dev</code> se lanza un servidor, en el puerto 8000, un proxy en el puerto 80001 y un servidor que se encargará de gestionar las conexiones de webscokets.</p>
+
+<p>La función del reload proxy es inyectar un javascript en la página. Este javascript se va a encargar de las funciones de livereload. Cuando se cargue la página abrirá una conexión con el servidor websocket.</p>
+
+<p>Cuando la tarea grunt watch detecte cambios en alguno de los ficheros que está monitorizando, ejecutará los preprocesadores que tengamos configurados y llamará a la tarea reload. Esta tarea se comunicará con el servidor de webscoket para informarle de que hay que reiniciar la página. El servidor de webscoket se comunicará con todos los navegadores que tengan una conexión abierta enviándoles un mensaje de reload. El javascript inyectado es el que va a forzar la actualización de la página cuando reciba este mensaje.</p>
+
+<p>Aquí tienes una lista de navegadores que soportan websockets</p>
+
+<p><a href="http://caniuse.com/#feat=websockets">http://caniuse.com/#feat=websockets</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Axel Hernández Ferrera</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-15T23:34:00+01:00" pubdate data-updated="true">Jun 15<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/grunt/'>grunt</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/live-reload/'>live-reload</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://axelhzf.github.com/blog/2012/06/15/grunt-live-reload/" data-via="axelhzf" data-counturl="http://axelhzf.github.com/blog/2012/06/15/grunt-live-reload/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/05/30/labs-canvas-star-wars/" title="Previous Post: Labs : Canvas Star Wars">&laquo; Labs : Canvas Star Wars</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/06/15/grunt-live-reload/">Grunt Live-Reload</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/30/labs-canvas-star-wars/">Labs : Canvas Star Wars</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/28/grunt-vs-wro4j/">Grunt vs Wro4j</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/27/grunt/">grunt</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/20/intellij-idea-keyboard-shortcuts/">IntelliJ Idea keyboard shortcuts</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("axelhzf", 10, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/axelhzf" class="twitter-follow-button" data-show-count="false">Follow @axelhzf</a>
+  
+</section>
+
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/axelhzf">@axelhzf</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'axelhzf',
+            count: 10,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Los contenidos de esta web están sujetos a una licencia de <a href="http://creativecommons.org/licenses/by/3.0/es/deed.es">Creative Commons</a> si no se indica lo contrario
+  - Axel Hernández Ferrera
+  - <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'axelhzf';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://axelhzf.github.com/blog/2012/06/15/grunt-live-reload/';
+        var disqus_url = 'http://axelhzf.github.com/blog/2012/06/15/grunt-live-reload/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: viable | axelhzf]]></title>
+  <link href="http://axelhzf.github.com/blog/categories/viable/atom.xml" rel="self"/>
+  <link href="http://axelhzf.github.com/"/>
+  <updated>2012-08-17T22:47:50+01:00</updated>
+  <id>http://axelhzf.github.com/</id>
+  <author>
+    <name><![CDATA[Axel Hernández Ferrera]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Vim dentro de Eclipse]]></title>
+    <link href="http://axelhzf.github.com/blog/2011/09/10/vim-dentro-de-eclipse/"/>
+    <updated>2011-09-10T21:54:00+01:00</updated>
+    <id>http://axelhzf.github.com/blog/2011/09/10/vim-dentro-de-eclipse</id>
+    <content type="html"><![CDATA[<p>A raíz de un artículo "<a href="http://yannesposito.com/Scratch/en/blog/Learn-Vim-Progressively/">Learn Vim Progressively</a>"
+recordé la potencia que tenía vim y los tiempos en los que lo utilizaba a diario
+(esos tiempos donde no dejaban utilizar un IDE para las prácticas de la universidad).
+El problema es que ahora me he vuelto IDEdependiente y en concreto Eclipse dependiente
+(aunque a esto último le intento poner remedio: Idea? ;)</p>
+
+<p>Así que buscando un poco por internet llegue como suele ser habitual a
+<a href="http://stackoverflow.com/questions/28793/vim-commands-in-eclipse">StackOverflow</a> donde recomendaban
+una serie de plugins para simular algunas características de vim dentro de Eclipse.
+Me decidí por <a href="http://marketplace.eclipse.org/content/viable-vim-eclipse">Viable</a>
+(me pareció la opción más viable, jojojo)</p>
+
+<p>El plugin es de pago, pero bueno, es Java, no hay que ser ningún crack
+para hacerle un <a href="http://java.decompiler.free.fr/">apaño</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>

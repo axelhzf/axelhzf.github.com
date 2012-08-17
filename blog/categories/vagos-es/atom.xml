@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: vagos.es | axelhzf]]></title>
+  <link href="http://axelhzf.github.com/blog/categories/vagos-es/atom.xml" rel="self"/>
+  <link href="http://axelhzf.github.com/"/>
+  <updated>2012-08-17T22:47:50+01:00</updated>
+  <id>http://axelhzf.github.com/</id>
+  <author>
+    <name><![CDATA[Axel Hernández Ferrera]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[FireQuery]]></title>
+    <link href="http://axelhzf.github.com/blog/2010/09/02/firequery/"/>
+    <updated>2010-09-02T20:39:00+01:00</updated>
+    <id>http://axelhzf.github.com/blog/2010/09/02/firequery</id>
+    <content type="html"><![CDATA[<p><a href="http://firequery.binaryage.com/">FireQuery</a> es un plugin para Firefox que se integra con Firebug.
+Permite inyectar jquery en cualquier página web, tiene muchas otras <a href="http://firequery.binaryage.com/#features">características</a>
+, pero esta era justo la que estaba buscando cuando encontré el plugin.</p>
+
+<p>Un uso práctico de este plugin sería extraer todos los links de megaupload de una página.
+Pongamos que queremos bajarnos <a href="http://www.imdb.com/title/tt0369179/">Dos hombre y medio</a> desde esta página
+<a href="http://www.vagos.es/showthread.php?t=842744">http://www.vagos.es/showthread.php?t=842744</a>.
+Lo único que tenemos que hacer es abrir la consola de Firebug e inyectar jquery dándole al botón “jQuerify”.
+Con un poquito de magia de jQuery podemos extraer todos los enlaces de megaupload de la página:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a:contains(&quot;megaupload&quot;)&#39;</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">e</span><span class="p">){</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="nx">e</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">));</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><img class="center" src="/images/posts/firequery.png"></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: wro4j | axelhzf]]></title>
+  <link href="http://axelhzf.github.com/blog/categories/wro4j/atom.xml" rel="self"/>
+  <link href="http://axelhzf.github.com/"/>
+  <updated>2012-08-17T22:47:50+01:00</updated>
+  <id>http://axelhzf.github.com/</id>
+  <author>
+    <name><![CDATA[Axel Hernández Ferrera]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Grunt vs Wro4j]]></title>
+    <link href="http://axelhzf.github.com/blog/2012/05/28/grunt-vs-wro4j/"/>
+    <updated>2012-05-28T22:01:00+01:00</updated>
+    <id>http://axelhzf.github.com/blog/2012/05/28/grunt-vs-wro4j</id>
+    <content type="html"><![CDATA[<p>En el post anterior hice la siguiente afirmación sin dar ningún dato:</p>
+
+<p><blockquote><p>He probado algunas otras herramientas que tienen el mismo objetivo, como por ejemplo wro4j, pero grunt es mucho más rápido.</p></blockquote></p>
+
+<p>En realidad no había hecho ninguna prueba, fue la sensación que tuve al utilizar las dos herramientas. <a href="http://www.twitter.com/alexobjelean">Alex Objelean</a>, el creador de wro4j, escribió un comentario preguntando si había hecho alguna prueba de rendimiento. Para ser justos me decidí a hacer una comparativa.</p>
+
+<!-- more -->
+
+
+<h2>Máquina de pruebas</h2>
+
+<ul>
+<li>Intel Core 2 Duo 2,66 GHz</li>
+<li>4GB DDR3</li>
+<li>OS X Lion 10.7.4</li>
+</ul>
+
+
+<h2>Pruebas</h2>
+
+<p>La prueba consistió en compilar :</p>
+
+<ul>
+<li><a href="http://code.jquery.com/jquery-1.7.2.js">jquery 1.7.2</a></li>
+<li><a href="http://underscorejs.org/underscore.js">underscore 1.3.3</a></li>
+<li><a href="http://backbonejs.org/backbone.js">backbone 0.9.2</a></li>
+<li><a href="https://github.com/twitter/bootstrap/tree/master/less">twitter bootstrap less</a></li>
+</ul>
+
+
+<h2>Proyectos</h2>
+
+<h3>Grunt</h3>
+
+<pre><code>.
+├── grunt.js
+└── src
+    ├── js
+    │   ├── backbone.js
+    │   ├── jquery-1.7.2.js
+    │   └── underscore.js
+    └── less
+        ├── *bootstrap.less
+</code></pre>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>grunt.js  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+</span><span class='line'>    <span class="nx">concat</span> <span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">dist</span> <span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">src</span> <span class="o">:</span> <span class="p">[</span><span class="s1">&#39;src/js/jquery-1.7.2.js&#39;</span><span class="p">,</span> <span class="s1">&#39;src/js/underscore.js&#39;</span><span class="p">,</span> <span class="s1">&#39;src/js/backbone.js&#39;</span><span class="p">],</span>
+</span><span class='line'>            <span class="nx">dest</span> <span class="o">:</span> <span class="s1">&#39;dist/built.js&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="nx">separator</span> <span class="o">:</span> <span class="s1">&#39;;&#39;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="nx">min</span> <span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">dist</span> <span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">src</span> <span class="o">:</span> <span class="p">[</span><span class="s1">&#39;dist/built.js&#39;</span><span class="p">],</span>
+</span><span class='line'>            <span class="nx">dest</span> <span class="o">:</span> <span class="s1">&#39;dist/built.min.js&#39;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="nx">recess</span> <span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">dist</span> <span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">src</span> <span class="o">:</span> <span class="s1">&#39;src/less/bootstrap.less&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="nx">dest</span> <span class="o">:</span> <span class="s1">&#39;dist/bootstrap.css&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="nx">options</span> <span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nx">compile</span> <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span><span class='line'>                <span class="nx">compress</span> <span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-recess&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="s1">&#39;concat min recess&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>Wro4j</h3>
+
+<pre><code>.
+├── pom.xml
+├── wro.xml
+├── wro.properties
+└── src
+    ├── js
+    │   ├── backbone.js
+    │   ├── jquery-1.7.2.js
+    │   └── underscore.js
+    └── less
+        ├── *bootstrap.less
+</code></pre>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>pom.xml  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="ni">&amp;lt;</span>project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span>     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+</span><span class='line'>     xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0
+</span><span class='line'>                  http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>modelVersion<span class="ni">&amp;gt;</span>4.0.0<span class="ni">&amp;lt;</span>/modelVersion<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>groupId<span class="ni">&amp;gt;</span>com.axelhzf<span class="ni">&amp;lt;</span>/groupId<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>artifactId<span class="ni">&amp;gt;</span>grunt-vs-wro4j<span class="ni">&amp;lt;</span>/artifactId<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>version<span class="ni">&amp;gt;</span>1.0<span class="ni">&amp;lt;</span>/version<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>packaging<span class="ni">&amp;gt;</span>jar<span class="ni">&amp;lt;</span>/packaging<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>dependencies<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>dependency<span class="ni">&amp;gt;</span>
+</span><span class='line'>        <span class="ni">&amp;lt;</span>groupId<span class="ni">&amp;gt;</span>ro.isdc.wro4j<span class="ni">&amp;lt;</span>/groupId<span class="ni">&amp;gt;</span>
+</span><span class='line'>        <span class="ni">&amp;lt;</span>artifactId<span class="ni">&amp;gt;</span>wro4j-maven-plugin<span class="ni">&amp;lt;</span>/artifactId<span class="ni">&amp;gt;</span>
+</span><span class='line'>        <span class="ni">&amp;lt;</span>version<span class="ni">&amp;gt;</span>1.4.6<span class="ni">&amp;lt;</span>/version<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>/dependency<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>/dependencies<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>build<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>plugins<span class="ni">&amp;gt;</span>
+</span><span class='line'>        <span class="ni">&amp;lt;</span>plugin<span class="ni">&amp;gt;</span>
+</span><span class='line'>            <span class="ni">&amp;lt;</span>groupId<span class="ni">&amp;gt;</span>ro.isdc.wro4j<span class="ni">&amp;lt;</span>/groupId<span class="ni">&amp;gt;</span>
+</span><span class='line'>            <span class="ni">&amp;lt;</span>artifactId<span class="ni">&amp;gt;</span>wro4j-maven-plugin<span class="ni">&amp;lt;</span>/artifactId<span class="ni">&amp;gt;</span>
+</span><span class='line'>            <span class="ni">&amp;lt;</span>version<span class="ni">&amp;gt;</span>1.4.6<span class="ni">&amp;lt;</span>/version<span class="ni">&amp;gt;</span>
+</span><span class='line'>            <span class="ni">&amp;lt;</span>executions<span class="ni">&amp;gt;</span>
+</span><span class='line'>                <span class="ni">&amp;lt;</span>execution<span class="ni">&amp;gt;</span>
+</span><span class='line'>                    <span class="ni">&amp;lt;</span>phase<span class="ni">&amp;gt;</span>compile<span class="ni">&amp;lt;</span>/phase<span class="ni">&amp;gt;</span>
+</span><span class='line'>                    <span class="ni">&amp;lt;</span>goals<span class="ni">&amp;gt;</span>
+</span><span class='line'>                        <span class="ni">&amp;lt;</span>goal<span class="ni">&amp;gt;</span>run<span class="ni">&amp;lt;</span>/goal<span class="ni">&amp;gt;</span>
+</span><span class='line'>                    <span class="ni">&amp;lt;</span>/goals<span class="ni">&amp;gt;</span>
+</span><span class='line'>                <span class="ni">&amp;lt;</span>/execution<span class="ni">&amp;gt;</span>
+</span><span class='line'>            <span class="ni">&amp;lt;</span>/executions<span class="ni">&amp;gt;</span>
+</span><span class='line'>            <span class="ni">&amp;lt;</span>configuration<span class="ni">&amp;gt;</span>
+</span><span class='line'>                <span class="ni">&amp;lt;</span>wroFile<span class="ni">&amp;gt;</span>wro.xml<span class="ni">&amp;lt;</span>/wroFile<span class="ni">&amp;gt;</span>
+</span><span class='line'>                <span class="ni">&amp;lt;</span>extraConfigFile<span class="ni">&amp;gt;</span>wro.properties<span class="ni">&amp;lt;</span>/extraConfigFile<span class="ni">&amp;gt;</span>
+</span><span class='line'>                <span class="ni">&amp;lt;</span>wroManagerFactory<span class="ni">&amp;gt;</span>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory
+</span><span class='line'>                <span class="ni">&amp;lt;</span>/wroManagerFactory<span class="ni">&amp;gt;</span>
+</span><span class='line'>                <span class="ni">&amp;lt;</span>destinationFolder<span class="ni">&amp;gt;</span>${basedir}/dist<span class="ni">&amp;lt;</span>/destinationFolder<span class="ni">&amp;gt;</span>
+</span><span class='line'>                <span class="ni">&amp;lt;</span>targetGroups<span class="ni">&amp;gt;</span>all<span class="ni">&amp;lt;</span>/targetGroups<span class="ni">&amp;gt;</span>
+</span><span class='line'>                <span class="ni">&amp;lt;</span>contextFolder<span class="ni">&amp;gt;</span>${basedir}<span class="ni">&amp;lt;</span>/contextFolder<span class="ni">&amp;gt;</span>
+</span><span class='line'>            <span class="ni">&amp;lt;</span>/configuration<span class="ni">&amp;gt;</span>
+</span><span class='line'>        <span class="ni">&amp;lt;</span>/plugin<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>/plugins<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>/build<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;/project&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>wro.xml  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;groups</span> <span class="na">xmlns=</span><span class="s">&quot;http://www.isdc.ro/wro&quot;</span><span class="nt">&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>group name=&quot;all&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>css<span class="ni">&amp;gt;</span>/src/less/bootstrap.less<span class="ni">&amp;lt;</span>/css<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>js<span class="ni">&amp;gt;</span>/src/js/underscore.js<span class="ni">&amp;lt;</span>/js<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>js<span class="ni">&amp;gt;</span>/src/js/backbone.js<span class="ni">&amp;lt;</span>/js<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>/group<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;/groups&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>wro.properties  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">preProcessors</span><span class="o">=</span><span class="nx">cssImport</span>
+</span><span class='line'><span class="nx">postProcessors</span><span class="o">=</span><span class="nx">lessCss</span><span class="p">,</span> <span class="nx">uglifyJs</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Ejecución</h2>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>grunt  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>axel:grunt axelhzf<span class="nv">$ </span><span class="nb">time </span>grunt
+</span><span class='line'>Running <span class="s2">&quot;concat:dist&quot;</span> <span class="o">(</span>concat<span class="o">)</span> task
+</span><span class='line'>File <span class="s2">&quot;dist/built.js&quot;</span> created.&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Running <span class="s2">&quot;min:dist&quot;</span> <span class="o">(</span>min<span class="o">)</span> task
+</span><span class='line'>File <span class="s2">&quot;dist/built.min.js&quot;</span> created.
+</span><span class='line'>Uncompressed size: 343428 bytes.
+</span><span class='line'>Compressed size: 42680 bytes gzipped <span class="o">(</span>123542 bytes minified<span class="o">)</span>.&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Running <span class="s2">&quot;recess:dist&quot;</span> <span class="o">(</span>recess<span class="o">)</span> task
+</span><span class='line'>File <span class="s2">&quot;dist/bootstrap.css&quot;</span> created.
+</span><span class='line'>Uncompressed size: 97585 bytes.
+</span><span class='line'>Compressed size: 13496 bytes gzipped <span class="o">(</span>81938 bytes minified<span class="o">)</span>.&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Done, without errors.&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;real    0m5.620s
+</span><span class='line'>user    0m4.534s
+</span><span class='line'>sys 0m0.177s
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>wro4j  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>axel:wro4j axelhzf<span class="nv">$ </span>mvn compile
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> Scanning <span class="k">for </span>projects...
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span>                                                                       &lt;br/&gt;
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> Building grunt-vs-wro4j 1.0
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span>
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> --- maven-resources-plugin:2.4.3:resources <span class="o">(</span>default-resources<span class="o">)</span> @ grunt-vs-wro4j ---
+</span><span class='line'><span class="o">[</span>WARNING<span class="o">]</span> Using platform encoding <span class="o">(</span>MacRoman actually<span class="o">)</span> to copy filtered resources, i.e. build is platform dependent!
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> skip non existing resourceDirectory /Users/axelhzf/dev/js/grunt-vs-wro4j/wro4j/src/main/resources
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span>
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> --- maven-compiler-plugin:2.3.2:compile <span class="o">(</span>default-compile<span class="o">)</span> @ grunt-vs-wro4j ---
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> No sources to compile
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span>
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> --- wro4j-maven-plugin:1.4.6:run <span class="o">(</span>default<span class="o">)</span> @ grunt-vs-wro4j ---
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> Executing the mojo:
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> Wro4j Model path: /Users/axelhzf/dev/js/grunt-vs-wro4j/wro4j/wro.xml
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> targetGroups: all
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> minimize: <span class="nb">true</span>
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> ignoreMissingResources: <span class="nb">true</span>
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> destinationFolder: /Users/axelhzf/dev/js/grunt-vs-wro4j/wro4j/dist
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> jsDestinationFolder: null
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> cssDestinationFolder: null
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> groupNameMappingFile: null
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> folder: /Users/axelhzf/dev/js/grunt-vs-wro4j/wro4j/dist
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> processing group: all.css
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> wroManagerFactory class: ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> file size: all.css -&gt; 97585 bytes
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> /Users/axelhzf/dev/js/grunt-vs-wro4j/wro4j/dist/all.css <span class="o">(</span>97585 bytes<span class="o">)</span>
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> folder: /Users/axelhzf/dev/js/grunt-vs-wro4j/wro4j/dist
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> processing group: all.js
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> file size: all.js -&gt; 39532 bytes
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> /Users/axelhzf/dev/js/grunt-vs-wro4j/wro4j/dist/all.js <span class="o">(</span>39532 bytes<span class="o">)</span>
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> BUILD SUCCESS
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> Total <span class="nb">time</span>: 1:11.501s
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> Finished at: Mon May 28 22:22:50 WEST 2012
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> Final Memory: 8M/81M
+</span><span class='line'><span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Conclusión</h2>
+
+<p>La diferencia de tiempos es considerable. Creo que la principal diferencia entre las dos herramientas es el motor de javascript que utilizan. Wro4j usa <a href="http://www.mozilla.org/rhino/">rhino</a> mientras que grunt utiliza <a href="http://code.google.com/p/v8/">v8</a>. En <a href="http://axtaxt.wordpress.com/2011/09/25/benchmark-rhino-vs-chrome-v8-on-server-side/">este artículo</a> se realiza una comparativa de rendimiento de los dos motores.</p>
+]]></content>
+  </entry>
+  
+</feed>

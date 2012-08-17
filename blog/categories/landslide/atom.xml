@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: landslide | axelhzf]]></title>
+  <link href="http://axelhzf.github.com/blog/categories/landslide/atom.xml" rel="self"/>
+  <link href="http://axelhzf.github.com/"/>
+  <updated>2012-08-17T22:47:50+01:00</updated>
+  <id>http://axelhzf.github.com/</id>
+  <author>
+    <name><![CDATA[Axel Hernández Ferrera]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Creando una presentación con HTML+CSS+JS]]></title>
+    <link href="http://axelhzf.github.com/blog/2011/06/19/creando-una-presentacion-con-html-plus-css-plus-js/"/>
+    <updated>2011-06-19T20:58:00+01:00</updated>
+    <id>http://axelhzf.github.com/blog/2011/06/19/creando-una-presentacion-con-html-plus-css-plus-js</id>
+    <content type="html"><![CDATA[<p>Me encanta la presentación <a href="http://slides.html5rocks.com/">html5rocks</a>. Es interactiva,
+puedes ir probando todo lo que va explicando. Incluso dibujar un Doraemon en la diapositiva 47.
+Lo mejor de todo es que crearon un generador de diapositivas y nosotros mismos podemos crear diapositivas de este tipo.</p>
+
+<h2>Proyecto</h2>
+
+<p>El proyecto se llama <strong>landslide</strong> y se puede descargar de
+<a href="https://github.com/n1k0/landslide">https://github.com/n1k0/landslide</a></p>
+
+<h2>Instalación</h2>
+
+<p>En la página principal están las instrucciones de instalación. Hay varias opciones, la que yo seguí fue clonar el repositorio e instalar</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git clone git://github.com/n1k0/landslide.git
+</span><span class='line'><span class="nb">cd </span>landslide
+</span><span class='line'>python setup.py build
+</span><span class='line'>sudo python setup.py install&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Creando la presentación</h2>
+
+<p>Las presentaciones se escriben con <a href="http://daringfireball.net/projects/markdown/syntax">markdown</a>.
+Este formato se está popularizando bastante, por ejemplo tumblr ya tiene soporte y es el formato con el
+que estoy escribiendo el post.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>presentacion.md  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;h1&gt;</span>Título de la presentación<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;hr</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;h2&gt;</span>Primera diapositiva<span class="nt">&lt;/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>Contenido de la diapositiva<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;hr</span> <span class="nt">/&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;h2&gt;</span>Segunda diapositiva<span class="nt">&lt;/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>Contenido de la <span class="nt">&lt;strong&gt;</span>segunda<span class="nt">&lt;/strong&gt;</span> diapositiva
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Esta es una presentación bastante simple. Cada diapositiva va separada con --- y el título de la diapositiva con ##</p>
+
+<h2>Compilando la presentación</h2>
+
+<p>Para poder ver la presentación tenemos que compilarla para que se cree el html.</p>
+
+<pre><code>landslide presentacion.md
+</code></pre>
+
+<p>Esto genera un archivo presentation.html, lo abrimos con el navegador y ya tenemos nuestra presentación.</p>
+
+<p><img class="center" src="/images/posts/landslide.png"></p>
+]]></content>
+  </entry>
+  
+</feed>
