@@ -13,5 +13,5 @@ vendor
 node_modules
 .idea
 *.iml
-atlassian-ide-plugin.xml
-node_modules
+.preview-mode
+atlassian*
