@@ -356,6 +356,19 @@ footer[role='contentinfo'] hr {
 .right {
   float: right;
 }
+.center {
+  margin-right: auto;
+  margin-left: auto;
+  *zoom: 1;
+}
+.center:before,
+.center:after {
+  display: table;
+  content: "";
+}
+.center:after {
+  clear: both;
+}
 .typekit-badge {
   display: none !important;
 }
