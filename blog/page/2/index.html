@@ -9,9 +9,7 @@
   <meta name="author" content="Axel Hernández Ferrera">
 
   
-  <meta name="description" content="A raíz de un artículo &#8221;Learn Vim Progressively&#8221;
-recordé la potencia que tenía vim y los tiempos en los que lo utilizaba a diario
-(esos &hellip;">
+  <meta name="description" content="Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en los que sale ganador de comparativas con Eclipse o Netbeans. El año &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,18 +19,16 @@ recordé la potencia que tenía vim y los tiempos en los que lo utilizaba a diar
 
   
   <link rel="canonical" href="http://axelhzf.github.com/blog/page/2">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-    <link href="/stylesheets/keys.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
+  <script type="text/javascript">Typekit.load()</script>
+
+  <link rel="shortcut icon" href="favicon.ico"/>
+  <link href="/stylesheets/main.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="axelhzf" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-
-
   
   <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -49,29 +45,27 @@ recordé la potencia que tenía vim y los tiempos en los que lo utilizaba a diar
 
 </head>
 
-<body   >
-  <nav role="navigation"><div class="container">
-    <ul class="subscription" data-subscription="rss">
-      <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-      
-    </ul>
-      
-    <form action="http://google.com/search" method="get">
-      <fieldset role="search">
-        <input type="hidden" name="q" value="site:axelhzf.github.com" />
-        <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-      </fieldset>
-    </form>
-      
-    <ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
+<body>
 
-</div>
+<hgroup class="header">
+    <div class="logo"><a href="/">axelhzf</a></div>
+</hgroup>
+
+
+
+<nav role="navigation"><ul class="main-navigation">
+    <li><a href="/">Blog</a></li>
+    <li><a href="/blog/archives">Archives</a></li>
+    <li><a href="/tutorials">Tutorials</a></li>
+    <li><a href="/talks">Talks</a></li>
+    <li><a href="/experiments">Experiments</a></li>
+    <li><a href="http://twitter.com/axelhzf" target="_blank">Twitter</a></li>
+    <li><a href="http://www.github.com/axelhzf" target="_blank">Github</a></li>
+    <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank">RSS</a></li>
+</ul>
 </nav>
   <div id="main">
-    <div id="content">
+    <div id="content" class="container">
       <div class="blog-index">
   
   
@@ -80,7 +74,7 @@ recordé la potencia que tenía vim y los tiempos en los que lo utilizaba a diar
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2011/09/10/vim-dentro-de-eclipse/">Vim Dentro De Eclipse</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012/05/20/intellij-idea-keyboard-shortcuts/">IntelliJ Idea Keyboard Shortcuts</a></h1>
     
     
       <p class="meta">
@@ -96,27 +90,41 @@ recordé la potencia que tenía vim y los tiempos en los que lo utilizaba a diar
   
 
 
-<time datetime="2011-09-10T21:54:00+01:00" pubdate data-updated="true">Sep 10<span>th</span>, 2011</time>
+<time datetime="2012-05-20T11:30:00+01:00" pubdate data-updated="true">May 20<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>A raíz de un artículo &#8221;<a href="http://yannesposito.com/Scratch/en/blog/Learn-Vim-Progressively/">Learn Vim Progressively</a>&#8221;
-recordé la potencia que tenía vim y los tiempos en los que lo utilizaba a diario
-(esos tiempos donde no dejaban utilizar un IDE para las prácticas de la universidad).
-El problema es que ahora me he vuelto IDEdependiente y en concreto Eclipse dependiente
-(aunque a esto último le intento poner remedio: Idea? ;)</p>
+  <div class="entry-content"><p><img class="center" src="/images/posts/intellij_idea.gif"></p>
 
-<p>Así que buscando un poco por internet llegue como suele ser habitual a
-<a href="http://stackoverflow.com/questions/28793/vim-commands-in-eclipse">StackOverflow</a> donde recomendaban
-una serie de plugins para simular algunas características de vim dentro de Eclipse.
-Me decidí por <a href="http://marketplace.eclipse.org/content/viable-vim-eclipse">Viable</a>
-(me pareció la opción más viable, jojojo)</p>
+<p>Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en los que sale ganador de comparativas con Eclipse o Netbeans. El año pasado le intenté dar una oportunidad pero la cosa no fue bien. En ese momento estaba desarrollando un plugin para Eclipse por lo que no tenía mucho sentido que utilizara en IntelliJ. Mi situación cambió hace unos dos meses, cambié de trabajo y ahora me dedico casi exclusivamente a desarrollo front-end. Estoy ampliando mucho mis conocimientos de javascript que antes se limitaba a lo básico de jQuery. El soporte que tiene Eclipse para javascript me daba la sensación de que perjudicaba más que ayudar. Incluso editores de textos con esteroides como <a href="http://www.sublimetext.com/">SublimeText</a> ayudan más a la hora de escribir javascript. Dada esta situación decidí darle una segunda oportunidad a IntelliJ, que si tiene un soporte de verdad para javascript, resaltado de sintaxis, refactor, integración con jslint, búsqueda usos dinámicos, etc.</p>
 
-<p>El plugin es de pago, pero bueno, es Java, no hay que ser ningún crack
-para hacerle un <a href="http://java.decompiler.free.fr/">apaño</a>.</p>
+<p>El problema de cambiar de IDE es que tienes que cambiar por completo tu flujo de trabajo. Tienes que aprender a crear proyectos, compilarlos y desplegarlos. Realizar las tareas más básicas se convierte en una búsqueda constante por los menús, la ayuda y stackoverflow. Durante este periodo de aprendizaje eres menos productivo. Estás acostumbrado a trabajar de una manera y es complicado cambiarla, aunque sea para mejor. Más vale IDE malo conocido que bueno por conocer (te estoy mirando a ti plugin de maven para Eclipse).</p>
+
+<p>De las cosas más importantes que tienes que aprender cuando estás trabajando con un IDE nuevo si quieres ser productivo son los atajos de teclado. Para ver y editar los atajos de teclado en IntelliJ tienes que ir al menú <code>Settings/keymap</code>. Por defecto viene con algunos presets, incluso viene con un preset similar a Eclipse para hacer menos traumático el cambio.</p>
+
+<p>Encontré este posts con una recopilación de atajos</p>
+
+<p><a href="http://stackoverflow.com/questions/294167/what-are-the-most-useful-intellij-idea-keyboard-shortcuts">http://stackoverflow.com/questions/294167/what-are-the-most-useful-intellij-idea-keyboard-shortcuts</a></p>
+
+<p>Hay algunos que considero básicos que no estaban en esa lista por lo que dejo mi propia lista de atajos de teclado:</p>
+
+<ul>
+<li><kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>A</kbd> : Este es el atajo de teclado definitivo. Aparecerá una caja de búsqueda donde podrás buscar entre todas las acciones que puedes realizar.</li>
+<li><kbd>Cmd</kbd> + <kbd>N</kbd> : Buscar clase</li>
+<li><kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd> : Buscar archivo</li>
+<li><kbd>Cmd</kbd> + <kbd>E</kbd> : Últimos ficheros editados</li>
+<li><kbd>Alt</kbd> + <kbd>Enter</kbd> : Acciones que puedes realizar en el contexto</li>
+<li><kbd>Cmd</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd> : Reformatear</li>
+<li><kbd>Ctrl</kbd> + <kbd>N</kbd> : Generar código. Por ejemplo getter, setters, constructor</li>
+<li><kbd>Cmd</kbd> + <kbd>P</kbd> : Ver información de los parámetros de un método</li>
+<li><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>F10</kbd> : Menú de ejecución</li>
+</ul>
+
+
+<p>Iré añadiendo más a la lista a medida que los vaya descubriendo.</p>
 </div>
   
   
@@ -129,7 +137,7 @@ para hacerle un <a href="http://java.decompiler.free.fr/">apaño</a>.</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2011/06/19/creando-una-presentacion-con-html-plus-css-plus-js/">Creando Una Presentación Con HTML+CSS+JS</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012/05/20/octopress/">Octopress</a></h1>
     
     
       <p class="meta">
@@ -145,44 +153,64 @@ para hacerle un <a href="http://java.decompiler.free.fr/">apaño</a>.</p>
   
 
 
-<time datetime="2011-06-19T20:58:00+01:00" pubdate data-updated="true">Jun 19<span>th</span>, 2011</time>
+<time datetime="2012-05-20T11:00:00+01:00" pubdate data-updated="true">May 20<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>Me encanta la presentación <a href="http://slides.html5rocks.com/">html5rocks</a>. Es interactiva,
-puedes ir probando todo lo que va explicando. Incluso dibujar un Doraemon en la diapositiva 47.
-Lo mejor de todo es que crearon un generador de diapositivas y nosotros mismos podemos crear diapositivas de este tipo.</p>
+  <div class="entry-content"><p><img class="center" src="/images/posts/octopress.png"></p>
 
-<h2>Proyecto</h2>
+<p>Después de un tiempo utilizando <a href="http://axelhzf.tumblr.com">tumblr</a> traslado el blog a <a href="http://octopress.org/">Octopress</a> desplegado en github.</p>
 
-<p>El proyecto se llama <strong>landslide</strong> y se puede descargar de
-<a href="https://github.com/n1k0/landslide">https://github.com/n1k0/landslide</a></p>
+<p>Octopress es un sistema de blogging basado en <a href="https://github.com/mojombo/jekyll">Jekyll</a>. No es más que un generador estáticos de páginas escrito en ruby por <a href="https://github.com/mojombo">mojombo</a> cofundador de github y es el sistema que utiliza <a href="http://pages.github.com/">github:pages</a>. Octopress añade un conjunto de utilidades que facilitan el trabajo con jekyll.</p>
 
-<h2>Instalación</h2>
-
-<p>En la página principal están las instrucciones de instalación. Hay varias opciones, la que yo seguí fue clonar el repositorio e instalar</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone git://github.com/n1k0/landslide.git
-</span><span class='line'><span class="nb">cd </span>landslide
-</span><span class='line'>python setup.py build
-</span><span class='line'>sudo python setup.py install
-</span></code></pre></td></tr></table></div></figure>
+<p>El principal motivo del cambio es poder escribir los posts de una forma más cómoda desde un editor de texto y no desde una web. A partir de ahora podré utilizar <a href="http://www.sublimetext.com">SublimeText</a> o <a href="http://www.iawriter.com/">iA Writer</a>. Con Octopress publicar trozos de código es mucho más sencillo. Tiene integración con <a href="http://pygments.org/">pygments</a> para el resaltado de sintaxis y algún otro plugin interesante como el de <a href="http://octopress.org/docs/plugins/gist-tag/">gist</a> o el de <a href="http://octopress.org/docs/plugins/jsfiddle-tag/">jsFiddle</a>. Todavía no estoy muy seguro de si voy a hacer una migración de los posts antiguos o no, todo depende de lo complicado que resulte.</p>
+</div>
+  
+  
 
 
-<h2>Creando la presentación</h2>
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/02/04/ampliando-el-modulo-de-google-guice/">Ampliando El Módulo De Google Guice</a></h1>
+    
+    
+      <p class="meta">
+        
 
-<p>Las presentaciones se escriben con <a href="http://daringfireball.net/projects/markdown/syntax">markdown</a>.
-Este formato se está popularizando bastante, por ejemplo tumblr ya tiene soporte y es el formato con el
-que estoy escribiendo el post.</p>
 
-<figure class='code'><figcaption><span>presentacion.md  </span></figcaption>
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-04T22:34:00+00:00" pubdate data-updated="true">Feb 4<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Como comenté al final de mi <a href="http://axelhzf.tumblr.com/post/16930248351/play-framework-google-guice">post</a> anterior mi intención era añadir al módulo de play las clases que añaden el scope LazySingleton.</p>
+
+<p>Los cambios están en este <a href="https://github.com/axelhzf/play-guice-module/commit/30af78bb96c7561a529ac578ff93d2b49a1e5492">commit</a>.</p>
+
+<p>Añadí a la clase <em>GuiceSupport</em> una variable con el stage en función del modo en el que se está ejecutando play y creé la clase <em>PlayAbstractModule</em> que incluye el método <em>bindLazySingletonOnDev</em>.</p>
+
+<p>Para utilizarlo:</p>
+
+<figure class='code'><figcaption><span>conf/dependencies.yml </span></figcaption>
  <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -193,128 +221,48 @@ que estoy escribiendo el post.</p>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'># Título de la presentación
-</span><span class='line'>---
-</span><span class='line'>## Primera diapositiva
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">require</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">play</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">axelhzf -&gt; guice 1.3</span>
 </span><span class='line'>
-</span><span class='line'>Contenido de la diapositiva
-</span><span class='line'>
-</span><span class='line'>---
-</span><span class='line'>## Segunda diapositiva
-</span><span class='line'>
-</span><span class='line'>Contenido de la **segunda** diapositiva
+</span><span class='line'><span class="l-Scalar-Plain">repositories</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">axelhzf-guice-repository</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">artifact</span><span class="p-Indicator">:</span> <span class="s">&quot;http://cloud.github.com/downloads/axelhzf/play-guice-module/guice-[revision].zip&quot;</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">contains</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">axelhzf -&gt; guice</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Esta es una presentación bastante simple. Cada diapositiva va separada con &#8212; y el título de la diapositiva con ##</p>
+<p>Configurar el inyector</p>
 
-<h2>Compilando la presentación</h2>
-
-<p>Para poder ver la presentación tenemos que compilarla para que se cree el html.</p>
-
-<pre><code>landslide presentacion.md
-</code></pre>
-
-<p>Esto genera un archivo presentation.html, lo abrimos con el navegador y ya tenemos nuestra presentación.</p>
-
-<p><img class="center" src="/images/posts/landslide.png"></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/05/22/eclipse-color-themes/">Eclipse Color Themes</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-05-22T20:48:00+01:00" pubdate data-updated="true">May 22<span>nd</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="center" src="/images/posts/eclipseColorThemes.jpeg"></p>
-
-<p><a href="http://www.eclipsecolorthemes.org/">Eclipse Color Themes</a> era algo que siempre había querido: Temas de colores oscuros en Eclipse.
-Algo fácil de instalar, nada de estar importando <a href="http://blog.codefront.net/2006/09/28/vibrant-ink-textmate-theme-for-eclipse/">preferencias completas</a>.
-Este plugin para Eclipse viene por defecto con un par de temas que no están nada mal
-(Ahora mismo estoy utilizando <a href="http://www.eclipsecolorthemes.org/?view=theme&amp;id=21">Obsidian</a>)
-y también puedes crearte tu propio tema desde su <a href="http://www.eclipsecolorthemes.org/?view=firsttheme">página web</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/09/02/firequery/">FireQuery</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-09-02T20:39:00+01:00" pubdate data-updated="true">Sep 2<span>nd</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://firequery.binaryage.com/">FireQuery</a> es un plugin para Firefox que se integra con Firebug.
-Permite inyectar jquery en cualquier página web, tiene muchas otras <a href="http://firequery.binaryage.com/#features">características</a>
-, pero esta era justo la que estaba buscando cuando encontré el plugin.</p>
-
-<p>Un uso práctico de este plugin sería extraer todos los links de megaupload de una página.
-Pongamos que queremos bajarnos <a href="http://www.imdb.com/title/tt0369179/">Dos hombre y medio</a> desde esta página
-<a href="http://www.vagos.es/showthread.php?t=842744">http://www.vagos.es/showthread.php?t=842744</a>.
-Lo único que tenemos que hacer es abrir la consola de Firebug e inyectar jquery dándole al botón “jQuerify”.
-Con un poquito de magia de jQuery podemos extraer todos los enlaces de megaupload de la página:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>GuiceConfig.java  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a:contains(&quot;megaupload&quot;)&#39;</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">e</span><span class="p">){</span>
-</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="nx">e</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">));</span>
-</span><span class='line'><span class="p">});</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">public</span> <span class="kd">class</span> <span class="nc">GuiceConfig</span> <span class="kd">extends</span> <span class="n">GuiceSupport</span> <span class="o">{</span>
+</span><span class='line'>      <span class="nd">@Override</span>
+</span><span class='line'>      <span class="kd">protected</span> <span class="n">Injector</span> <span class="nf">configure</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="n">Guice</span><span class="o">.</span><span class="na">createInjector</span><span class="o">(</span><span class="n">stage</span><span class="o">,</span> <span class="k">new</span> <span class="n">PlayAbstractModule</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>              <span class="nd">@Override</span>
+</span><span class='line'>              <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>                  <span class="n">bindLazySingletonOnDev</span><span class="o">(</span><span class="n">MyService</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">MyServiceImpl</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>                  <span class="n">bindLazySingletonOnDev</span><span class="o">(</span><span class="n">MyDependentService</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">MyDependentServiceImpl</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>              <span class="o">}</span>
+</span><span class='line'>          <span class="o">});</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p><img class="center" src="/images/posts/firequery.png"></p>
 </div>
   
   
@@ -327,7 +275,7 @@ Con un poquito de magia de jQuery podemos extraer todos los enlaces de megauploa
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2010/08/23/seriesmonkey/">Seriesmonkey</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012/02/02/play-framework-plus-google-guice/">Play Framework + Google Guice</a></h1>
     
     
       <p class="meta">
@@ -343,29 +291,29 @@ Con un poquito de magia de jQuery podemos extraer todos los enlaces de megauploa
   
 
 
-<time datetime="2010-08-23T20:27:00+01:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2010</time>
+<time datetime="2012-02-02T22:18:00+00:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p><img class="center" src="/images/posts/seriesmonkey.png"></p>
+  <div class="entry-content"><p>En el proyecto en el que estoy trabajando actualmente empezamos a utilizar Google Guice. Para quien no lo sepa, Guice es un framework de inyección de dependencias. La idea básica de la inyección de dependencias consiste en sumistrar a una clase sus dependencias, en lugar de que sea esta quien tenga que instanciarlas.</p>
 
-<p>Esta última semana he estado aprendiendo <a href="http://www.jquery.com">jQuery</a> gracias al libro <a href="http://jqfundamentals.com/book/index.html">jQuery Fundamentals</a>
-(en el enlace al github lo tienen en varios formatos epub, pdf, …).</p>
+<p>Play cuenta con un módulo para integrar Guice:</p>
 
-<p>De nada sirve leer y leer tutoriales si no pones en práctica lo que vas aprendiendo,
-así que me animé a hacer un script de greasemonkey. El plugin en cuestión sustituye la interfaz de seriesyonkis por una más simple y más accesible.</p>
+<p><a href="">http://www.playframework.org/modules/guice-1.2/home</a></p>
 
-<p>Si quieren probarla (y hacer de betatester) pueden descargarla desde el <a href="http://github.com/downloads/axelhzf/seriesyonkisGreasemonkey/seriesyonkisgreasemonkey.user.js">repositorio</a>.</p>
+<p>Además de la propia documentación del módulo, está este post de <a href="http://www.twitter.com/_felipera">@_felipera</a> que te puede ayudar a dar los primeros pasos:</p>
 
-<p>Por ahora la he probado únicamente en Firefox (con el plugin de greasemonkey).
-Creo que Chrome también tiene soporte para estos scripts, pero tengo que investigar un poco más.</p>
+<p><a href="">http://geeks.aretotally.in/dependency-injection-with-play-framework-and-google-guice</a></p>
 
-<p>Cualquier comentario o sugerencia será bienvenida :)</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/02/02/play-framework-plus-google-guice/">More &rarr;</a>
+    </footer>
   
 
 
@@ -373,15 +321,24 @@ Creo que Chrome también tiene soporte para estos scripts, pero tengo que invest
   
   <div class="pagination">
     
+      <a class="prev" href="/blog/page/3/">&larr; Older</a>
+    
     <a href="/blog/archives">Blog Archives</a>
     
     <a class="next" href="/">Newer &rarr;</a>
     
   </div>
 </div>
-<aside class="sidebar">
-  
-    <section>
+
+    </div>
+  </div>
+  <footer role="contentinfo">
+<div class="container">
+
+
+    <div class="row">
+        <div class="span3">
+            <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
     
@@ -405,17 +362,28 @@ Creo que Chrome también tiene soporte para estos scripts, pero tengo que invest
         <a href="/blog/2012/05/20/intellij-idea-keyboard-shortcuts/">IntelliJ Idea keyboard shortcuts</a>
       </li>
     
+      <li class="post">
+        <a href="/blog/2012/05/20/octopress/">octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/02/04/ampliando-el-modulo-de-google-guice/">Ampliando el módulo de Google Guice</a>
+      </li>
+    
   </ul>
 </section>
 
+        </div>
+        <div class="span5">
+            
 <section>
   <h1>Latest Tweets</h1>
   <ul id="tweets">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   <script type="text/javascript">
     $.domReady(function(){
-      getTwitterFeed("axelhzf", 10, false);
+      getTwitterFeed("axelhzf", 6, false);
     });
   </script>
   <script src="/javascripts/twitter.js" type="text/javascript"> </script>
@@ -425,51 +393,34 @@ Creo que Chrome también tiene soporte para estos scripts, pero tengo que invest
 </section>
 
 
-<section>
-  <h1>GitHub Repos</h1>
-  <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
-  </ul>
-  
-  <a href="https://github.com/axelhzf">@axelhzf</a> on GitHub
-  
-  <script type="text/javascript">
-    $.domReady(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
+        </div>
+    </div>
 
-        github.showRepos({
-            user: 'axelhzf',
-            count: 10,
-            skip_forks: true,
-            target: '#gh_repos'
-        });
-    });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
+    <hr>
 
-
-
-
-
-  
-</aside>
+    <div class="row">
+        <ul class="main-navigation">
+    <li><a href="/">Blog</a></li>
+    <li><a href="/blog/archives">Archives</a></li>
+    <li><a href="/tutorials">Tutorials</a></li>
+    <li><a href="/talks">Talks</a></li>
+    <li><a href="/experiments">Experiments</a></li>
+    <li><a href="http://twitter.com/axelhzf" target="_blank">Twitter</a></li>
+    <li><a href="http://www.github.com/axelhzf" target="_blank">Github</a></li>
+    <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank">RSS</a></li>
+</ul>
 
     </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Los contenidos de esta web están sujetos a una licencia de <a href="http://creativecommons.org/licenses/by/3.0/es/deed.es">Creative Commons</a> si no se indica lo contrario
-  - Axel Hernández Ferrera
-  - <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
 
-</footer>
+    
+
+    <div class="row license">
+        This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+        <br/>
+        Axel Hernández Ferrera - Powered by <a href="http://octopress.org">Octopress</a>
+    </div>
+
+</div></footer>
   
 
 <script type="text/javascript">
