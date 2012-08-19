@@ -3,22 +3,23 @@ var github = (function(){
     var i = 0, fragment = '', t = $(target)[0];
 
     for(i = 0; i < repos.length; i++) {
-      fragment += '<li><a href="'+repos[i].url+'">'+repos[i].name+'</a><p>'+repos[i].description+'</p></li>';
+      fragment += '<li><a href="'+repos[i].url+'" title="' + repos[i].description + '">'+repos[i].name+'</a></li>';
     }
     t.innerHTML = fragment;
   }
   return {
     showRepos: function(options){
       $.ajax({
-          url: "http://github.com/api/v2/json/repos/show/"+options.user+"?callback=?"
+          url: "https://api.github.com/users/" + options.user + "/repos?callback=?"
         , type: 'jsonp'
         , error: function (err) { $(options.target + ' li.loading').addClass('error').text("Error loading feed"); }
         , success: function(data) {
           var repos = [];
-          if (!data || !data.repositories) { return; }
-          for (var i = 0; i < data.repositories.length; i++) {
-            if (options.skip_forks && data.repositories[i].fork) { continue; }
-            repos.push(data.repositories[i]);
+          if (!data) { return; }
+          for (var i = 0; i < data.data.length; i++) {
+            var repository = data.data[i];
+            if (options.skip_forks && repository.fork) { continue; }
+            repos.push(repository);
           }
           repos.sort(function(a, b) {
             var aDate = new Date(a.pushed_at).valueOf(),
@@ -29,6 +30,7 @@ var github = (function(){
           });
 
           if (options.count) { repos.splice(options.count); }
+
           render(options.target, repos);
         }
       });
