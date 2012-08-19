@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "talks"
+title: "Talks"
 comments: false
 sharing: false
 footer: true

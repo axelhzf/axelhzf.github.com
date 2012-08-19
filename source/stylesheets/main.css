@@ -350,6 +350,12 @@ footer[role='contentinfo'] hr {
 .twitter-follow-button {
   float: right;
 }
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
 .typekit-badge {
   display: none !important;
 }

@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "experiments"
+title: "Experiments"
 comments: false
 sharing: false
 footer: true

@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "tutorials"
+title: "Tutorials"
 comments: false
 sharing: false
 footer: true
