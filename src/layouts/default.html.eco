@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+	<!-- Standard Meta -->
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width" />
+
+	<!-- Site Properities -->
+	<title><%= @getPreparedTitle() %></title>
+	<meta name="description" content="<%= @getPreparedDescription() %>" />
+	<meta name="keywords" content="<%= @getPreparedKeywords() %>" />
+
+	<!-- DocPad Meta -->
+	<%- @getBlock('meta').toHTML() %>
+
+	<!-- DocPad Styles + Our Own -->
+	<%- @getBlock('styles').add(['/assets/styles/main.css', '/assets/styles/highlight/github.css']).toHTML() %>
+
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="/icons/favicon.ico" />
+
+    <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
+    <script type="text/javascript">Typekit.load()</script>
+
+</head>
+<body>
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+
+    <hgroup class="header">
+        <div class="logo"><a href="/">axelhzf</a></div>
+    </hgroup>
+
+    <div class="wrapper">
+
+    <nav role="navigation">
+        <ul class="main-navigation">
+            <li><a href="/blog/archives">Blog</a></li>
+            <li><a href="/tutorials">Tutorials</a></li>
+            <li><a href="/talks">Talks</a></li>
+            <li><a href="/experiments">Experiments</a></li>
+            <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank">RSS</a></li>
+        </ul>
+    </nav>
+
+    <div id="content" class="container">
+		<%- @content %>
+    </div>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row license">
+                This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+                <br/>
+                <%= @site.author %>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

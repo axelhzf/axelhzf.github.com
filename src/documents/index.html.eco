@@ -1,0 +1,18 @@
+---
+layout: 'default'
+---
+
+<h1>Recent Posts <small><a href="/blog/archives">view all</a></small></h1>
+<% for article in @getCollection('posts').toJSON()[0..5] : %>
+<div>
+    <a href="<%= article.url %>"><%= article.title %></a>
+    <small><%= article.date.toShortDateString() %> posted on <%- @getTags(article.tags) %></small>
+</div>
+<% end %>
+
+<div class="social">
+    <a href="http://www.twitter.com/axelhzf" target="_blank" class="twitter"></a>
+    <a href="http://www.github.com/axelhzf" target="_blank" class="github"></a>
+</div>
+
+

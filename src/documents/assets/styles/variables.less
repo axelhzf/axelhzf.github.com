@@ -1,0 +1,31 @@
+// fonts
+@font-serif: "museo",serif;
+@font-sans: "museo-sans","Lucida Grande","Lucida Sans Unicode",Helvetica, Arial, Verdana, sans-serif;
+@font-mono: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace;
+@baseLineHeight: 18px;
+
+// color definition
+@soft-black: #151B1F;
+@primary-color: #08A4F1;
+@secondary-color: #C03;
+@soft-gray: #F1F1F1;
+@red: #E41F3A;
+
+// colorize elements
+@page-bg: @soft-gray;
+@logo-bg: @red;
+@content-bg: #fff;
+@link-color: @secondary-color;
+@link-color-hover: @secondary-color;
+
+
+
+@page-container-width: 600px;
+
+// Default 940px grid
+// -------------------------
+
+@gridColumns:             8;
+@gridColumnWidth:         60px;
+@gridGutterWidth:         20px;
+@gridRowWidth:            (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1));
