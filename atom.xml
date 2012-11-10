@@ -3,7 +3,7 @@
     <title>axelhzf</title>
     <link href="http://axelhzf.com/atom.xml" rel="self"/>
     <link href="http://axelhzf.com"/>
-    <updated>2012-11-10T00:16:39.728Z</updated>
+    <updated>2012-11-10T01:10:26.430Z</updated>
     <id>http://axelhzf.com</id>
     <author>
         <name>Axel Hernández Ferrea</name>
@@ -12,9 +12,47 @@
 
     
         <entry>
+            <title>Cocoapods</title>
+            <link href="http://axelhzf.com/blog/2012-11-10-cocoapods.html"/>
+            <updated>2012-11-10T00:00:00.269Z</updated>
+            <id>http://axelhzf.com/blog/2012-11-10-cocoapods.html</id>
+            <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/cocoapods.png&quot; alt=&quot;CocoaPods&quot; /&gt;
+
+&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://cocoapods.org/&quot;&gt;CocoaPods&lt;/a&gt; es una librería para la gestión de dependencias de proyectos de XCode. Se encarga de resolver las dependencias, descargar los fuentes y de gestionar el workspace. Esto simplifica mucho utilizar librerías de terceros en nuestro proyecto.
+
+&lt;/p&gt;
+&lt;p&gt;CocoaPods se distribuye como una gema de ruby, para instalarlo:
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;haskell&quot;&gt;&lt;span class=&quot;title&quot;&gt;gem&lt;/span&gt; install cocoapods
+&lt;span class=&quot;title&quot;&gt;pod&lt;/span&gt; setup&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Una vez instalado tenemos que indicar las dependencias que tiene nuestro proyecto. Para ello creamos el fichero &lt;strong&gt;Podfile&lt;/strong&gt;. Este fichero es el equivalente al pom.xml en Maven. La sintaxis de este fichero es la siguiente:
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;haskell&quot;&gt;&lt;span class=&quot;title&quot;&gt;platform&lt;/span&gt; :ios
+&lt;span class=&quot;title&quot;&gt;pod&lt;/span&gt;&lt;span class=&quot;string&quot;&gt; 'MagicalRecord'&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt; '~&amp;gt; 2.0.6'&lt;/span&gt;
+&lt;span class=&quot;title&quot;&gt;pod&lt;/span&gt;&lt;span class=&quot;string&quot;&gt; 'SVProgressHUD'&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt; '~&amp;gt; 0.8'&lt;/span&gt;
+&lt;span class=&quot;title&quot;&gt;pod&lt;/span&gt;&lt;span class=&quot;string&quot;&gt; 'Underscore.m'&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt; '~&amp;gt; 0.1.0'&lt;/span&gt;
+
+&lt;span class=&quot;title&quot;&gt;target&lt;/span&gt; :test, :exclusive =&amp;gt; true &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt;
+   pod&lt;span class=&quot;string&quot;&gt; 'OCMock'&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt; '~&amp;gt; 2.0.1'&lt;/span&gt; 
+&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;En este fichero de configuración se especifica que el proyecto depende de las librerias &lt;em&gt;MagicalRecord&lt;/em&gt;, &lt;em&gt;SVProgressHUD&lt;/em&gt; y &lt;em&gt;Underscore.m&lt;/em&gt;. En el target &lt;em&gt;test&lt;/em&gt; se especifica las dependencias que sólo estarán disponibles para la ejecución de los tests. En la página de &lt;a href=&quot;http://cocoapods.org/&quot;&gt;CocoaPods&lt;/a&gt; hay un buscador donde puedes encontrar las librerías disponibles.
+
+&lt;/p&gt;
+&lt;p&gt;Cada vez que se modifique el fichero Podfile es necesario actualizar las dependencias. Para ello se utiliza el comando:
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;nginx&quot;&gt;&lt;span class=&quot;title&quot;&gt;pod&lt;/span&gt; install&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;CocoaPods creará un workspace (fichero que termina con la extensión .xcworkspace). Este es el fichero que tenemos que abrir con XCode a partir de ahora. Este workspace está compuesto por dos proyectos, uno que contiene aplicación y el otro que está gestionado por CocoaPods que es donde se encuentran los fuentes de todas las librerías que se han descargado.&lt;/p&gt;
+</content>
+        </entry>
+    
+        <entry>
             <title>Grunt Live-Reload</title>
             <link href="http://axelhzf.com/blog/2012-06-15-grunt-live-reload.html"/>
-            <updated>2012-06-15T23:34:00.567Z</updated>
+            <updated>2012-06-15T23:34:00.267Z</updated>
             <id>http://axelhzf.com/blog/2012-06-15-grunt-live-reload.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/grunt-reload.jpg&quot; alt=&quot;Grunt Reload&quot; /&gt;
 
@@ -156,7 +194,7 @@
         <entry>
             <title>Labs : Canvas Star Wars</title>
             <link href="http://axelhzf.com/blog/2012-05-30-labs-canvas-star-wars.html"/>
-            <updated>2012-05-30T09:15:00.564Z</updated>
+            <updated>2012-05-30T09:15:00.264Z</updated>
             <id>http://axelhzf.com/blog/2012-05-30-labs-canvas-star-wars.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/star_wars.png&quot; alt=&quot;Star Wars&quot;&gt;
 
@@ -177,7 +215,7 @@ Estos últimos días he estado aprendiendo &lt;a href=&quot;https://developer.mo
         <entry>
             <title>Grunt vs Wro4j</title>
             <link href="http://axelhzf.com/blog/2012-05-28-grunt-vs-wro4j.html"/>
-            <updated>2012-05-28T22:01:00.560Z</updated>
+            <updated>2012-05-28T22:01:00.260Z</updated>
             <id>http://axelhzf.com/blog/2012-05-28-grunt-vs-wro4j.html</id>
             <content type="html">&lt;p&gt;En el post anterior hice la siguiente afirmación sin dar ningún dato:
 
@@ -392,7 +430,7 @@ sys    0m0.177s&lt;/code&gt;&lt;/pre&gt;
         <entry>
             <title>grunt</title>
             <link href="http://axelhzf.com/blog/2012-05-27-grunt.html"/>
-            <updated>2012-05-27T16:07:00.558Z</updated>
+            <updated>2012-05-27T16:07:00.257Z</updated>
             <id>http://axelhzf.com/blog/2012-05-27-grunt.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/grunt.png&quot; alt=&quot;grunt&quot; /&gt;
 
@@ -535,7 +573,7 @@ sys    0m0.177s&lt;/code&gt;&lt;/pre&gt;
         <entry>
             <title>IntelliJ Idea keyboard shortcuts</title>
             <link href="http://axelhzf.com/blog/2012-05-20-intellij-idea-keyboard-shortcuts.html"/>
-            <updated>2012-05-20T11:30:00.553Z</updated>
+            <updated>2012-05-20T11:30:00.252Z</updated>
             <id>http://axelhzf.com/blog/2012-05-20-intellij-idea-keyboard-shortcuts.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/intellij_idea.gif&quot; alt=&quot;Intellij Idea&quot;&gt;
 Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en los que sale ganador de comparativas con Eclipse o Netbeans. El año pasado le intenté dar una oportunidad pero la cosa no fue bien. En ese momento estaba desarrollando un plugin para Eclipse por lo que no tenía mucho sentido que utilizara en IntelliJ. Mi situación cambió hace unos dos meses, cambié de trabajo y ahora me dedico casi exclusivamente a desarrollo front-end. Estoy ampliando mucho mis conocimientos de javascript que antes se limitaba a lo básico de jQuery. El soporte que tiene Eclipse para javascript me daba la sensación de que perjudicaba más que ayudar. Incluso editores de textos con esteroides como &lt;a href=&quot;http://www.sublimetext.com/&quot;&gt;SublimeText&lt;/a&gt; ayudan más a la hora de escribir javascript. Dada esta situación decidí darle una segunda oportunidad a IntelliJ, que si tiene un soporte de verdad para javascript, resaltado de sintaxis, refactor, integración con jslint, búsqueda usos dinámicos, etc.
@@ -574,7 +612,7 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
         <entry>
             <title>octopress</title>
             <link href="http://axelhzf.com/blog/2012-05-20-octopress.html"/>
-            <updated>2012-05-20T11:00:00.556Z</updated>
+            <updated>2012-05-20T11:00:00.255Z</updated>
             <id>http://axelhzf.com/blog/2012-05-20-octopress.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/octopress.png&quot; alt=&quot;Ocotpress&quot;&gt;
 
@@ -592,7 +630,7 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
         <entry>
             <title>Ampliando el módulo de Google Guice</title>
             <link href="http://axelhzf.com/blog/2012-02-04-ampliando-el-modulo-de-google-guice.html"/>
-            <updated>2012-02-04T22:34:00.551Z</updated>
+            <updated>2012-02-04T22:34:00.250Z</updated>
             <id>http://axelhzf.com/blog/2012-02-04-ampliando-el-modulo-de-google-guice.html</id>
             <content type="html">&lt;p&gt;Como comenté al final de mi &lt;a href=&quot;http://axelhzf.tumblr.com/post/16930248351/play-framework-google-guice&quot;&gt;post&lt;/a&gt; anterior mi intención era añadir al módulo de play las clases que añaden el scope LazySingleton.
 
@@ -641,7 +679,7 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
         <entry>
             <title>Play Framework + Google Guice</title>
             <link href="http://axelhzf.com/blog/2012-02-02-play-framework-plus-google-guice.html"/>
-            <updated>2012-02-02T22:18:00.549Z</updated>
+            <updated>2012-02-02T22:18:00.247Z</updated>
             <id>http://axelhzf.com/blog/2012-02-02-play-framework-plus-google-guice.html</id>
             <content type="html">&lt;p&gt;En el proyecto en el que estoy trabajando actualmente empezamos a utilizar Google Guice. Para quien no lo sepa, Guice es un framework de inyección de dependencias. La idea básica de la inyección de dependencias consiste en sumistrar a una clase sus dependencias, en lugar de que sea esta quien tenga que instanciarlas.
 
@@ -1012,7 +1050,7 @@ INFO: production - después del getInstance&lt;/code&gt;&lt;/pre&gt;
         <entry>
             <title>knockout.js (Ejemplo completo)</title>
             <link href="http://axelhzf.com/blog/2011-09-26-knockout-dot-js-ejemplo-completo.html"/>
-            <updated>2011-09-26T22:05:00.546Z</updated>
+            <updated>2011-09-26T22:05:00.245Z</updated>
             <id>http://axelhzf.com/blog/2011-09-26-knockout-dot-js-ejemplo-completo.html</id>
             <content type="html">&lt;p&gt;En el anterior post hice un pequeña &lt;a href=&quot;http://axelhzf.tumblr.com/post/10638045853/knockout&quot;&gt;introducción a la librería knockout.js&lt;/a&gt;.  Este post, continuación del anterior, tiene un ejemplo más completo en el cual espero que se vea mejor la utilidad de la librería. En el ejemplo crearemos una tabla de Posts, donde mostraremos el título y el texto. Le añadiremos a la tabla filtrado y edición inline. Con esto veremos cómo utilizar variables observables, dependentObservables y observableArrays.
 También haremos uso de jquery tmpl para renderizar la vista.
@@ -1242,7 +1280,7 @@ viewModel.deletePosts = &lt;span class=&quot;keyword&quot;&gt;function&lt;/span&
         <entry>
             <title>knockout.js</title>
             <link href="http://axelhzf.com/blog/2011-09-25-knockout-dot-js.html"/>
-            <updated>2011-09-25T22:01:00.543Z</updated>
+            <updated>2011-09-25T22:01:00.242Z</updated>
             <id>http://axelhzf.com/blog/2011-09-25-knockout-dot-js.html</id>
             <content type="html">&lt;p&gt;&lt;a href=&quot;http://knockoutjs.com/&quot;&gt;knockout.js&lt;/a&gt; es una librería javascript que implementa el patrón Model View View-Model.
 
@@ -1280,7 +1318,7 @@ Describe cómo mantener de una forma simple una interfaz de usuario sofisticada 
         <entry>
             <title>Vim dentro de Eclipse</title>
             <link href="http://axelhzf.com/blog/2011-09-10-vim-dentro-de-eclipse.html"/>
-            <updated>2011-09-10T21:54:00.541Z</updated>
+            <updated>2011-09-10T21:54:00.240Z</updated>
             <id>http://axelhzf.com/blog/2011-09-10-vim-dentro-de-eclipse.html</id>
             <content type="html">&lt;p&gt;A raíz de un artículo &amp;quot;&lt;a href=&quot;http://yannesposito.com/Scratch/en/blog/Learn-Vim-Progressively/&quot;&gt;Learn Vim Progressively&lt;/a&gt;&amp;quot;
 recordé la potencia que tenía vim y los tiempos en los que lo utilizaba a diario
@@ -1304,7 +1342,7 @@ para hacerle un &lt;a href=&quot;http://java.decompiler.free.fr/&quot;&gt;apaño
         <entry>
             <title>Creando una presentación con HTML+CSS+JS</title>
             <link href="http://axelhzf.com/blog/2011-06-19-creando-una-presentacion-con-html-plus-css-plus-js.html"/>
-            <updated>2011-06-19T20:58:00.531Z</updated>
+            <updated>2011-06-19T20:58:00.231Z</updated>
             <id>http://axelhzf.com/blog/2011-06-19-creando-una-presentacion-con-html-plus-css-plus-js.html</id>
             <content type="html">&lt;p&gt;Me encanta la presentación &lt;a href=&quot;http://slides.html5rocks.com/&quot;&gt;html5rocks&lt;/a&gt;. Es interactiva,
 puedes ir probando todo lo que va explicando. Incluso dibujar un Doraemon en la diapositiva 47.
@@ -1359,7 +1397,7 @@ que estoy escribiendo el post.
         <entry>
             <title>Eclipse Color Themes</title>
             <link href="http://axelhzf.com/blog/2011-05-22-eclipse-color-themes.html"/>
-            <updated>2011-05-22T20:48:00.525Z</updated>
+            <updated>2011-05-22T20:48:00.226Z</updated>
             <id>http://axelhzf.com/blog/2011-05-22-eclipse-color-themes.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/eclipseColorThemes.jpeg&quot; alt=&quot;Eclipse Color Themes&quot;&gt;
 
@@ -1375,7 +1413,7 @@ y también puedes crearte tu propio tema desde su &lt;a href=&quot;http://www.ec
         <entry>
             <title>FireQuery</title>
             <link href="http://axelhzf.com/blog/2010-09-02-firequery.html"/>
-            <updated>2010-09-02T20:39:00.523Z</updated>
+            <updated>2010-09-02T20:39:00.224Z</updated>
             <id>http://axelhzf.com/blog/2010-09-02-firequery.html</id>
             <content type="html">&lt;p&gt;&lt;a href=&quot;http://firequery.binaryage.com/&quot;&gt;FireQuery&lt;/a&gt; es un plugin para Firefox que se integra con Firebug.
 Permite inyectar jquery en cualquier página web, tiene muchas otras &lt;a href=&quot;http://firequery.binaryage.com/#features&quot;&gt;características&lt;/a&gt;
@@ -1399,7 +1437,7 @@ Con un poquito de magia de jQuery podemos extraer todos los enlaces de megauploa
         <entry>
             <title>seriesmonkey</title>
             <link href="http://axelhzf.com/blog/2010-08-23-seriesmonkey.html"/>
-            <updated>2010-08-23T20:27:00.519Z</updated>
+            <updated>2010-08-23T20:27:00.221Z</updated>
             <id>http://axelhzf.com/blog/2010-08-23-seriesmonkey.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/seriesmonkey.png&quot; alt=&quot;SeriesMonkey&quot;&gt;
 

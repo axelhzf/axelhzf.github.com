@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width" />
 
     <!-- Site Properities -->
-    <title>Creando una presentación con HTML+CSS+JS | axelhzf</title>
+    <title>Cocoapods | axelhzf</title>
     <meta name="description" content="Axelhzf" />
     <meta name="keywords" content="place, your, website, keywoards, here, keep, them, related, to, the, content, of, your, website" />
 
@@ -49,54 +49,37 @@
     </nav>
 
     <div id="content" class="container">
-        <h1>Creando una presentación con HTML+CSS+JS</h1>
-<p>Me encanta la presentación <a href="http://slides.html5rocks.com/">html5rocks</a>. Es interactiva,
-puedes ir probando todo lo que va explicando. Incluso dibujar un Doraemon en la diapositiva 47.
-Lo mejor de todo es que crearon un generador de diapositivas y nosotros mismos podemos crear diapositivas de este tipo.
+        <h1>Cocoapods</h1>
+<p><img src="/images/posts/cocoapods.png" alt="CocoaPods" />
 
 </p>
-<h2>Proyecto</h2>
-<p>El proyecto se llama <strong>landslide</strong> y se puede descargar de
-<a href="https://github.com/n1k0/landslide"><a href="https://github.com/n1k0/landslide">https://github.com/n1k0/landslide</a></a>
+<p><a href="http://cocoapods.org/">CocoaPods</a> es una librería para la gestión de dependencias de proyectos de XCode. Se encarga de resolver las dependencias, descargar los fuentes y de gestionar el workspace. Esto simplifica mucho utilizar librerías de terceros en nuestro proyecto.
 
 </p>
-<h2>Instalación</h2>
-<p>En la página principal están las instrucciones de instalación. Hay varias opciones, la que yo seguí fue clonar el repositorio e instalar
+<p>CocoaPods se distribuye como una gema de ruby, para instalarlo:
 
 </p>
-<pre class="highlighted"><code class="bash">git clone git://github.com/n1k0/landslide.git
-cd landslide
-python setup.py build
-sudo python setup.py install</code></pre>
-<h2>Creando la presentación</h2>
-<p>Las presentaciones se escriben con <a href="http://daringfireball.net/projects/markdown/syntax">markdown</a>.
-Este formato se está popularizando bastante, por ejemplo tumblr ya tiene soporte y es el formato con el
-que estoy escribiendo el post.
+<pre class="highlighted"><code class="haskell"><span class="title">gem</span> install cocoapods
+<span class="title">pod</span> setup</code></pre>
+<p>Una vez instalado tenemos que indicar las dependencias que tiene nuestro proyecto. Para ello creamos el fichero <strong>Podfile</strong>. Este fichero es el equivalente al pom.xml en Maven. La sintaxis de este fichero es la siguiente:
 
 </p>
-<pre class="highlighted"><code class="brainfuck">
-<span class="comment">#</span> <span class="comment">Título</span> <span class="comment">de</span> <span class="comment">la</span> <span class="comment">presentación</span>
-<span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>
-<span class="comment">##</span> <span class="comment">Primera</span> <span class="comment">diapositiva</span>
+<pre class="highlighted"><code class="haskell"><span class="title">platform</span> :ios
+<span class="title">pod</span><span class="string"> 'MagicalRecord'</span>,<span class="string"> '~&gt; 2.0.6'</span>
+<span class="title">pod</span><span class="string"> 'SVProgressHUD'</span>,<span class="string"> '~&gt; 0.8'</span>
+<span class="title">pod</span><span class="string"> 'Underscore.m'</span>,<span class="string"> '~&gt; 0.1.0'</span>
 
-<span class="comment">Contenido</span> <span class="comment">de</span> <span class="comment">la</span> <span class="comment">diapositiva</span>
-
-<span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>
-<span class="comment">##</span> <span class="comment">Segunda</span> <span class="comment">diapositiva</span>
-
-<span class="comment">Contenido</span> <span class="comment">de</span> <span class="comment">la</span> <span class="comment">**segunda**</span> <span class="comment">diapositiva</span></code></pre>
-<p>Esta es una presentación bastante simple. Cada diapositiva va separada con --- y el título de la diapositiva con ##
+<span class="title">target</span> :test, :exclusive =&gt; true <span class="keyword">do</span>
+   pod<span class="string"> 'OCMock'</span>,<span class="string"> '~&gt; 2.0.1'</span> 
+<span class="title">end</span></code></pre>
+<p>En este fichero de configuración se especifica que el proyecto depende de las librerias <em>MagicalRecord</em>, <em>SVProgressHUD</em> y <em>Underscore.m</em>. En el target <em>test</em> se especifica las dependencias que sólo estarán disponibles para la ejecución de los tests. En la página de <a href="http://cocoapods.org/">CocoaPods</a> hay un buscador donde puedes encontrar las librerías disponibles.
 
 </p>
-<h2>Compilando la presentación</h2>
-<p>Para poder ver la presentación tenemos que compilarla para que se cree el html.
+<p>Cada vez que se modifique el fichero Podfile es necesario actualizar las dependencias. Para ello se utiliza el comando:
 
 </p>
-<pre class="highlighted"><code class="nginx"><span class="title">landslide</span> presentacion.md</code></pre>
-<p>Esto genera un archivo presentation.html, lo abrimos con el navegador y ya tenemos nuestra presentación.
-
-</p>
-<p><img src="/images/posts/landslide.png" alt="landslice" /></p>
+<pre class="highlighted"><code class="nginx"><span class="title">pod</span> install</code></pre>
+<p>CocoaPods creará un workspace (fichero que termina con la extensión .xcworkspace). Este es el fichero que tenemos que abrir con XCode a partir de ahora. Este workspace está compuesto por dos proyectos, uno que contiene aplicación y el otro que está gestionado por CocoaPods que es donde se encuentran los fuentes de todas las librerías que se han descargado.</p>
 
 
 <h2>Comments</h2>
@@ -108,8 +91,8 @@ que estoy escribiendo el post.
 
 
     // var disqus_developer = 1;
-    var disqus_identifier = 'http://axelhzf.com/blog/2011-06-19-creando-una-presentacion-con-html-plus-css-plus-js.html';
-    var disqus_url = 'http://axelhzf.com/blog/2011-06-19-creando-una-presentacion-con-html-plus-css-plus-js.html';
+    var disqus_identifier = 'http://axelhzf.com/blog/2012-11-10-cocoapods.html';
+    var disqus_url = 'http://axelhzf.com/blog/2012-11-10-cocoapods.html';
     var disqus_script = 'embed.js';
 
     (function () {
