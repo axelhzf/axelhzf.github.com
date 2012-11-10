@@ -1,0 +1,137 @@
+
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+
+    <!-- Site Properities -->
+    <title>Creando una presentación con HTML+CSS+JS | axelhzf</title>
+    <meta name="description" content="Axelhzf" />
+    <meta name="keywords" content="place, your, website, keywoards, here, keep, them, related, to, the, content, of, your, website" />
+
+    <!-- DocPad Meta -->
+    <meta http-equiv="X-Powered-By" content="DocPad" />
+
+    <!-- DocPad Styles + Our Own -->
+    <link rel="stylesheet" href="/assets/styles/main.css" /><link rel="stylesheet" href="/assets/styles/highlight/github.css" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+
+    <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
+    <script type="text/javascript">Typekit.load()</script>
+
+</head>
+<body>
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+
+    <hgroup class="header">
+        <div class="logo"><a href="/">axelhzf</a></div>
+    </hgroup>
+
+    <div class="wrapper">
+
+    <nav role="navigation">
+        <ul class="main-navigation">
+            <li><a href="/blog/archives">Blog</a></li>
+            <li><a href="/tutorials">Tutorials</a></li>
+            <li><a href="/talks">Talks</a></li>
+            <li><a href="/experiments">Experiments</a></li>
+            <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank">RSS</a></li>
+        </ul>
+    </nav>
+
+    <div id="content" class="container">
+        <h1>Creando una presentación con HTML+CSS+JS</h1>
+<p>Me encanta la presentación <a href="http://slides.html5rocks.com/">html5rocks</a>. Es interactiva,
+puedes ir probando todo lo que va explicando. Incluso dibujar un Doraemon en la diapositiva 47.
+Lo mejor de todo es que crearon un generador de diapositivas y nosotros mismos podemos crear diapositivas de este tipo.
+
+</p>
+<h2>Proyecto</h2>
+<p>El proyecto se llama <strong>landslide</strong> y se puede descargar de
+<a href="https://github.com/n1k0/landslide"><a href="https://github.com/n1k0/landslide">https://github.com/n1k0/landslide</a></a>
+
+</p>
+<h2>Instalación</h2>
+<p>En la página principal están las instrucciones de instalación. Hay varias opciones, la que yo seguí fue clonar el repositorio e instalar
+
+</p>
+<pre class="highlighted"><code class="bash">git clone git://github.com/n1k0/landslide.git
+cd landslide
+python setup.py build
+sudo python setup.py install</code></pre>
+<h2>Creando la presentación</h2>
+<p>Las presentaciones se escriben con <a href="http://daringfireball.net/projects/markdown/syntax">markdown</a>.
+Este formato se está popularizando bastante, por ejemplo tumblr ya tiene soporte y es el formato con el
+que estoy escribiendo el post.
+
+</p>
+<pre class="highlighted"><code class="brainfuck">
+<span class="comment">#</span> <span class="comment">Título</span> <span class="comment">de</span> <span class="comment">la</span> <span class="comment">presentación</span>
+<span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>
+<span class="comment">##</span> <span class="comment">Primera</span> <span class="comment">diapositiva</span>
+
+<span class="comment">Contenido</span> <span class="comment">de</span> <span class="comment">la</span> <span class="comment">diapositiva</span>
+
+<span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>
+<span class="comment">##</span> <span class="comment">Segunda</span> <span class="comment">diapositiva</span>
+
+<span class="comment">Contenido</span> <span class="comment">de</span> <span class="comment">la</span> <span class="comment">**segunda**</span> <span class="comment">diapositiva</span></code></pre>
+<p>Esta es una presentación bastante simple. Cada diapositiva va separada con --- y el título de la diapositiva con ##
+
+</p>
+<h2>Compilando la presentación</h2>
+<p>Para poder ver la presentación tenemos que compilarla para que se cree el html.
+
+</p>
+<pre class="highlighted"><code class="nginx"><span class="title">landslide</span> presentacion.md</code></pre>
+<p>Esto genera un archivo presentation.html, lo abrimos con el navegador y ya tenemos nuestra presentación.
+
+</p>
+<p><img src="/images/posts/landslide.png" alt="landslice" /></p>
+
+
+<h1>Comments</h1>
+<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+
+
+    // var disqus_developer = 1;
+    var disqus_identifier = 'http://axelhzf.com/blog/2011-06-19-creando-una-presentacion-con-html-plus-css-plus-js.html';
+    var disqus_url = 'http://axelhzf.com/blog/2011-06-19-creando-una-presentacion-con-html-plus-css-plus-js.html';
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+    </div>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row license">
+                This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+                <br />
+                Axel Hernández Ferrea
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

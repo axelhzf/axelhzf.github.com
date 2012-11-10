@@ -1,0 +1,297 @@
+
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+
+    <!-- Site Properities -->
+    <title>Grunt vs Wro4j | axelhzf</title>
+    <meta name="description" content="Axelhzf" />
+    <meta name="keywords" content="place, your, website, keywoards, here, keep, them, related, to, the, content, of, your, website" />
+
+    <!-- DocPad Meta -->
+    <meta http-equiv="X-Powered-By" content="DocPad" />
+
+    <!-- DocPad Styles + Our Own -->
+    <link rel="stylesheet" href="/assets/styles/main.css" /><link rel="stylesheet" href="/assets/styles/highlight/github.css" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+
+    <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
+    <script type="text/javascript">Typekit.load()</script>
+
+</head>
+<body>
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+
+    <hgroup class="header">
+        <div class="logo"><a href="/">axelhzf</a></div>
+    </hgroup>
+
+    <div class="wrapper">
+
+    <nav role="navigation">
+        <ul class="main-navigation">
+            <li><a href="/blog/archives">Blog</a></li>
+            <li><a href="/tutorials">Tutorials</a></li>
+            <li><a href="/talks">Talks</a></li>
+            <li><a href="/experiments">Experiments</a></li>
+            <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank">RSS</a></li>
+        </ul>
+    </nav>
+
+    <div id="content" class="container">
+        <h1>Grunt vs Wro4j</h1>
+<p>En el post anterior hice la siguiente afirmación sin dar ningún dato:
+
+
+</p>
+<blockquote>
+<p>He probado algunas otras herramientas que tienen el mismo objetivo, como por ejemplo wro4j, pero grunt es mucho más rápido.
+
+</p>
+</blockquote>
+<p>En realidad no había hecho ninguna prueba, fue la sensación que tuve al utilizar las dos herramientas. <a href="http://www.twitter.com/alexobjelean">Alex Objelean</a>, el creador de wro4j, escribió un comentario preguntando si había hecho alguna prueba de rendimiento. Para ser justos me decidí a hacer una comparativa.
+
+</p>
+<h2>Máquina de pruebas</h2>
+<ul>
+<li>Intel Core 2 Duo 2,66 GHz</li>
+<li>4GB DDR3</li>
+<li>OS X Lion 10.7.4</li>
+</ul>
+<h2>Pruebas</h2>
+<p>La prueba consistió en compilar :
+
+</p>
+<ul>
+<li><a href="http://code.jquery.com/jquery-1.7.2.js">jquery 1.7.2</a></li>
+<li><a href="http://underscorejs.org/underscore.js">underscore 1.3.3</a></li>
+<li><a href="http://backbonejs.org/backbone.js">backbone 0.9.2</a></li>
+<li><a href="https://github.com/twitter/bootstrap/tree/master/less">twitter bootstrap less</a></li>
+</ul>
+<h2>Proyectos</h2>
+<h3>Grunt</h3>
+<pre class="highlighted"><code class="objectivec">.
+├── grunt<span class="variable">.js</span>
+└── src
+    ├── js
+    │&amp;nbsp;&amp;nbsp; ├── backbone<span class="variable">.js</span>
+    │&amp;nbsp;&amp;nbsp; ├── jquery-<span class="number">1.7</span><span class="number">.2</span><span class="variable">.js</span>
+    │&amp;nbsp;&amp;nbsp; └── underscore<span class="variable">.js</span>
+    └── less
+        ├── *bootstrap<span class="variable">.less</span></code></pre>
+<p>grunt.js
+
+</p>
+<pre class="highlighted"><code class="javascript">module.exports = <span class="function"><span class="keyword">function</span> <span class="params">(grunt)</span> {</span>
+    grunt.initConfig({
+        concat : {
+            dist : {
+                src : [<span class="string">'src/js/jquery-1.7.2.js'</span>, <span class="string">'src/js/underscore.js'</span>, <span class="string">'src/js/backbone.js'</span>],
+                dest : <span class="string">'dist/built.js'</span>,
+                separator : <span class="string">';'</span>
+            }
+        },
+        min : {
+            dist : {
+                src : [<span class="string">'dist/built.js'</span>],
+                dest : <span class="string">'dist/built.min.js'</span>
+            }
+        },
+        recess : {
+            dist : {
+                src : <span class="string">'src/less/bootstrap.less'</span>,
+                dest : <span class="string">'dist/bootstrap.css'</span>,
+                options : {
+                    compile : <span class="literal">true</span>,
+                    compress : <span class="literal">true</span>
+                }
+            }
+        }
+    });
+    grunt.loadNpmTasks(<span class="string">'grunt-recess'</span>);
+    grunt.registerTask(<span class="string">'default'</span>, <span class="string">'concat min recess'</span>);
+};</code></pre>
+<h3>Wro4j</h3>
+<pre class="highlighted"><code class="objectivec">.
+├── pom<span class="variable">.xml</span>
+├── wro<span class="variable">.xml</span>
+├── wro<span class="variable">.properties</span>
+└── src
+    ├── js
+    │&amp;nbsp;&amp;nbsp; ├── backbone<span class="variable">.js</span>
+    │&amp;nbsp;&amp;nbsp; ├── jquery-<span class="number">1.7</span><span class="number">.2</span><span class="variable">.js</span>
+    │&amp;nbsp;&amp;nbsp; └── underscore<span class="variable">.js</span>
+    └── less
+        ├── *bootstrap<span class="variable">.less</span></code></pre>
+<p>pom.xml
+</p>
+<pre class="highlighted"><code class="xml"><span class="tag">&lt;<span class="title">project</span> <span class="attribute">xmlns</span>=<span class="value">"http://maven.apache.org/POM/4.0.0"</span>
+         <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+         <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="title">modelVersion</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.axelhzf<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>grunt-vs-wro4j<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">packaging</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dependencies</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>ro.isdc.wro4j<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>wro4j-maven-plugin<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.4.6<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dependencies</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">build</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">plugins</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">plugin</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>ro.isdc.wro4j<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>wro4j-maven-plugin<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.4.6<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">executions</span>&gt;</span>
+                    <span class="tag">&lt;<span class="title">execution</span>&gt;</span>
+                        <span class="tag">&lt;<span class="title">phase</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">phase</span>&gt;</span>
+                        <span class="tag">&lt;<span class="title">goals</span>&gt;</span>
+                            <span class="tag">&lt;<span class="title">goal</span>&gt;</span>run<span class="tag">&lt;/<span class="title">goal</span>&gt;</span>
+                        <span class="tag">&lt;/<span class="title">goals</span>&gt;</span>
+                    <span class="tag">&lt;/<span class="title">execution</span>&gt;</span>
+                <span class="tag">&lt;/<span class="title">executions</span>&gt;</span>
+                <span class="tag">&lt;<span class="title">configuration</span>&gt;</span>
+                    <span class="tag">&lt;<span class="title">wroFile</span>&gt;</span>wro.xml<span class="tag">&lt;/<span class="title">wroFile</span>&gt;</span>
+                    <span class="tag">&lt;<span class="title">extraConfigFile</span>&gt;</span>wro.properties<span class="tag">&lt;/<span class="title">extraConfigFile</span>&gt;</span>
+                    <span class="tag">&lt;<span class="title">wroManagerFactory</span>&gt;</span>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory
+                    <span class="tag">&lt;/<span class="title">wroManagerFactory</span>&gt;</span>
+                    <span class="tag">&lt;<span class="title">destinationFolder</span>&gt;</span>${basedir}/dist<span class="tag">&lt;/<span class="title">destinationFolder</span>&gt;</span>
+                    <span class="tag">&lt;<span class="title">targetGroups</span>&gt;</span>all<span class="tag">&lt;/<span class="title">targetGroups</span>&gt;</span>
+                    <span class="tag">&lt;<span class="title">contextFolder</span>&gt;</span>${basedir}<span class="tag">&lt;/<span class="title">contextFolder</span>&gt;</span>
+                <span class="tag">&lt;/<span class="title">configuration</span>&gt;</span>
+            <span class="tag">&lt;/<span class="title">plugin</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">plugins</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">build</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">project</span>&gt;</span></code></pre>
+<p>wro.xml
+</p>
+<pre class="highlighted"><code class="xml"><span class="tag">&lt;<span class="title">groups</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.isdc.ro/wro"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">group</span> <span class="attribute">name</span>=<span class="value">"all"</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">css</span>&gt;</span>/src/less/bootstrap.less<span class="tag">&lt;/<span class="title">css</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">js</span>&gt;</span>/src/js/underscore.js<span class="tag">&lt;/<span class="title">js</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">js</span>&gt;</span>/src/js/backbone.js<span class="tag">&lt;/<span class="title">js</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">group</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">groups</span>&gt;</span></code></pre>
+<p>wro.properties
+</p>
+<pre class="highlighted"><code class="javascript">preProcessors=cssImport
+postProcessors=lessCss, uglifyJs</code></pre>
+<h2>Ejecución</h2>
+<p>grunt
+</p>
+<pre class="highlighted"><code class="bash">axel:grunt axelhzf$ time grunt
+Running <span class="string">"concat:dist"</span> (concat) task
+File <span class="string">"dist/built.js"</span> created.
+
+Running <span class="string">"min:dist"</span> (min) task
+File <span class="string">"dist/built.min.js"</span> created.
+Uncompressed size: 343428 bytes.
+Compressed size: 42680 bytes gzipped (123542 bytes minified).
+
+Running <span class="string">"recess:dist"</span> (recess) task
+File <span class="string">"dist/bootstrap.css"</span> created.
+Uncompressed size: 97585 bytes.
+Compressed size: 13496 bytes gzipped (81938 bytes minified).
+
+Done, without errors.
+
+real    0m5.620s
+user    0m4.534s
+sys    0m0.177s</code></pre>
+<p>wro4j
+</p>
+<pre class="highlighted"><code class="bash">axel:wro4j axelhzf$ mvn compile
+[INFO] Scanning <span class="keyword">for</span> projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building grunt-vs-wro4j 1.0
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:resources (default-resources) @ grunt-vs-wro4j ---
+[WARNING] Using platform encoding (MacRoman actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory /Users/axelhzf/dev/js/grunt-vs-wro4j/wro4j/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.3.2:compile (default-compile) @ grunt-vs-wro4j ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- wro4j-maven-plugin:1.4.6:run (default) @ grunt-vs-wro4j ---
+[INFO] Executing the mojo: 
+[INFO] Wro4j Model path: /Users/axelhzf/dev/js/grunt-vs-wro4j/wro4j/wro.xml
+[INFO] targetGroups: all
+[INFO] minimize: <span class="literal">true</span>
+[INFO] ignoreMissingResources: <span class="literal">true</span>
+[INFO] destinationFolder: /Users/axelhzf/dev/js/grunt-vs-wro4j/wro4j/dist
+[INFO] jsDestinationFolder: null
+[INFO] cssDestinationFolder: null
+[INFO] groupNameMappingFile: null
+[INFO] folder: /Users/axelhzf/dev/js/grunt-vs-wro4j/wro4j/dist
+[INFO] processing group: all.css
+[INFO] wroManagerFactory class: ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory
+[INFO] file size: all.css -&gt; 97585 bytes
+[INFO] /Users/axelhzf/dev/js/grunt-vs-wro4j/wro4j/dist/all.css (97585 bytes)
+[INFO] folder: /Users/axelhzf/dev/js/grunt-vs-wro4j/wro4j/dist
+[INFO] processing group: all.js
+[INFO] file size: all.js -&gt; 39532 bytes
+[INFO] /Users/axelhzf/dev/js/grunt-vs-wro4j/wro4j/dist/all.js (39532 bytes)
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 1:11.501s
+[INFO] Finished at: Mon May 28 22:22:50 WEST 2012
+[INFO] Final Memory: 8M/81M
+[INFO] ------------------------------------------------------------------------</code></pre>
+<h2>Conclusión</h2>
+<p>La diferencia de tiempos es considerable. Creo que la principal diferencia entre las dos herramientas es el motor de javascript que utilizan. Wro4j usa <a href="http://www.mozilla.org/rhino/">rhino</a> mientras que grunt utiliza <a href="http://code.google.com/p/v8/">v8</a>. En <a href="http://axtaxt.wordpress.com/2011/09/25/benchmark-rhino-vs-chrome-v8-on-server-side/">este artículo</a> se realiza una comparativa de rendimiento de los dos motores.</p>
+
+
+<h1>Comments</h1>
+<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+
+
+    // var disqus_developer = 1;
+    var disqus_identifier = 'http://axelhzf.github.com/blog/2012/05/28/grunt-vs-wro4j/';
+    var disqus_url = 'http://axelhzf.github.com/blog/2012/05/28/grunt-vs-wro4j/';
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+    </div>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row license">
+                This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+                <br />
+                Axel Hernández Ferrea
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -10,12 +10,12 @@
     <meta name="viewport" content="width=device-width" />
 
     <!-- Site Properities -->
-    <title>axelhzf</title>
+    <title>FireQuery | axelhzf</title>
     <meta name="description" content="Axelhzf" />
     <meta name="keywords" content="place, your, website, keywoards, here, keep, them, related, to, the, content, of, your, website" />
 
     <!-- DocPad Meta -->
-    <meta http-equiv="X-Powered-By" content="DocPad"/>
+    <meta http-equiv="X-Powered-By" content="DocPad" />
 
     <!-- DocPad Styles + Our Own -->
     <link rel="stylesheet" href="/assets/styles/main.css" /><link rel="stylesheet" href="/assets/styles/highlight/github.css" />
@@ -49,43 +49,45 @@
     </nav>
 
     <div id="content" class="container">
-        <h1>Recent Posts <small><a href="/blog/archives">view all</a></small></h1>
+        <h1>FireQuery</h1>
+<p><a href="http://firequery.binaryage.com/">FireQuery</a> es un plugin para Firefox que se integra con Firebug.
+Permite inyectar jquery en cualquier página web, tiene muchas otras <a href="http://firequery.binaryage.com/#features">características</a>
+, pero esta era justo la que estaba buscando cuando encontré el plugin.
 
-<div>
-    <a href="/blog/2012-06-15-grunt-live-reload.html">Grunt Live-Reload</a>
-    <small>Jun 16 2012 posted on javascript, grunt, js, live-reload</small>
+</p>
+<p>Un uso práctico de este plugin sería extraer todos los links de megaupload de una página.
+Pongamos que queremos bajarnos <a href="http://www.imdb.com/title/tt0369179/">Dos hombre y medio</a> desde esta página
+<a href="http://www.vagos.es/showthread.php?t=842744"><a href="http://www.vagos.es/showthread.php?t=842744">http://www.vagos.es/showthread.php?t=842744</a></a>.
+Lo único que tenemos que hacer es abrir la consola de Firebug e inyectar jquery dándole al botón “jQuerify”.
+Con un poquito de magia de jQuery podemos extraer todos los enlaces de megaupload de la página:
+
+</p>
+<pre class="highlighted"><code class="javascript">$(<span class="string">'a:contains("megaupload")'</span>).each(<span class="keyword">function</span>(i, e){
+    console.log($(e).attr(<span class="string">'href'</span>));
+});</code></pre>
+<p><img src="/images/posts/firequery.png" alt="FireQuery" /></p>
+
+
+<h1>Comments</h1>
+<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
 
-<div>
-    <a href="/blog/2012-05-30-labs-canvas-star-wars.html">Labs : Canvas Star Wars</a>
-    <small>May 30 2012 posted on javascript, canvas, star wars</small>
-</div>
-
-<div>
-    <a href="/blog/2012-05-28-grunt-vs-wro4j.html">Grunt vs Wro4j</a>
-    <small>May 28 2012 posted on grunt, wro4j, js, v8, rhino</small>
-</div>
-
-<div>
-    <a href="/blog/2012-05-27-grunt.html">grunt</a>
-    <small>May 27 2012 posted on </small>
-</div>
-
-<div>
-    <a href="/blog/2012-05-20-intellij-idea-keyboard-shortcuts.html">IntelliJ Idea keyboard shortcuts</a>
-    <small>May 20 2012 posted on intellij, idea, keyboard, shortcuts</small>
-</div>
-
-<div>
-    <a href="/blog/2012-05-20-octopress.html">octopress</a>
-    <small>May 20 2012 posted on octopress, blog</small>
-</div>
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
 
 
-<div class="social">
-    <a href="http://www.twitter.com/axelhzf" target="_blank" class="twitter"></a>
-    <a href="http://www.github.com/axelhzf" target="_blank" class="github"></a>
-</div>
+    // var disqus_developer = 1;
+    var disqus_identifier = 'http://axelhzf.com/blog/2010-09-02-firequery.html';
+    var disqus_url = 'http://axelhzf.com/blog/2010-09-02-firequery.html';
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
     </div>
 
     </div>
@@ -94,7 +96,7 @@
         <div class="container">
             <div class="row license">
                 This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
-                <br/>
+                <br />
                 Axel Hernández Ferrea
             </div>
         </div>

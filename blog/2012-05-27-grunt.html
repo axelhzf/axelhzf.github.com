@@ -1,0 +1,225 @@
+
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+
+    <!-- Site Properities -->
+    <title>grunt | axelhzf</title>
+    <meta name="description" content="Axelhzf" />
+    <meta name="keywords" content="place, your, website, keywoards, here, keep, them, related, to, the, content, of, your, website" />
+
+    <!-- DocPad Meta -->
+    <meta http-equiv="X-Powered-By" content="DocPad" />
+
+    <!-- DocPad Styles + Our Own -->
+    <link rel="stylesheet" href="/assets/styles/main.css" /><link rel="stylesheet" href="/assets/styles/highlight/github.css" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+
+    <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
+    <script type="text/javascript">Typekit.load()</script>
+
+</head>
+<body>
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+
+    <hgroup class="header">
+        <div class="logo"><a href="/">axelhzf</a></div>
+    </hgroup>
+
+    <div class="wrapper">
+
+    <nav role="navigation">
+        <ul class="main-navigation">
+            <li><a href="/blog/archives">Blog</a></li>
+            <li><a href="/tutorials">Tutorials</a></li>
+            <li><a href="/talks">Talks</a></li>
+            <li><a href="/experiments">Experiments</a></li>
+            <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank">RSS</a></li>
+        </ul>
+    </nav>
+
+    <div id="content" class="container">
+        <h1>grunt</h1>
+<p><img src="/images/posts/grunt.png" alt="grunt" />
+
+</p>
+<p><a href="https://github.com/cowboy/grunt">Grunt</a> es una herramienta para construir proyectos javascript. Se encarga de las tareas básicas de la de compilación como puede ser concatenar y minimizar los ficheros, ejecutar los test, validar la sintaxis, etc. Es personalizable y se pueden definir nuevas tareas para cubrir las necesidades de nuestro proyecto.
+
+</p>
+<p>Lo primero que me llamo la atención es su rapidez. He probado algunas otras herramientas que tienen el mismo objetivo, como por ejemplo <a href="http://code.google.com/p/wro4j/">wro4j</a>, pero grunt es mucho más rápido.
+
+</p>
+<p>Las tareas que trae grunt por defecto son:
+
+</p>
+<ul>
+<li><code>concat</code> - Concatena ficheros</li>
+<li><code>init</code> - Crea un proyecto a partir de una plantilla</li>
+<li><code>lint</code> - Valida los ficheros con JSHint</li>
+<li><code>min</code> - Minimiza con UglifyJS</li>
+<li><code>qunit</code> - Ejecuta test de QUnit</li>
+<li><code>server</code> - Ejecuta un servidor estático</li>
+<li><code>test</code> - Ejecuta test de nodeunit</li>
+<li><code>watch</code> - Ejecuta tareas automáticamente cuando los ficheros se han modificado</li>
+</ul>
+<h2>Instalación</h2>
+<p>Para instalar grunt.js lo más sencillo es utilizar <a href="http://npmjs.org/">npm</a> el gestor de paquetes de node. El comando es
+
+</p>
+<pre class="highlighted"><code class="nginx"><span class="title">npm</span> install grunt    </code></pre>
+<p>Opcionalmente se le puede pasar la opcion <code>-g</code> para que instale el paquete de forma global. Esto es particularmente interesante para poder ejecutar la tarea <code>init</code> en cualquier carpeta.
+
+</p>
+<pre class="highlighted"><code class="nginx"><span class="title">npm</span> install -g grunt</code></pre>
+<h2>Configuración</h2>
+<p>Grunt se configura mediante el fichero <code>grunt.js</code> en la raíz del proyecto. En este fichero podremos configurar las diferentes tareas que van a intervenir en la compilación del proyecto.
+
+
+</p>
+<p>grunt.js
+</p>
+<pre class="highlighted"><code class="javascript">module.exports = <span class="function"><span class="keyword">function</span> <span class="params">(grunt)</span> {</span>
+    grunt.initConfig({
+        lint : {
+            all : [<span class="string">'src/**/*.js'</span>, <span class="string">'test/**/*.js'</span>]
+        },
+        jshint : {
+            options : {
+                browser : <span class="literal">true</span>
+            }
+        },
+        concat : {
+            dist : {
+                src : [<span class="string">'src/**/*.js'</span>],
+                dest : <span class="string">'dist/built.js'</span>,
+                separator : <span class="string">';'</span>
+            }
+        },
+        min : {
+            dist : {
+                src : [<span class="string">'dist/built.js'</span>],
+                dest : <span class="string">'dist/built.min.js'</span>
+            }
+        }
+    });
+    grunt.registerTask(<span class="string">'default'</span>, <span class="string">'lint concat min'</span>);
+};</code></pre>
+<p>Esta es una configuración básica de grunt en la que estamos validando los ficheros, concatenándolos y minimizánlos. La configuración se hace mediante javascript, nos evitamos problemas definiendo ficheros xml como se hace con otras herramientas.
+
+</p>
+<p>Al ejecutar el comando
+
+</p>
+<pre class="highlighted"><code class="http"><span class="attribute">grunt</span></code></pre>
+<p>Se ejecuta la tarea <code>default</code> que tal como definimos, se encarga de ejecutar las otras tareas. Si queremos ejecutar una tarea en concreto
+
+</p>
+<pre class="highlighted"><code class="nginx"><span class="title">grunt</span> lint</code></pre>
+<p>Puedes ver cómo se configuran el resto de tareas en la <a href="https://github.com/cowboy/grunt/tree/master/docs">documentación</a>.
+
+</p>
+<p>Para utilizar una tarea que no viene por defecto, lo primero que debemos hacer es instarla. En este caso vamos a hacer las pruebas con <a href="https://github.com/sindresorhus/grunt-recess">grunt-recess</a> una tarea que permite validar y minimizar archivos CSS y LESS. Para la instalación también se utiliza npm.
+
+</p>
+<pre class="highlighted"><code class="nginx"><span class="title">npm</span> install grunt-recess</code></pre>
+<p>Una vez instalado lo único que debemos hacer es añadir la configuración al fichero grunt.js
+
+</p>
+<pre class="highlighted"><code class="javascript">module.exports = <span class="function"><span class="keyword">function</span> <span class="params">(grunt)</span> {</span>
+    grunt.initConfig({
+        <span class="comment">//....</span>
+        recess : {
+            dist : {
+                src : <span class="string">'less/*.less'</span>,
+                dest : <span class="string">'dist/all.css'</span>,
+                options : {
+                    compile : <span class="literal">true</span>,
+                    compress : <span class="literal">true</span>
+                }
+            }
+        }
+    });
+    grunt.loadNpmTasks(<span class="string">'grunt-recess'</span>);
+    grunt.registerTask(<span class="string">'default'</span>, <span class="string">'lint concat min recess'</span>);
+};</code></pre>
+<p>Lo primero que debemos hacer es incluir la tarea utilizando el comando <code>grunt.loadNpmTasks</code> y configurarla de la misma forma que las tareas básicas.
+
+</p>
+<p>Esta tarea se presta a combinarla con la tarea watch. De forma que cada vez que cada vez que se modifique un fichero less se compile automáticamente.
+
+</p>
+<pre class="highlighted"><code class="javascript">module.exports = <span class="function"><span class="keyword">function</span> <span class="params">(grunt)</span> {</span>
+    grunt.initConfig({
+        <span class="comment">//....</span>
+        recess : {
+            dist : {
+                src : <span class="string">'less/*.less'</span>,
+                dest : <span class="string">'dist/all.css'</span>,
+                options : {
+                    compile : <span class="literal">true</span>,
+                    compress : <span class="literal">true</span>
+                }
+            }
+        },
+        watch : {
+            files : <span class="string">'less/*.less'</span>,
+            tasks : <span class="string">'recess'</span>
+        }
+    });
+
+    grunt.loadNpmTasks(<span class="string">'grunt-recess'</span>);
+    grunt.registerTask(<span class="string">'default'</span>, <span class="string">'lint concat min recess'</span>);
+};</code></pre>
+<p>Después ejecutamos
+
+</p>
+<pre class="highlighted"><code class="nginx"><span class="title">grunt</span> watch</code></pre>
+<p>Y cada vez que modifiquemos un fichero less, se volverá a regerar el fichero css compilado y minimizado.</p>
+
+
+<h1>Comments</h1>
+<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+
+
+    // var disqus_developer = 1;
+    var disqus_identifier = 'http://axelhzf.github.com/blog/2012/05/27/grunt/';
+    var disqus_url = 'http://axelhzf.github.com/blog/2012/05/27/grunt/';
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+    </div>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row license">
+                This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+                <br />
+                Axel Hernández Ferrea
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

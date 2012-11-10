@@ -1,0 +1,312 @@
+
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+
+    <!-- Site Properities -->
+    <title>knockout.js (Ejemplo completo) | axelhzf</title>
+    <meta name="description" content="Axelhzf" />
+    <meta name="keywords" content="place, your, website, keywoards, here, keep, them, related, to, the, content, of, your, website" />
+
+    <!-- DocPad Meta -->
+    <meta http-equiv="X-Powered-By" content="DocPad" />
+
+    <!-- DocPad Styles + Our Own -->
+    <link rel="stylesheet" href="/assets/styles/main.css" /><link rel="stylesheet" href="/assets/styles/highlight/github.css" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+
+    <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
+    <script type="text/javascript">Typekit.load()</script>
+
+</head>
+<body>
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+
+    <hgroup class="header">
+        <div class="logo"><a href="/">axelhzf</a></div>
+    </hgroup>
+
+    <div class="wrapper">
+
+    <nav role="navigation">
+        <ul class="main-navigation">
+            <li><a href="/blog/archives">Blog</a></li>
+            <li><a href="/tutorials">Tutorials</a></li>
+            <li><a href="/talks">Talks</a></li>
+            <li><a href="/experiments">Experiments</a></li>
+            <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank">RSS</a></li>
+        </ul>
+    </nav>
+
+    <div id="content" class="container">
+        <h1>knockout.js (Ejemplo completo)</h1>
+<p>En el anterior post hice un pequeña <a href="http://axelhzf.tumblr.com/post/10638045853/knockout">introducción a la librería knockout.js</a>.  Este post, continuación del anterior, tiene un ejemplo más completo en el cual espero que se vea mejor la utilidad de la librería. En el ejemplo crearemos una tabla de Posts, donde mostraremos el título y el texto. Le añadiremos a la tabla filtrado y edición inline. Con esto veremos cómo utilizar variables observables, dependentObservables y observableArrays.
+También haremos uso de jquery tmpl para renderizar la vista.
+
+</p>
+<p>Este post también forma parte del curso de desarrollo de aplicaciones web con Play.
+
+</p>
+<p>Prueba el ejemplo completo en <a href="http://jsfiddle.net/9mSBY/"><a href="http://jsfiddle.net/9mSBY/">http://jsfiddle.net/9mSBY/</a></a>
+
+</p>
+<h3>Esqueleto de la página</h3>
+<p>Enlazamos los css y js que vamos a utilizar:
+
+</p>
+<ul>
+<li>Twitter Bootstrap (Para el aspecto de la página)</li>
+<li>jQuery</li>
+<li>jQuery tmpl</li>
+<li>knockout.js</li>
+</ul>
+<pre class="highlighted"><code class="xml"><span class="doctype">&lt;!doctype html&gt;</span>
+<span class="tag">&lt;<span class="title">html</span>&gt;</span>
+<span class="tag">&lt;<span class="title">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">title</span>&gt;</span><span class="tag">&lt;/<span class="title">title</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css"</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript "</span> <span class="attribute">src</span>=<span class="value">"https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"http://cloud.github.com/downloads/SteveSanderson/knockout/jquery.tmpl.min.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"http://cloud.github.com/downloads/SteveSanderson/knockout/knockout-1.2.1.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">head</span>&gt;</span>
+<span class="tag">&lt;<span class="title">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">html</span>&gt;</span></code></pre>
+<h3>Tabla</h3>
+<p>Añadimos la tabla donde mostraremos el listado de Post en 3 columnas. La primera de selección, la segunda el título y luego el texto.
+
+</p>
+<pre class="highlighted"><code class="xml"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"container"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">table</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">thead</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">tr</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">th</span>&gt;</span><span class="tag">&lt;/<span class="title">th</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">th</span>&gt;</span>Title<span class="tag">&lt;/<span class="title">th</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">th</span>&gt;</span>Text<span class="tag">&lt;/<span class="title">th</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">tr</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">thead</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">tbody</span> /&gt;</span>
+    <span class="tag">&lt;/<span class="title">table</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span></code></pre>
+<h3>ViewModel</h3>
+<p>El viewModel contará con un listado de post que se mostrarán en la tabla
+
+</p>
+<pre class="highlighted"><code class="xml"><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
+     <span class="function"><span class="keyword">function</span> <span class="title">containsIgnoreCase</span><span class="params">(s, q)</span>{</span>
+        <span class="keyword">return</span> s.toLowerCase().indexOf(q.toLowerCase()) != -<span class="number">1</span>;
+     }
+
+     <span class="function"><span class="keyword">function</span> <span class="title">Post</span><span class="params">(title, text)</span>{</span>
+        <span class="keyword">this</span>.title = ko.observable(title);
+        <span class="keyword">this</span>.text = ko.observable(text);
+        <span class="keyword">this</span>.selected = ko.observable(<span class="literal">false</span>);
+
+        <span class="keyword">this</span>.containsText = <span class="keyword">function</span>(query){
+            <span class="keyword">return</span> containsIgnoreCase(<span class="keyword">this</span>.title(), query)
+                || containsIgnoreCase(<span class="keyword">this</span>.text(), query);
+        }
+     }
+
+     <span class="keyword">var</span> viewModel = {
+        posts : ko.observableArray([])
+     }
+
+     viewModel.posts.push(<span class="keyword">new</span> Post(<span class="string">'title1'</span>, <span class="string">'text1'</span>));
+     viewModel.posts.push(<span class="keyword">new</span> Post(<span class="string">'title2'</span>, <span class="string">'text2'</span>));
+
+     ko.applyBindings(viewModel);
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></code></pre>
+<p>En la clase Post se han definido los 3 campos como variables observables, para que los cambios que se hagan en esas variables se actualicen automáticamente. En el viewModel hemos definido un observableArray con el listado de post. Añadimos a esta lista dos posts de ejemplo.
+
+</p>
+<p>Para mostrar los posts en la tabla. Creamos una nueva plantilla que mostrará el contenido de cada fila.
+
+</p>
+<pre class="highlighted"><code class="parser3"><span class="xml"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/html"</span> <span class="attribute">id</span>=<span class="value">"postRow"</span>&gt;</span><span class="javascript">
+    &lt;tr&gt;
+        <span class="xml"><span class="tag">&lt;<span class="title">td</span>&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"checkbox"</span> <span class="attribute">data-bind</span>=<span class="value">"checked: selected"</span> /&gt;</span><span class="tag">&lt;/<span class="title">td</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">td</span>&gt;</span></span></span></span><span class="variable">${title}</span><span class="xml"><span class="tag">&lt;/<span class="title">td</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">td</span>&gt;</span></span><span class="variable">${text}</span><span class="xml"><span class="tag">&lt;/<span class="title">td</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">tr</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">script</span>&gt;</span></span></code></pre>
+<p>Y añadimos en binding en la tabla para que renderice la plantilla "postRow" con el listado de "posts".
+
+</p>
+<pre class="highlighted"><code class="haskell">&lt;tbody <span class="typedef"><span class="keyword">data</span>-bind="template : <span class="container">{<span class="title">name</span> : '<span class="title">postRow'</span>, <span class="title">foreach</span>: <span class="title">posts</span>}</span>" /&gt;</span></code></pre>
+<p>Con este código ya tenemos sincronizada la tabla con la lista de Posts. Para hacer una prueba podemos abrir la consola javascript y añadir un nuevos post.
+
+</p>
+<pre class="highlighted"><code class="javascript">viewModel.posts.push(<span class="keyword">new</span> Post(<span class="string">'prueba'</span>, <span class="string">'desde la consola de javascript!'</span>);</code></pre>
+<p>La tabla se tiene que haber actualizado automáticamanete con la nueva fila añadida.
+
+
+</p>
+<h3>Filtrado</h3>
+<p>Para añadir filtrado de la tabla vamos a almacenar dos arrays, uno con la lista de posts completos y otro con la lista de posts filtrados.
+
+</p>
+<p>Añadimos un campo de texto donde vamos a escribir el filtro. El evento por defecto que actualiza el viewModel es cuando pierde foco. Para hacer un filtrado en tiempo real podemos cambiar el evento de actualización a 'afterkeydown'.
+
+</p>
+<pre class="highlighted"><code class="xml"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"container"</span>&gt;</span>
+    ...
+
+    <span class="tag">&lt;<span class="title">form</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"clearfix"</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">input</span> <span class="attribute">class</span>=<span class="value">"xxlarge"</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">data-bind</span>=<span class="value">"value : filterQuery, valueUpdate:'afterkeydown'"</span> <span class="attribute">placeholder</span>=<span class="value">"Filter"</span>/&gt;</span>
+    <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">form</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span></code></pre>
+<p>Modificamos el viewModel para añadir el texto por el que se filtra y la lista de posts filtrados. Definimos la variable filteredPost como dependentObservable, de esta forma, cada vez que se actualice la lista de post, se volverá a evaluar la lista de post filtrados. En el caso de que el filtro esté vacio, mostramos la lista de todos los posts.
+
+</p>
+<pre class="highlighted"><code class="actionscript"><span class="keyword">var</span> viewModel = {
+    posts : ko.observableArray([]),
+    filterQuery : ko.observable(<span class="string">''</span>)
+}
+
+viewModel.filteredPosts = ko.dependentObservable(<span class="keyword">function</span>(){
+    <span class="keyword">var</span> query = <span class="keyword">this</span>.filterQuery();
+    <span class="keyword">if</span>(query){
+        <span class="keyword">var</span> filtered = [];
+        $.<span class="keyword">each</span>(viewModel.posts(), <span class="keyword">function</span>(i, post){
+            <span class="keyword">if</span>(post.containsText(query)){
+                filtered.push(post);
+            }
+        });
+        <span class="keyword">return</span> filtered;
+    }
+    <span class="comment">//Not filtering</span>
+    <span class="keyword">return</span> viewModel.posts();
+}, viewModel);</code></pre>
+<p>Modificamos el binding de la tabla para mostrar la lista de posts filtrados.
+
+</p>
+<pre class="highlighted"><code class="haskell">&lt;tbody <span class="typedef"><span class="keyword">data</span>-bind="template : <span class="container">{<span class="title">name</span> : '<span class="title">postRow'</span>, <span class="title">foreach</span>: <span class="title">filteredPosts</span>}</span>" /&gt;</span></code></pre>
+<h3>Edición inline</h3>
+<p>Para permitir la edición inline vamos a añadir una nueva variable que nos indique si estamos en modo edición. En el modo de edición, en la tabla aparecerán campos de texto donde el usuario podrá modificar las filas. También añadiremos un botón de nuevo y un botón para borrar las filas seleccionados.
+
+</p>
+<p>Botones para realizar las acciones.
+
+</p>
+<pre class="highlighted"><code class="xml"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"container"</span>&gt;</span>
+    ...
+
+    <span class="tag">&lt;<span class="title">form</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"clearfix"</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"#"</span> <span class="attribute">class</span>=<span class="value">"btn primary"</span> <span class="attribute">data-bind</span>=<span class="value">"click : newPost"</span>&gt;</span>New post<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"#"</span> <span class="attribute">class</span>=<span class="value">"btn primary"</span> <span class="attribute">data-bind</span>=<span class="value">"visible: editMode, click: toggleEditMode"</span>&gt;</span>Save<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"#"</span> <span class="attribute">class</span>=<span class="value">"btn"</span> <span class="attribute">data-bind</span>=<span class="value">"visible: !editMode(), click : toggleEditMode"</span>&gt;</span>Edit<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"#"</span> <span class="attribute">class</span>=<span class="value">"btn danger"</span> <span class="attribute">data-bind</span>=<span class="value">"click : deletePosts"</span>&gt;</span>Delete<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+     ...</code></pre>
+<p>La plantilla muestra el texto o un input dependiendo del campo editMode.
+
+
+</p>
+<pre class="highlighted"><code class="parser3"><span class="xml"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/html"</span> <span class="attribute">id</span>=<span class="value">"postRow"</span>&gt;</span><span class="javascript">
+    &lt;tr&gt;
+        <span class="xml"><span class="tag">&lt;<span class="title">td</span>&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"checkbox"</span> <span class="attribute">data-bind</span>=<span class="value">"checked: selected"</span> /&gt;</span><span class="tag">&lt;/<span class="title">td</span>&gt;</span>
+        {{if viewModel.editMode()}}
+            <span class="tag">&lt;<span class="title">td</span>&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">data-bind</span>=<span class="value">"value : title"</span> /&gt;</span><span class="tag">&lt;/<span class="title">td</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">td</span>&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">data-bind</span>=<span class="value">"value : text"</span> /&gt;</span><span class="tag">&lt;/<span class="title">td</span>&gt;</span>
+        {{else}}
+            <span class="tag">&lt;<span class="title">td</span>&gt;</span></span></span></span><span class="variable">${title}</span><span class="xml"><span class="tag">&lt;/<span class="title">td</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">td</span>&gt;</span></span><span class="variable">${text}</span><span class="xml"><span class="tag">&lt;/<span class="title">td</span>&gt;</span>
+        {{/if}}
+    <span class="tag">&lt;/<span class="title">tr</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">script</span>&gt;</span></span></code></pre>
+<p>Añadimos las acciones al modelo.
+
+</p>
+<pre class="highlighted"><code class="javascript"><span class="keyword">var</span> viewModel = {
+    posts : ko.observableArray([]),
+    filterQuery : ko.observable(<span class="string">''</span>),
+    editMode : ko.observable(<span class="literal">false</span>)
+}
+
+viewModel.selectedPosts = ko.dependentObservable(<span class="keyword">function</span>(){
+    <span class="keyword">var</span> result = [];
+    $.each(<span class="keyword">this</span>.posts(), <span class="keyword">function</span>(i, post){
+        <span class="keyword">if</span>(post.selected()){
+            result.push(post);
+        }
+    });
+    <span class="keyword">return</span> result;
+}, viewModel);
+
+viewModel.toggleEditMode = <span class="keyword">function</span>(){
+    viewModel.editMode(!viewModel.editMode());
+}
+
+viewModel.newPost = <span class="keyword">function</span>(){
+    viewModel.posts.push(<span class="keyword">new</span> Post(<span class="string">''</span>,<span class="string">''</span>));
+    viewModel.editMode(<span class="literal">true</span>);
+}
+
+viewModel.deletePosts = <span class="keyword">function</span>(){
+    viewModel.posts.removeAll(viewModel.selectedPosts());
+}</code></pre>
+<p>Declarando la variable selectedPosts como dependentObservable nos aseguramos que esté sincronizada con la lista de posts. A la hora de borrar los posts de la lista utilizamos la función removeAll y le pasamos la lista completa de posts seleccionados.
+
+</p>
+<h3>Conclusiones</h3>
+<p>En el ejemplo hemos visto como podemos utilizar knockout.js para tener sincronizada la interfaz de usuario con el modelo. Haciendo uso de variables dependientes y bindings hemos conseguido darle comportamiento dinámico a una tabla estática. En pocas lineas de código hemos conseguido que nuestra tabla sea completamente editable y filtrable.
+
+</p>
+<p>Falta ver como sincronizar nuestro modelo con el servidor por medio de llamadas ajax. Lo dejo pendiente para un futuro artículo.
+
+</p>
+<p>Puedes ver el código completo en <a href="http://jsfiddle.net/9mSBY/"><a href="http://jsfiddle.net/9mSBY/">http://jsfiddle.net/9mSBY/</a></a></p>
+
+
+<h1>Comments</h1>
+<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+
+
+    // var disqus_developer = 1;
+    var disqus_identifier = 'http://axelhzf.com/blog/2011-09-26-knockout-dot-js-ejemplo-completo.html';
+    var disqus_url = 'http://axelhzf.com/blog/2011-09-26-knockout-dot-js-ejemplo-completo.html';
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+    </div>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row license">
+                This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+                <br />
+                Axel Hernández Ferrea
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

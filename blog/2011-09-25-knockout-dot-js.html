@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+
+    <!-- Site Properities -->
+    <title>knockout.js | axelhzf</title>
+    <meta name="description" content="Axelhzf" />
+    <meta name="keywords" content="place, your, website, keywoards, here, keep, them, related, to, the, content, of, your, website" />
+
+    <!-- DocPad Meta -->
+    <meta http-equiv="X-Powered-By" content="DocPad"/>
+
+    <!-- DocPad Styles + Our Own -->
+    <link rel="stylesheet" href="/assets/styles/main.css" /><link rel="stylesheet" href="/assets/styles/highlight/github.css" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+
+    <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
+    <script type="text/javascript">Typekit.load()</script>
+
+</head>
+<body>
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+
+    <hgroup class="header">
+        <div class="logo"><a href="/">axelhzf</a></div>
+    </hgroup>
+
+    <div class="wrapper">
+
+    <nav role="navigation">
+        <ul class="main-navigation">
+            <li><a href="/blog/archives">Blog</a></li>
+            <li><a href="/tutorials">Tutorials</a></li>
+            <li><a href="/talks">Talks</a></li>
+            <li><a href="/experiments">Experiments</a></li>
+            <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank">RSS</a></li>
+        </ul>
+    </nav>
+
+    <div id="content" class="container">
+        <h1>knockout.js</h1>
+<p><a href="http://knockoutjs.com/">knockout.js</a> es una librería javascript que implementa el patrón Model View View-Model.
+
+</p>
+<h3>Patrón Model View View-Model</h3>
+<p>Patrón Model View View-Model (MVVM) es un patrón diseñado para construir interfaces de usuario.
+Describe cómo mantener de una forma simple una interfaz de usuario sofisticada dividiéndola en tres partes:
+
+</p>
+<ul>
+<li>Model: Los datos de la aplicación.</li>
+<li>View-Model : Representación de los datos y las operaciones de la interfaz gráfica. No es la interfaz de usuario en sí, no tiene los conceptos de botones o estilos.</li>
+<li>Vista : Representación gráfica del estado del View-Model. Muestra la información del View-Model y envía comandos para ejecutar las acciones.</li>
+</ul>
+<h3>Aplicado a Knockout.js</h3>
+<ul>
+<li>Modelo : Normalmente llamadas Ajax para leer o escribir en el servidor.</li>
+<li>View-Model : Código javascript puro.</li>
+<li>Vista : Código HTML con &quot;bindings&quot; declarativos para enlazar el view-model. También se pueden utilizar templates para generar el código html.</li>
+</ul>
+<h3>Ejemplo</h3>
+<p><a href="http://jsfiddle.net/h7tgN/"><a href="http://jsfiddle.net/h7tgN/">http://jsfiddle.net/h7tgN/</a></a>
+
+</p>
+<p>En el ejemplo tenemos un campo de texto donde estamos escribiendo en la variable valor. La variable se esta actualizando automáticamente cuando se presiona una tecla. Después tenemos una etiqueta span donde estamos mostrando el contenido de la variable. Vemos que a medida que vamos escribiendo en el campo de texto se va actualizando la etiqueta.
+
+</p>
+<p>Recomiendo que pruebes los tutoriales de knockout.js <a href="http://learn.knockoutjs.com/"><a href="http://learn.knockoutjs.com/">http://learn.knockoutjs.com/</a></a>. Están bastante trabajados y tienen una web donde puedes ir probando el código en la página web directamente y viendo los resultados.
+
+</p>
+<p>Nota : El contenido de este post pertenece a un curso de desarrollo de aplicaciones web con Play Framework que daré del 3 al 7 de octubre.</p>
+
+
+<h1>Comments</h1>
+<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+
+
+    // var disqus_developer = 1;
+    var disqus_identifier = 'http://axelhzf.com/blog/2011-09-25-knockout-dot-js.html';
+    var disqus_url = 'http://axelhzf.com/blog/2011-09-25-knockout-dot-js.html';
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+    </div>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row license">
+                This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+                <br/>
+                Axel Hernández Ferrea
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

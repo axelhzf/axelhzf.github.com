@@ -1,0 +1,131 @@
+
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+
+    <!-- Site Properities -->
+    <title>Ampliando el módulo de Google Guice | axelhzf</title>
+    <meta name="description" content="Axelhzf" />
+    <meta name="keywords" content="place, your, website, keywoards, here, keep, them, related, to, the, content, of, your, website" />
+
+    <!-- DocPad Meta -->
+    <meta http-equiv="X-Powered-By" content="DocPad" />
+
+    <!-- DocPad Styles + Our Own -->
+    <link rel="stylesheet" href="/assets/styles/main.css" /><link rel="stylesheet" href="/assets/styles/highlight/github.css" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+
+    <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
+    <script type="text/javascript">Typekit.load()</script>
+
+</head>
+<body>
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+
+    <hgroup class="header">
+        <div class="logo"><a href="/">axelhzf</a></div>
+    </hgroup>
+
+    <div class="wrapper">
+
+    <nav role="navigation">
+        <ul class="main-navigation">
+            <li><a href="/blog/archives">Blog</a></li>
+            <li><a href="/tutorials">Tutorials</a></li>
+            <li><a href="/talks">Talks</a></li>
+            <li><a href="/experiments">Experiments</a></li>
+            <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank">RSS</a></li>
+        </ul>
+    </nav>
+
+    <div id="content" class="container">
+        <h1>Ampliando el módulo de Google Guice</h1>
+<p>Como comenté al final de mi <a href="http://axelhzf.tumblr.com/post/16930248351/play-framework-google-guice">post</a> anterior mi intención era añadir al módulo de play las clases que añaden el scope LazySingleton.
+
+</p>
+<p>Los cambios están en este <a href="https://github.com/axelhzf/play-guice-module/commit/30af78bb96c7561a529ac578ff93d2b49a1e5492">commit</a>.
+
+</p>
+<p>Añadí a la clase <em>GuiceSupport</em> una variable con el stage en función del modo en el que se está ejecutando play y creé la clase <em>PlayAbstractModule</em> que incluye el método <em>bindLazySingletonOnDev</em>.
+
+</p>
+<p>Para utilizarlo:
+
+</p>
+<p>conf/dependencies.yml
+</p>
+<pre class="highlighted"><code class="brainfuck"><span class="comment">require:</span>
+    <span class="literal">-</span> <span class="comment">play</span>
+    <span class="literal">-</span> <span class="comment">axelhzf</span> <span class="literal">-</span>&gt; <span class="comment">guice</span> <span class="comment">1</span>.<span class="comment">3</span>
+
+<span class="comment">repositories:</span>
+    <span class="literal">-</span> <span class="comment">axelhzf</span>-<span class="comment">guice</span>-<span class="comment">repository:</span>
+        <span class="comment">type:</span> <span class="comment">http</span>
+        <span class="comment">artifact:</span> <span class="comment">"http://cloud</span>.<span class="comment">github</span>.<span class="comment">com/downloads/axelhzf/play</span>-<span class="comment">guice</span>-<span class="comment">module/guice</span>-<span class="title">[</span><span class="comment">revision</span>]<span class="string">.</span><span class="comment">zip"</span>
+        <span class="comment">contains:</span>
+            <span class="literal">-</span> <span class="comment">axelhzf</span> <span class="literal">-</span>&gt; <span class="comment">guice</span></code></pre>
+<p>Configurar el inyector
+
+</p>
+<p>GuiceConfig.java
+</p>
+<pre class="highlighted"><code class="java">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GuiceConfig</span> <span class="keyword">extends</span> <span class="title">GuiceSupport</span> {</span>
+        <span class="annotation">@Override</span>
+        <span class="keyword">protected</span> Injector configure() {
+            <span class="keyword">return</span> Guice.createInjector(stage, <span class="keyword">new</span> PlayAbstractModule() {
+                <span class="annotation">@Override</span>
+                <span class="keyword">protected</span> <span class="keyword">void</span> configure() {
+                    bindLazySingletonOnDev(MyService.class, MyServiceImpl.class);
+                    bindLazySingletonOnDev(MyDependentService.class, MyDependentServiceImpl.class);
+                }
+            });
+        }
+    }</code></pre>
+
+
+<h1>Comments</h1>
+<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+
+
+    // var disqus_developer = 1;
+    var disqus_identifier = 'http://axelhzf.com/blog/2012-02-04-ampliando-el-modulo-de-google-guice.html';
+    var disqus_url = 'http://axelhzf.com/blog/2012-02-04-ampliando-el-modulo-de-google-guice.html';
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+    </div>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row license">
+                This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+                <br />
+                Axel Hernández Ferrea
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
