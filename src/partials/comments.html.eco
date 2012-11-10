@@ -1,5 +1,5 @@
 
-<h1>Comments</h1>
+<h2>Comments</h2>
 <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
 
@@ -8,8 +8,8 @@
 
 
     // var disqus_developer = 1;
-    var disqus_identifier = '<%= @disqusId %>';
-    var disqus_url = '<%= @disqusId %>';
+    var disqus_identifier = '<%= @disqusId or @url %>';
+    var disqus_url = '<%= @disqusId or @url %>';
     var disqus_script = 'embed.js';
 
     (function () {
