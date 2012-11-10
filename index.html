@@ -51,7 +51,7 @@
         </nav>
 
         <div id="content" class="container">
-            <h1>Recent Posts <small><a href="/blog/archives">view all</a></small></h1>
+            <h1 class="recent-posts-title">Recent Posts <small><a href="/blog/archives">view all</a></small></h1>
 
 <div>
     <a href="/blog/2012-11-10-cocoapods.html">CocoaPods</a>
@@ -84,10 +84,20 @@
 </div>
 
 
+<h1 class="recent-links-title">Recent Links <small><a href="http://karmacracy.com/axelhzf">view all</a></small></h1>
+<div class="links"></div>
+
 <div class="social">
     <a href="http://www.twitter.com/axelhzf" target="_blank" class="twitter"></a>
     <a href="http://www.github.com/axelhzf" target="_blank" class="github"></a>
 </div>
+
+<script src="/vendor/jquery.js"></script>
+<script src="/assets/js/kcy.js"></script>
+<script>
+    var kcy = new Kcy({user : 'axelhzf', el : '.links'});
+    kcy.fetch();
+</script>
         </div>
 
     </div>
