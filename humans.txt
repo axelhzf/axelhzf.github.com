@@ -2,14 +2,15 @@
 # The humans responsible & technology colophon
 
 # TEAM
-
-    <name> -- <role> -- <twitter>
+    Developer: Axel Hernández Ferrera
+    Site: axelhzf@gmail.com
+    Twitter: axelhzf
+    Location: La Laguna, Tenerife, Span
 
 # THANKS
 
-    <name>
-
 # TECHNOLOGY COLOPHON
-
-    HTML5, CSS3
-    jQuery, Modernizr
+    Language: Spanish
+    Doctype: Html5
+    IDE: Intellij Idea, SublimeText
+    Frameworks: Doctype
