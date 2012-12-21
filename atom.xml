@@ -3,7 +3,7 @@
     <title>axelhzf</title>
     <link href="http://axelhzf.com/atom.xml" rel="self"/>
     <link href="http://axelhzf.com"/>
-    <updated>2012-11-10T17:22:30.584Z</updated>
+    <updated>2012-12-21T02:21:05.282Z</updated>
     <id>http://axelhzf.com</id>
     <author>
         <name>Axel Hernández Ferrea</name>
@@ -12,9 +12,213 @@
 
     
         <entry>
+            <title>View communication in iOS</title>
+            <link href="http://axelhzf.com/blog/2012-12-21-views-communication.html"/>
+            <updated>2012-12-21T00:01:00.120Z</updated>
+            <id>http://axelhzf.com/blog/2012-12-21-views-communication.html</id>
+            <content type="html">&lt;p&gt;Unos de los problemas más comunes que nos encontramos cuando estamos desarrollando una aplicación para iOS es cómo pasar información de una vista a otra. Pongamos por ejemplo las pantallas de Settings.app que se muestra en la imagen.
+
+&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/view-communication.png&quot; alt=&quot;View communication&quot; /&gt;
+
+&lt;/p&gt;
+&lt;p&gt;Este es un ejemplo de controladores que deben comunicarse entre ellos. La primera vista tiene una celda donde aparece el nombre del dispositivo. Al pulsar la celda, se muestra la siguiente vista donde se puede editar el nombre del dispositivo. Una vez se termine la edición, el texto nuevo debe volver a la primera vista.
+
+&lt;/p&gt;
+&lt;p&gt;Existen varios métodos para resolver este problema:
+
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Singleton&lt;/li&gt;
+&lt;li&gt;Delegate + protocol&lt;/li&gt;
+&lt;li&gt;Bloques&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;En el &lt;a href=&quot;http://axelhzf.com/ios-curso&quot;&gt;curso&lt;/a&gt; hay ejemplos de código que utilizan los dos primeros métodos, vamos a repasarlos y vamos a ver cómo funciona el método de comunicación de controladores mediante bloques.
+
+&lt;/p&gt;
+&lt;h2&gt;Singleton&lt;/h2&gt;
+&lt;p&gt;El patrón Singleton consiste en restringir la creación de una única instancia para una clase determinada.En nuestro podemos compartir esta instancia única entre las dos vistas de forma que podamos comunicar las vistas hacia delante y hacia detrás.
+
+&lt;/p&gt;
+&lt;p&gt;Tal como se comenta en este &lt;a href=&quot;http://lukeredpath.co.uk/blog/a-note-on-objective-c-singletons.html&quot;&gt;post&lt;/a&gt; existe varias formas de crear un Singleton. Utilizando el autocompletado de &lt;a href=&quot;http://www.jetbrains.com/objc/&quot;&gt;AppCode&lt;/a&gt; (se ha convertido en mi IDE habitual, lo recomiendo totalmente) se genera el siguiente código:
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;actionscript&quot;&gt;@&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;NameInfo&lt;/span&gt; : &lt;span class=&quot;title&quot;&gt;NSObject&lt;/span&gt;
+
+@&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;strong&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;NSString&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt;;
+
++ (&lt;span class=&quot;title&quot;&gt;NameInfo&lt;/span&gt; *)&lt;span class=&quot;title&quot;&gt;instance&lt;/span&gt;;
+
+@&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;La clase &lt;strong&gt;NameInfo&lt;/strong&gt; es un Singleton que permitirá la comunicación entre las dos vistas. 
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;lua&quot;&gt;@implementation NameInfo
+
++ (NameInfo *)instance {
+    static NameInfo *_instance = &lt;span class=&quot;keyword&quot;&gt;nil&lt;/span&gt;;
+
+    @synchronized (self) {
+        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (_instance == &lt;span class=&quot;keyword&quot;&gt;nil&lt;/span&gt;) {
+            _instance = &lt;span class=&quot;string&quot;&gt;[[self alloc] init];
+        }
+    }
+
+    return _instance;
+}
+
+@end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;La implementación se asegura de que se llama una única vez al método init.
+
+&lt;/p&gt;
+&lt;p&gt;El código para utilizar el singleton es
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;avrasm&quot;&gt;NameInfo *nameInfo = [NameInfo instance]&lt;span class=&quot;comment&quot;&gt;;&lt;/span&gt;
+nameInfo&lt;span class=&quot;preprocessor&quot;&gt;.name&lt;/span&gt; = @&lt;span class=&quot;string&quot;&gt;&quot;Axel&quot;&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;;&lt;/span&gt;
+NSLog(nameInfo&lt;span class=&quot;preprocessor&quot;&gt;.name&lt;/span&gt;)&lt;span class=&quot;comment&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;El código es bastante sencillo. El principal problema que tiene este método es que nos obliga a crear una clase nueva cada vez que queramos realizar comunicación entre vistas. Además, la segunda vista debe escribir directamente en la propiedad &lt;strong&gt;name&lt;/strong&gt;, por lo tanto podemos tener problemas para reutilizar la vista. 
+
+&lt;/p&gt;
+&lt;h2&gt;Delegate + protocol&lt;/h2&gt;
+&lt;p&gt;Este patrón es el recomendado en la &lt;a href=&quot;https://developer.apple.com/library/ios/#featuredarticles/ViewControllerPGforiPhoneOS/ManagingDataFlowBetweenViewControllers/ManagingDataFlowBetweenViewControllers.html#//apple_ref/doc/uid/TP40007457-CH8-SW1&quot;&gt;documentación de Apple&lt;/a&gt;. Un ejemplo de uso suponiendo la utilización de segues es:
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;objectivec&quot;&gt;@&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;implementation&lt;/span&gt; &lt;span class=&quot;id&quot;&gt;AViewController&lt;/span&gt;&lt;/span&gt;
+
+- (&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)prepareForSegue:(UIStoryboardSegue *)segue sender:(&lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt;)sender {
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;([segue&lt;span class=&quot;variable&quot;&gt;.identifier&lt;/span&gt; isEqualToString:@&lt;span class=&quot;string&quot;&gt;&quot;toB&quot;&lt;/span&gt;]) {
+        BViewController *controller = segue&lt;span class=&quot;variable&quot;&gt;.destinationViewController&lt;/span&gt;;
+        controller&lt;span class=&quot;variable&quot;&gt;.name&lt;/span&gt; = &lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;.name&lt;/span&gt;;
+        controller&lt;span class=&quot;variable&quot;&gt;.delegate&lt;/span&gt; = &lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;En el método &lt;strong&gt;prepareForSegue&lt;/strong&gt; es donde se comunica la vista A con la vista B. En este caso se está pasando el valor de la propiedad &lt;strong&gt;name&lt;/strong&gt;. Además se esta asignando la propiedad &lt;strong&gt;delegate&lt;/strong&gt;, de forma que la vista B tiene una referencia a la vista A. Esto permitirá hacer la comunicación en el sentido contrario.
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;actionscript&quot;&gt;@&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;BViewController&lt;/span&gt; : &lt;span class=&quot;title&quot;&gt;UIViewController&lt;/span&gt;
+
+@&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;strong&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;NSString&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt;;
+@&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;weak&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;delegate&lt;/span&gt;;
+
+@&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;El código para el controlador B tiene la definición de la propiedad &lt;strong&gt;delegate&lt;/strong&gt;. Esta propiedad es importante que sea &lt;strong&gt;weak&lt;/strong&gt;, para que no se produzca una referencia cíclica y que la memoria pueda liberarse correctamente.
+
+&lt;/p&gt;
+&lt;p&gt;La comunicación desde la vista B hasta la vista A se puede hacer en el momento en que la vista B va a desaparecer.
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;vala&quot;&gt;- (&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)viewWillDisappear:(BOOL)animated {
+   &lt;span class=&quot;constant&quot;&gt; SEL &lt;/span&gt;setNameSelector = @selector(setName:);
+    if([self.&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;delegate&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;respondsToSelector&lt;/span&gt;:&lt;span class=&quot;title&quot;&gt;setNameSelector&lt;/span&gt;]) {&lt;/span&gt;
+        [self.&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;delegate&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;performSelector&lt;/span&gt;:&lt;span class=&quot;title&quot;&gt;setNameSelector&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;withObject&lt;/span&gt;:&lt;span class=&quot;title&quot;&gt;self&lt;/span&gt;.&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt;];
+    }
+}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;El código llama al método &lt;strong&gt;setName&lt;/strong&gt; del objeto delegate en el caso de que exista. Se utiliza el método &lt;strong&gt;performSelector&lt;/strong&gt; porque no hemos definido el tipo de dato del delegate.
+
+&lt;/p&gt;
+&lt;p&gt;En el caso de que quisiéramos que el código fuese type checked podemos utilizar un protocolo.
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;objectivec&quot;&gt;@&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protocol&lt;/span&gt; &lt;span class=&quot;id&quot;&gt;BViewControllerDelegate&lt;/span&gt; &amp;lt;&lt;span class=&quot;id&quot;&gt;NSObject&lt;/span&gt;&amp;gt;&lt;/span&gt;
+
+- (&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)setName:(&lt;span class=&quot;built_in&quot;&gt;NSString&lt;/span&gt; *)name;
+
+@&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;El protocolo define un único método &lt;strong&gt;setName&lt;/strong&gt;
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;actionscript&quot;&gt;@&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;AViewController&lt;/span&gt; : &lt;span class=&quot;title&quot;&gt;UIViewController&lt;/span&gt; &amp;lt;&lt;span class=&quot;title&quot;&gt;BViewControllerDelegate&lt;/span&gt;&amp;gt;
+
+@&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;strong&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;NSString&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt;;
+
+@&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ahora la clase &lt;strong&gt;AViewController&lt;/strong&gt; debe implementar el protocolo &lt;strong&gt;BViewControllerDelegate&lt;/strong&gt;.
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;actionscript&quot;&gt;@&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;BViewController&lt;/span&gt; : &lt;span class=&quot;title&quot;&gt;UIViewController&lt;/span&gt;
+
+@&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;strong&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;NSString&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt;;
+@&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;weak&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;id&lt;/span&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;BViewControllerDelegate&lt;/span&gt;&amp;gt; &lt;span class=&quot;title&quot;&gt;delegate&lt;/span&gt;;
+
+@&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Se modifica la definición del &lt;strong&gt;delegate&lt;/strong&gt; para especificar que es el tipo de dato una clase que implementa el protocolo &lt;strong&gt;BViewControllerDelegate&lt;/strong&gt;.
+
+&lt;/p&gt;
+&lt;p&gt;El código del controlador B se reduce a invocar el método &lt;strong&gt;setName&lt;/strong&gt; directamente.
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;vala&quot;&gt;- (&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)viewWillDisappear:(BOOL)animated {
+    [self.&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;delegate&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;setName&lt;/span&gt;:&lt;span class=&quot;title&quot;&gt;self&lt;/span&gt;.&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt;];
+}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Este método está muy extendido en las librerías que hace Apple, por ejemplo el controlador &lt;a href=&quot;http://developer.apple.com/library/ios/#documentation/MessageUI/Reference/MFMailComposeViewController_class/Reference/Reference.html&quot;&gt;&lt;strong&gt;MFMailComposeViewController&lt;/strong&gt;&lt;/a&gt; que permite el envío de correos utiliza el protocolo &lt;strong&gt; MFMailComposeViewControllerDelegate&lt;/strong&gt; para comunicarse con la vista anterior e informa si el correo se envió correctamente o se produjo un error.
+
+&lt;/p&gt;
+&lt;h2&gt;Bloques&lt;/h2&gt;
+&lt;p&gt;La última opción para comunicar dos controladores es utilizar bloques. Un bloque es lo que en otros lenguajes de programación se conoce en  como una closure. En pocas palabras se trata de una función definida de forma inline y que tiene acceso a las variables locales que están en el mismo scope en el que se ha definido la closure. Los bloques son una característica nueva del lenguaje que fue introducida en iOS 4.
+
+&lt;/p&gt;
+&lt;p&gt;Aquí tienes dos artículos     que explican cómo trabajar con bloques.
+
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://pragmaticstudio.com/blog/2010/7/28/ios4-blocks-1&quot;&gt;iOS4 blocks 1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://pragmaticstudio.com/blog/2010/9/15/ios4-blocks-2&quot;&gt;iOS4 blocks 2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Si prefieres puedes consultar la documentación oficial de &lt;a href=&quot;http://developer.apple.com/library/ios/#documentation/cocoa/Conceptual/Blocks/Articles/00_Introduction.html&quot;&gt;introducción a los bloques&lt;/a&gt;
+
+&lt;/p&gt;
+&lt;p&gt;Los bloques permiten resolver el problema de comunicar dos vistas de una manera muy elegante.
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;actionscript&quot;&gt;typedef &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;(^BViewControllerCallback)(NSString *name);
+
+@&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;BViewController&lt;/span&gt; : &lt;span class=&quot;title&quot;&gt;UIViewController&lt;/span&gt;
+
+@&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;strong&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;NSString&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt;;
+@&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;copy&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;BViewControllerCallback&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;callback&lt;/span&gt;;
+
+@&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;En el código se define el tipo &lt;strong&gt;BViewControllerCallback&lt;/strong&gt; como un bloque que recibe un parámetro &lt;strong&gt;name&lt;/strong&gt;.
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;objectivec&quot;&gt;- (&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)viewWillDisappear:(&lt;span class=&quot;built_in&quot;&gt;BOOL&lt;/span&gt;)animated {
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;.callback&lt;/span&gt; != &lt;span class=&quot;literal&quot;&gt;nil&lt;/span&gt;) {
+        &lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;.callback&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;.name&lt;/span&gt;);
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Cuando la vista va a desaparecer, si hay definido un callback se invoca pasando como parámetro el valor actual.
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;objectivec&quot;&gt;- (&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)prepareForSegue:(UIStoryboardSegue *)segue sender:(&lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt;)sender {
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;([segue&lt;span class=&quot;variable&quot;&gt;.identifier&lt;/span&gt; isEqualToString:@&lt;span class=&quot;string&quot;&gt;&quot;toB&quot;&lt;/span&gt;]) {
+        BViewController *controller = segue&lt;span class=&quot;variable&quot;&gt;.destinationViewController&lt;/span&gt;;
+        controller&lt;span class=&quot;variable&quot;&gt;.name&lt;/span&gt; = &lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;.name&lt;/span&gt;;
+
+        __&lt;span class=&quot;keyword&quot;&gt;weak&lt;/span&gt; AViewController *weakSelf = &lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;;
+        controller&lt;span class=&quot;variable&quot;&gt;.callback&lt;/span&gt; = ^(&lt;span class=&quot;built_in&quot;&gt;NSString&lt;/span&gt; *name) {
+            weakSelf&lt;span class=&quot;variable&quot;&gt;.name&lt;/span&gt; = name;
+        };
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;El método &lt;strong&gt;prepareForSegue&lt;/strong&gt; debe definir el código que se debe ejecutar cuando la vista B haya terminado.
+
+&lt;/p&gt;
+&lt;p&gt;La clase &lt;a href=&quot;http://developer.apple.com/library/ios/#documentation/Twitter/Reference/TWTweetSheetViewControllerClassRef/Reference/Reference.html&quot;&gt;&lt;strong&gt;TWTweetComposeViewController&lt;/strong&gt;&lt;/a&gt; que permite compartir contenido en Twitter utiliza esta técnica. Define una propiedad &lt;strong&gt;completionHandler&lt;/strong&gt; que es el bloque se invoca cuando el controlador ha terminado de enviar el tweet.
+
+&lt;/p&gt;
+&lt;p&gt;La principal ventaja de utilizar bloques es que permite reutilizar la vista B más fácilmente. Lo único que hay que hacer es definir un callback distinto cada una de las veces que se invoque la vista.
+
+&lt;/p&gt;
+&lt;h2&gt;Conclusiones&lt;/h2&gt;
+&lt;p&gt;En el post hemos visto varias formas de resolver el problema de la comunicación entre dos controladores. Cada una de los métodos tiene sus ventajas e inconvenientes y puede ser más adecuada para ciertas situaciones. Últimamente me estoy decantando por definir la comunicación utilizando bloques porque me permite reutilizar el código más fácilmente. También puede ser que de trabajar mucho con javascript, diseñar apis utilizando callbacks se esta convirtiendo en una práctica muy habitual en mi código.&lt;/p&gt;
+</content>
+        </entry>
+    
+        <entry>
             <title>CocoaPods</title>
             <link href="http://axelhzf.com/blog/2012-11-10-cocoapods.html"/>
-            <updated>2012-11-10T00:00:00.426Z</updated>
+            <updated>2012-11-10T00:00:00.124Z</updated>
             <id>http://axelhzf.com/blog/2012-11-10-cocoapods.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/cocoapods.png&quot; alt=&quot;CocoaPods&quot; /&gt;
 
@@ -52,7 +256,7 @@
         <entry>
             <title>Grunt Live-Reload</title>
             <link href="http://axelhzf.com/blog/2012-06-15-grunt-live-reload.html"/>
-            <updated>2012-06-15T23:34:00.423Z</updated>
+            <updated>2012-06-15T23:34:00.116Z</updated>
             <id>http://axelhzf.com/blog/2012-06-15-grunt-live-reload.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/grunt-reload.jpg&quot; alt=&quot;Grunt Reload&quot; /&gt;
 
@@ -194,7 +398,7 @@
         <entry>
             <title>Labs : Canvas Star Wars</title>
             <link href="http://axelhzf.com/blog/2012-05-30-labs-canvas-star-wars.html"/>
-            <updated>2012-05-30T09:15:00.421Z</updated>
+            <updated>2012-05-30T09:15:00.114Z</updated>
             <id>http://axelhzf.com/blog/2012-05-30-labs-canvas-star-wars.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/star_wars.png&quot; alt=&quot;Star Wars&quot;&gt;
 
@@ -215,7 +419,7 @@ Estos últimos días he estado aprendiendo &lt;a href=&quot;https://developer.mo
         <entry>
             <title>Grunt vs Wro4j</title>
             <link href="http://axelhzf.com/blog/2012-05-28-grunt-vs-wro4j.html"/>
-            <updated>2012-05-28T22:01:00.417Z</updated>
+            <updated>2012-05-28T22:01:00.108Z</updated>
             <id>http://axelhzf.com/blog/2012-05-28-grunt-vs-wro4j.html</id>
             <content type="html">&lt;p&gt;En el post anterior hice la siguiente afirmación sin dar ningún dato:
 
@@ -430,7 +634,7 @@ sys    0m0.177s&lt;/code&gt;&lt;/pre&gt;
         <entry>
             <title>grunt</title>
             <link href="http://axelhzf.com/blog/2012-05-27-grunt.html"/>
-            <updated>2012-05-27T16:07:00.410Z</updated>
+            <updated>2012-05-27T16:07:00.110Z</updated>
             <id>http://axelhzf.com/blog/2012-05-27-grunt.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/grunt.png&quot; alt=&quot;grunt&quot; /&gt;
 
@@ -573,7 +777,7 @@ sys    0m0.177s&lt;/code&gt;&lt;/pre&gt;
         <entry>
             <title>IntelliJ Idea keyboard shortcuts</title>
             <link href="http://axelhzf.com/blog/2012-05-20-intellij-idea-keyboard-shortcuts.html"/>
-            <updated>2012-05-20T11:30:00.406Z</updated>
+            <updated>2012-05-20T11:30:00.104Z</updated>
             <id>http://axelhzf.com/blog/2012-05-20-intellij-idea-keyboard-shortcuts.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/intellij_idea.gif&quot; alt=&quot;Intellij Idea&quot;&gt;
 Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en los que sale ganador de comparativas con Eclipse o Netbeans. El año pasado le intenté dar una oportunidad pero la cosa no fue bien. En ese momento estaba desarrollando un plugin para Eclipse por lo que no tenía mucho sentido que utilizara en IntelliJ. Mi situación cambió hace unos dos meses, cambié de trabajo y ahora me dedico casi exclusivamente a desarrollo front-end. Estoy ampliando mucho mis conocimientos de javascript que antes se limitaba a lo básico de jQuery. El soporte que tiene Eclipse para javascript me daba la sensación de que perjudicaba más que ayudar. Incluso editores de textos con esteroides como &lt;a href=&quot;http://www.sublimetext.com/&quot;&gt;SublimeText&lt;/a&gt; ayudan más a la hora de escribir javascript. Dada esta situación decidí darle una segunda oportunidad a IntelliJ, que si tiene un soporte de verdad para javascript, resaltado de sintaxis, refactor, integración con jslint, búsqueda usos dinámicos, etc.
@@ -612,7 +816,7 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
         <entry>
             <title>octopress</title>
             <link href="http://axelhzf.com/blog/2012-05-20-octopress.html"/>
-            <updated>2012-05-20T11:00:00.408Z</updated>
+            <updated>2012-05-20T11:00:00.105Z</updated>
             <id>http://axelhzf.com/blog/2012-05-20-octopress.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/octopress.png&quot; alt=&quot;Ocotpress&quot;&gt;
 
@@ -630,7 +834,7 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
         <entry>
             <title>Ampliando el módulo de Google Guice</title>
             <link href="http://axelhzf.com/blog/2012-02-04-ampliando-el-modulo-de-google-guice.html"/>
-            <updated>2012-02-04T22:34:00.400Z</updated>
+            <updated>2012-02-04T22:34:00.101Z</updated>
             <id>http://axelhzf.com/blog/2012-02-04-ampliando-el-modulo-de-google-guice.html</id>
             <content type="html">&lt;p&gt;Como comenté al final de mi &lt;a href=&quot;http://axelhzf.tumblr.com/post/16930248351/play-framework-google-guice&quot;&gt;post&lt;/a&gt; anterior mi intención era añadir al módulo de play las clases que añaden el scope LazySingleton.
 
@@ -679,7 +883,7 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
         <entry>
             <title>Play Framework + Google Guice</title>
             <link href="http://axelhzf.com/blog/2012-02-02-play-framework-plus-google-guice.html"/>
-            <updated>2012-02-02T22:18:00.414Z</updated>
+            <updated>2012-02-02T22:18:00.093Z</updated>
             <id>http://axelhzf.com/blog/2012-02-02-play-framework-plus-google-guice.html</id>
             <content type="html">&lt;p&gt;En el proyecto en el que estoy trabajando actualmente empezamos a utilizar Google Guice. Para quien no lo sepa, Guice es un framework de inyección de dependencias. La idea básica de la inyección de dependencias consiste en sumistrar a una clase sus dependencias, en lugar de que sea esta quien tenga que instanciarlas.
 
@@ -1050,7 +1254,7 @@ INFO: production - después del getInstance&lt;/code&gt;&lt;/pre&gt;
         <entry>
             <title>knockout.js (Ejemplo completo)</title>
             <link href="http://axelhzf.com/blog/2011-09-26-knockout-dot-js-ejemplo-completo.html"/>
-            <updated>2011-09-26T22:05:00.404Z</updated>
+            <updated>2011-09-26T22:05:00.090Z</updated>
             <id>http://axelhzf.com/blog/2011-09-26-knockout-dot-js-ejemplo-completo.html</id>
             <content type="html">&lt;p&gt;En el anterior post hice un pequeña &lt;a href=&quot;http://axelhzf.tumblr.com/post/10638045853/knockout&quot;&gt;introducción a la librería knockout.js&lt;/a&gt;.  Este post, continuación del anterior, tiene un ejemplo más completo en el cual espero que se vea mejor la utilidad de la librería. En el ejemplo crearemos una tabla de Posts, donde mostraremos el título y el texto. Le añadiremos a la tabla filtrado y edición inline. Con esto veremos cómo utilizar variables observables, dependentObservables y observableArrays.
 También haremos uso de jquery tmpl para renderizar la vista.
@@ -1280,7 +1484,7 @@ viewModel.deletePosts = &lt;span class=&quot;keyword&quot;&gt;function&lt;/span&
         <entry>
             <title>knockout.js</title>
             <link href="http://axelhzf.com/blog/2011-09-25-knockout-dot-js.html"/>
-            <updated>2011-09-25T22:01:00.398Z</updated>
+            <updated>2011-09-25T22:01:00.081Z</updated>
             <id>http://axelhzf.com/blog/2011-09-25-knockout-dot-js.html</id>
             <content type="html">&lt;p&gt;&lt;a href=&quot;http://knockoutjs.com/&quot;&gt;knockout.js&lt;/a&gt; es una librería javascript que implementa el patrón Model View View-Model.
 
@@ -1318,7 +1522,7 @@ Describe cómo mantener de una forma simple una interfaz de usuario sofisticada 
         <entry>
             <title>Vim dentro de Eclipse</title>
             <link href="http://axelhzf.com/blog/2011-09-10-vim-dentro-de-eclipse.html"/>
-            <updated>2011-09-10T21:54:00.396Z</updated>
+            <updated>2011-09-10T21:54:00.089Z</updated>
             <id>http://axelhzf.com/blog/2011-09-10-vim-dentro-de-eclipse.html</id>
             <content type="html">&lt;p&gt;A raíz de un artículo &amp;quot;&lt;a href=&quot;http://yannesposito.com/Scratch/en/blog/Learn-Vim-Progressively/&quot;&gt;Learn Vim Progressively&lt;/a&gt;&amp;quot;
 recordé la potencia que tenía vim y los tiempos en los que lo utilizaba a diario
@@ -1342,7 +1546,7 @@ para hacerle un &lt;a href=&quot;http://java.decompiler.free.fr/&quot;&gt;apaño
         <entry>
             <title>Creando una presentación con HTML+CSS+JS</title>
             <link href="http://axelhzf.com/blog/2011-06-19-creando-una-presentacion-con-html-plus-css-plus-js.html"/>
-            <updated>2011-06-19T20:58:00.385Z</updated>
+            <updated>2011-06-19T20:58:00.077Z</updated>
             <id>http://axelhzf.com/blog/2011-06-19-creando-una-presentacion-con-html-plus-css-plus-js.html</id>
             <content type="html">&lt;p&gt;Me encanta la presentación &lt;a href=&quot;http://slides.html5rocks.com/&quot;&gt;html5rocks&lt;/a&gt;. Es interactiva,
 puedes ir probando todo lo que va explicando. Incluso dibujar un Doraemon en la diapositiva 47.
@@ -1397,7 +1601,7 @@ que estoy escribiendo el post.
         <entry>
             <title>Eclipse Color Themes</title>
             <link href="http://axelhzf.com/blog/2011-05-22-eclipse-color-themes.html"/>
-            <updated>2011-05-22T20:48:00.380Z</updated>
+            <updated>2011-05-22T20:48:00.096Z</updated>
             <id>http://axelhzf.com/blog/2011-05-22-eclipse-color-themes.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/eclipseColorThemes.jpeg&quot; alt=&quot;Eclipse Color Themes&quot;&gt;
 
@@ -1413,7 +1617,7 @@ y también puedes crearte tu propio tema desde su &lt;a href=&quot;http://www.ec
         <entry>
             <title>FireQuery</title>
             <link href="http://axelhzf.com/blog/2010-09-02-firequery.html"/>
-            <updated>2010-09-02T20:39:00.382Z</updated>
+            <updated>2010-09-02T20:39:00.099Z</updated>
             <id>http://axelhzf.com/blog/2010-09-02-firequery.html</id>
             <content type="html">&lt;p&gt;&lt;a href=&quot;http://firequery.binaryage.com/&quot;&gt;FireQuery&lt;/a&gt; es un plugin para Firefox que se integra con Firebug.
 Permite inyectar jquery en cualquier página web, tiene muchas otras &lt;a href=&quot;http://firequery.binaryage.com/#features&quot;&gt;características&lt;/a&gt;
@@ -1437,7 +1641,7 @@ Con un poquito de magia de jQuery podemos extraer todos los enlaces de megauploa
         <entry>
             <title>seriesmonkey</title>
             <link href="http://axelhzf.com/blog/2010-08-23-seriesmonkey.html"/>
-            <updated>2010-08-23T20:27:00.376Z</updated>
+            <updated>2010-08-23T20:27:00.073Z</updated>
             <id>http://axelhzf.com/blog/2010-08-23-seriesmonkey.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/seriesmonkey.png&quot; alt=&quot;SeriesMonkey&quot;&gt;
 

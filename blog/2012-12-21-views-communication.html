@@ -1,0 +1,300 @@
+
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+
+    <!-- Site Properities -->
+    <title>View communication in iOS | axelhzf</title>
+    <meta name="description" content="Axelhzf" />
+    <meta name="keywords" content="axelhzf, ios, javascript, programming, iphone" />
+    <link rel="author" href="/humans.txt" />
+
+    <!-- DocPad Meta -->
+    <meta http-equiv="X-Powered-By" content="DocPad" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/assets/styles/main.css" /><link rel="stylesheet" href="/assets/styles/highlight/github.css" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+
+    <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
+    <script type="text/javascript">Typekit.load()</script>
+
+</head>
+<body>
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+
+    <hgroup class="header">
+        <div class="logo"><a href="/">axelhzf</a></div>
+    </hgroup>
+
+    <div class="wrapper">
+
+        <nav role="navigation">
+            <ul class="main-navigation">
+                <li><a href="/blog/archives">Blog</a></li>
+                <li><a href="/tutorials">Tutorials</a></li>
+                <li><a href="/talks">Talks</a></li>
+                <li><a href="/experiments">Experiments</a></li>
+                <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank">RSS</a></li>
+            </ul>
+        </nav>
+
+        <div id="content" class="container">
+            <h1>View communication in iOS</h1>
+<p>Unos de los problemas más comunes que nos encontramos cuando estamos desarrollando una aplicación para iOS es cómo pasar información de una vista a otra. Pongamos por ejemplo las pantallas de Settings.app que se muestra en la imagen.
+
+</p>
+<p><img src="/images/posts/view-communication.png" alt="View communication" />
+
+</p>
+<p>Este es un ejemplo de controladores que deben comunicarse entre ellos. La primera vista tiene una celda donde aparece el nombre del dispositivo. Al pulsar la celda, se muestra la siguiente vista donde se puede editar el nombre del dispositivo. Una vez se termine la edición, el texto nuevo debe volver a la primera vista.
+
+</p>
+<p>Existen varios métodos para resolver este problema:
+
+</p>
+<ul>
+<li>Singleton</li>
+<li>Delegate + protocol</li>
+<li>Bloques</li>
+</ul>
+<p>En el <a href="http://axelhzf.com/ios-curso">curso</a> hay ejemplos de código que utilizan los dos primeros métodos, vamos a repasarlos y vamos a ver cómo funciona el método de comunicación de controladores mediante bloques.
+
+</p>
+<h2>Singleton</h2>
+<p>El patrón Singleton consiste en restringir la creación de una única instancia para una clase determinada.En nuestro podemos compartir esta instancia única entre las dos vistas de forma que podamos comunicar las vistas hacia delante y hacia detrás.
+
+</p>
+<p>Tal como se comenta en este <a href="http://lukeredpath.co.uk/blog/a-note-on-objective-c-singletons.html">post</a> existe varias formas de crear un Singleton. Utilizando el autocompletado de <a href="http://www.jetbrains.com/objc/">AppCode</a> (se ha convertido en mi IDE habitual, lo recomiendo totalmente) se genera el siguiente código:
+
+</p>
+<pre class="highlighted"><code class="actionscript">@<span class="class"><span class="keyword">interface</span> <span class="title">NameInfo</span> : <span class="title">NSObject</span>
+
+@<span class="title">property</span>(<span class="title">strong</span>, <span class="title">nonatomic</span>) <span class="title">NSString</span> *<span class="title">name</span>;
+
++ (<span class="title">NameInfo</span> *)<span class="title">instance</span>;
+
+@<span class="title">end</span></span></code></pre>
+<p>La clase <strong>NameInfo</strong> es un Singleton que permitirá la comunicación entre las dos vistas. 
+
+</p>
+<pre class="highlighted"><code class="lua">@implementation NameInfo
+
++ (NameInfo *)instance {
+    static NameInfo *_instance = <span class="keyword">nil</span>;
+
+    @synchronized (self) {
+        <span class="keyword">if</span> (_instance == <span class="keyword">nil</span>) {
+            _instance = <span class="string">[[self alloc] init];
+        }
+    }
+
+    return _instance;
+}
+
+@end</span></code></pre>
+<p>La implementación se asegura de que se llama una única vez al método init.
+
+</p>
+<p>El código para utilizar el singleton es
+
+</p>
+<pre class="highlighted"><code class="avrasm">NameInfo *nameInfo = [NameInfo instance]<span class="comment">;</span>
+nameInfo<span class="preprocessor">.name</span> = @<span class="string">"Axel"</span><span class="comment">;</span>
+NSLog(nameInfo<span class="preprocessor">.name</span>)<span class="comment">;</span></code></pre>
+<p>El código es bastante sencillo. El principal problema que tiene este método es que nos obliga a crear una clase nueva cada vez que queramos realizar comunicación entre vistas. Además, la segunda vista debe escribir directamente en la propiedad <strong>name</strong>, por lo tanto podemos tener problemas para reutilizar la vista. 
+
+</p>
+<h2>Delegate + protocol</h2>
+<p>Este patrón es el recomendado en la <a href="https://developer.apple.com/library/ios/#featuredarticles/ViewControllerPGforiPhoneOS/ManagingDataFlowBetweenViewControllers/ManagingDataFlowBetweenViewControllers.html#//apple_ref/doc/uid/TP40007457-CH8-SW1">documentación de Apple</a>. Un ejemplo de uso suponiendo la utilización de segues es:
+
+</p>
+<pre class="highlighted"><code class="objectivec">@<span class="class"><span class="keyword">implementation</span> <span class="id">AViewController</span></span>
+
+- (<span class="keyword">void</span>)prepareForSegue:(UIStoryboardSegue *)segue sender:(<span class="keyword">id</span>)sender {
+    <span class="keyword">if</span>([segue<span class="variable">.identifier</span> isEqualToString:@<span class="string">"toB"</span>]) {
+        BViewController *controller = segue<span class="variable">.destinationViewController</span>;
+        controller<span class="variable">.name</span> = <span class="keyword">self</span><span class="variable">.name</span>;
+        controller<span class="variable">.delegate</span> = <span class="keyword">self</span>;
+    }
+}</code></pre>
+<p>En el método <strong>prepareForSegue</strong> es donde se comunica la vista A con la vista B. En este caso se está pasando el valor de la propiedad <strong>name</strong>. Además se esta asignando la propiedad <strong>delegate</strong>, de forma que la vista B tiene una referencia a la vista A. Esto permitirá hacer la comunicación en el sentido contrario.
+
+</p>
+<pre class="highlighted"><code class="actionscript">@<span class="class"><span class="keyword">interface</span> <span class="title">BViewController</span> : <span class="title">UIViewController</span>
+
+@<span class="title">property</span>(<span class="title">strong</span>, <span class="title">nonatomic</span>) <span class="title">NSString</span> *<span class="title">name</span>;
+@<span class="title">property</span>(<span class="title">weak</span>, <span class="title">nonatomic</span>) <span class="title">id</span> <span class="title">delegate</span>;
+
+@<span class="title">end</span></span></code></pre>
+<p>El código para el controlador B tiene la definición de la propiedad <strong>delegate</strong>. Esta propiedad es importante que sea <strong>weak</strong>, para que no se produzca una referencia cíclica y que la memoria pueda liberarse correctamente.
+
+</p>
+<p>La comunicación desde la vista B hasta la vista A se puede hacer en el momento en que la vista B va a desaparecer.
+
+</p>
+<pre class="highlighted"><code class="vala">- (<span class="keyword">void</span>)viewWillDisappear:(BOOL)animated {
+   <span class="constant"> SEL </span>setNameSelector = @selector(setName:);
+    if([self.<span class="class"><span class="keyword">delegate</span> <span class="title">respondsToSelector</span>:<span class="title">setNameSelector</span>]) {</span>
+        [self.<span class="class"><span class="keyword">delegate</span> <span class="title">performSelector</span>:<span class="title">setNameSelector</span> <span class="title">withObject</span>:<span class="title">self</span>.<span class="title">name</span>];
+    }
+}</span></code></pre>
+<p>El código llama al método <strong>setName</strong> del objeto delegate en el caso de que exista. Se utiliza el método <strong>performSelector</strong> porque no hemos definido el tipo de dato del delegate.
+
+</p>
+<p>En el caso de que quisiéramos que el código fuese type checked podemos utilizar un protocolo.
+
+</p>
+<pre class="highlighted"><code class="objectivec">@<span class="class"><span class="keyword">protocol</span> <span class="id">BViewControllerDelegate</span> &lt;<span class="id">NSObject</span>&gt;</span>
+
+- (<span class="keyword">void</span>)setName:(<span class="built_in">NSString</span> *)name;
+
+@<span class="keyword">end</span></code></pre>
+<p>El protocolo define un único método <strong>setName</strong>
+
+</p>
+<pre class="highlighted"><code class="actionscript">@<span class="class"><span class="keyword">interface</span> <span class="title">AViewController</span> : <span class="title">UIViewController</span> &lt;<span class="title">BViewControllerDelegate</span>&gt;
+
+@<span class="title">property</span>(<span class="title">strong</span>, <span class="title">nonatomic</span>) <span class="title">NSString</span> *<span class="title">name</span>;
+
+@<span class="title">end</span></span></code></pre>
+<p>Ahora la clase <strong>AViewController</strong> debe implementar el protocolo <strong>BViewControllerDelegate</strong>.
+
+</p>
+<pre class="highlighted"><code class="actionscript">@<span class="class"><span class="keyword">interface</span> <span class="title">BViewController</span> : <span class="title">UIViewController</span>
+
+@<span class="title">property</span>(<span class="title">strong</span>, <span class="title">nonatomic</span>) <span class="title">NSString</span> *<span class="title">name</span>;
+@<span class="title">property</span>(<span class="title">weak</span>, <span class="title">nonatomic</span>) <span class="title">id</span>&lt;<span class="title">BViewControllerDelegate</span>&gt; <span class="title">delegate</span>;
+
+@<span class="title">end</span></span></code></pre>
+<p>Se modifica la definición del <strong>delegate</strong> para especificar que es el tipo de dato una clase que implementa el protocolo <strong>BViewControllerDelegate</strong>.
+
+</p>
+<p>El código del controlador B se reduce a invocar el método <strong>setName</strong> directamente.
+
+</p>
+<pre class="highlighted"><code class="vala">- (<span class="keyword">void</span>)viewWillDisappear:(BOOL)animated {
+    [self.<span class="class"><span class="keyword">delegate</span> <span class="title">setName</span>:<span class="title">self</span>.<span class="title">name</span>];
+}</span></code></pre>
+<p>Este método está muy extendido en las librerías que hace Apple, por ejemplo el controlador <a href="http://developer.apple.com/library/ios/#documentation/MessageUI/Reference/MFMailComposeViewController_class/Reference/Reference.html"><strong>MFMailComposeViewController</strong></a> que permite el envío de correos utiliza el protocolo <strong> MFMailComposeViewControllerDelegate</strong> para comunicarse con la vista anterior e informa si el correo se envió correctamente o se produjo un error.
+
+</p>
+<h2>Bloques</h2>
+<p>La última opción para comunicar dos controladores es utilizar bloques. Un bloque es lo que en otros lenguajes de programación se conoce en  como una closure. En pocas palabras se trata de una función definida de forma inline y que tiene acceso a las variables locales que están en el mismo scope en el que se ha definido la closure. Los bloques son una característica nueva del lenguaje que fue introducida en iOS 4.
+
+</p>
+<p>Aquí tienes dos artículos     que explican cómo trabajar con bloques.
+
+</p>
+<ul>
+<li><a href="http://pragmaticstudio.com/blog/2010/7/28/ios4-blocks-1">iOS4 blocks 1</a></li>
+<li><a href="http://pragmaticstudio.com/blog/2010/9/15/ios4-blocks-2">iOS4 blocks 2</a></li>
+</ul>
+<p>Si prefieres puedes consultar la documentación oficial de <a href="http://developer.apple.com/library/ios/#documentation/cocoa/Conceptual/Blocks/Articles/00_Introduction.html">introducción a los bloques</a>
+
+</p>
+<p>Los bloques permiten resolver el problema de comunicar dos vistas de una manera muy elegante.
+
+</p>
+<pre class="highlighted"><code class="actionscript">typedef <span class="keyword">void</span>(^BViewControllerCallback)(NSString *name);
+
+@<span class="class"><span class="keyword">interface</span> <span class="title">BViewController</span> : <span class="title">UIViewController</span>
+
+@<span class="title">property</span>(<span class="title">strong</span>, <span class="title">nonatomic</span>) <span class="title">NSString</span> *<span class="title">name</span>;
+@<span class="title">property</span>(<span class="title">copy</span>, <span class="title">nonatomic</span>) <span class="title">BViewControllerCallback</span> <span class="title">callback</span>;
+
+@<span class="title">end</span></span></code></pre>
+<p>En el código se define el tipo <strong>BViewControllerCallback</strong> como un bloque que recibe un parámetro <strong>name</strong>.
+
+</p>
+<pre class="highlighted"><code class="objectivec">- (<span class="keyword">void</span>)viewWillDisappear:(<span class="built_in">BOOL</span>)animated {
+    <span class="keyword">if</span>(<span class="keyword">self</span><span class="variable">.callback</span> != <span class="literal">nil</span>) {
+        <span class="keyword">self</span><span class="variable">.callback</span>(<span class="keyword">self</span><span class="variable">.name</span>);
+    }
+}</code></pre>
+<p>Cuando la vista va a desaparecer, si hay definido un callback se invoca pasando como parámetro el valor actual.
+
+</p>
+<pre class="highlighted"><code class="objectivec">- (<span class="keyword">void</span>)prepareForSegue:(UIStoryboardSegue *)segue sender:(<span class="keyword">id</span>)sender {
+    <span class="keyword">if</span>([segue<span class="variable">.identifier</span> isEqualToString:@<span class="string">"toB"</span>]) {
+        BViewController *controller = segue<span class="variable">.destinationViewController</span>;
+        controller<span class="variable">.name</span> = <span class="keyword">self</span><span class="variable">.name</span>;
+
+        __<span class="keyword">weak</span> AViewController *weakSelf = <span class="keyword">self</span>;
+        controller<span class="variable">.callback</span> = ^(<span class="built_in">NSString</span> *name) {
+            weakSelf<span class="variable">.name</span> = name;
+        };
+    }
+}</code></pre>
+<p>El método <strong>prepareForSegue</strong> debe definir el código que se debe ejecutar cuando la vista B haya terminado.
+
+</p>
+<p>La clase <a href="http://developer.apple.com/library/ios/#documentation/Twitter/Reference/TWTweetSheetViewControllerClassRef/Reference/Reference.html"><strong>TWTweetComposeViewController</strong></a> que permite compartir contenido en Twitter utiliza esta técnica. Define una propiedad <strong>completionHandler</strong> que es el bloque se invoca cuando el controlador ha terminado de enviar el tweet.
+
+</p>
+<p>La principal ventaja de utilizar bloques es que permite reutilizar la vista B más fácilmente. Lo único que hay que hacer es definir un callback distinto cada una de las veces que se invoque la vista.
+
+</p>
+<h2>Conclusiones</h2>
+<p>En el post hemos visto varias formas de resolver el problema de la comunicación entre dos controladores. Cada una de los métodos tiene sus ventajas e inconvenientes y puede ser más adecuada para ciertas situaciones. Últimamente me estoy decantando por definir la comunicación utilizando bloques porque me permite reutilizar el código más fácilmente. También puede ser que de trabajar mucho con javascript, diseñar apis utilizando callbacks se esta convirtiendo en una práctica muy habitual en mi código.</p>
+
+
+<h2>Comments</h2>
+<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+
+
+    // var disqus_developer = 1;
+    var disqus_identifier = 'http://axelhzf.com/blog/2012-12-21-views-communication.html';
+    var disqus_url = 'http://axelhzf.com/blog/2012-12-21-views-communication.html';
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row license">
+                This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+                <br />
+                Axel Hernández Ferrea
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-31904298-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+</body>
+</html>
