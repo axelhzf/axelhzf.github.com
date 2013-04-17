@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width" />
 
     <!-- Site Properities -->
-    <title>FireQuery | axelhzf</title>
+    <title>iOS cheat sheet | axelhzf</title>
     <meta name="description" content="Axelhzf" />
     <meta name="keywords" content="axelhzf, ios, javascript, programming, iphone" />
     <link rel="author" href="/humans.txt" />
@@ -51,44 +51,24 @@
         </nav>
 
         <div id="content" class="container">
-            <h1>FireQuery</h1>
-<p><a href="http://firequery.binaryage.com/">FireQuery</a> es un plugin para Firefox que se integra con Firebug.
-Permite inyectar jquery en cualquier página web, tiene muchas otras <a href="http://firequery.binaryage.com/#features">características</a>
-, pero esta era justo la que estaba buscando cuando encontré el plugin.
-
-</p>
-<p>Un uso práctico de este plugin sería extraer todos los links de megaupload de una página.
-Pongamos que queremos bajarnos <a href="http://www.imdb.com/title/tt0369179/">Dos hombre y medio</a> desde esta página
-<a href="http://www.vagos.es/showthread.php?t=842744"><a href="http://www.vagos.es/showthread.php?t=842744">http://www.vagos.es/showthread.php?t=842744</a></a>.
-Lo único que tenemos que hacer es abrir la consola de Firebug e inyectar jquery dándole al botón “jQuerify”.
-Con un poquito de magia de jQuery podemos extraer todos los enlaces de megaupload de la página:
-
-</p>
-<pre class="highlighted"><code class="javascript">$(<span class="string">'a:contains("megaupload")'</span>).each(<span class="keyword">function</span>(i, e){
-    console.log($(e).attr(<span class="string">'href'</span>));
-});</code></pre>
-<p><img src="/images/posts/firequery.png" alt="FireQuery" /></p>
-
-
-<h2>Comments</h2>
-<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-
-<script type="text/javascript">
-    var disqus_shortname = 'axelhzf';
-
-
-    // var disqus_developer = 1;
-    var disqus_identifier = 'http://axelhzf.com/blog/2010-09-02-firequery.html';
-    var disqus_url = 'http://axelhzf.com/blog/2010-09-02-firequery.html';
-    var disqus_script = 'embed.js';
-
-    (function () {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    }());
-</script>
+            <h1>iOS cheat sheet</h1>
+<h2>Sizes</h2>
+<h3>Screen size</h3>
+<pre class="highlighted"><code class="lua"><span class="string">[[UIScreen mainScreen] bounds];</span></code></pre>
+<h3>Application Frame = ScreenSize - Status bar</h3>
+<pre class="highlighted"><code class="lua"><span class="string">[[UIScreen mainScreen] applicationFrame];</span></code></pre>
+<h2>Keyboard</h2>
+<h3>Keyboard show and hide events</h3>
+<pre class="highlighted"><code class="smalltalk">[[<span class="class">NSNotificationCenter</span> defaultCenter] <span class="method">addObserver:</span><span class="keyword">self</span> <span class="method">selector:</span>@selector(<span class="method">keyboardWillShow:</span>) <span class="method">name:</span><span class="class">UIKeyboardDidShowNotification</span> <span class="method">object:</span><span class="keyword">nil</span>];
+[[<span class="class">NSNotificationCenter</span> defaultCenter] <span class="method">addObserver:</span><span class="keyword">self</span> <span class="method">selector:</span>@selector(<span class="method">keyboardWillHide:</span>) <span class="method">name:</span><span class="class">UIKeyboardWillHideNotification</span> <span class="method">object:</span><span class="keyword">nil</span>];</code></pre>
+<h3>Format a date</h3>
+<pre class="highlighted"><code class="lua">static NSDateFormatter* dateFormatter = <span class="keyword">nil</span>;
+<span class="keyword">if</span>(dateFormatter == <span class="keyword">nil</span>){
+    dateFormatter = <span class="string">[[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd";
+}
+NSDate *date = ...
+NSString *dateStr = [dateFormatter stringFromDate:date];</span></code></pre>
 
         </div>
 

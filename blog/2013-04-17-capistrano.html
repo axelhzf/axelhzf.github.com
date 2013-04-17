@@ -1,0 +1,191 @@
+
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+
+    <!-- Site Properities -->
+    <title>Deploy automatizado con Capistrano | axelhzf</title>
+    <meta name="description" content="Axelhzf" />
+    <meta name="keywords" content="axelhzf, ios, javascript, programming, iphone" />
+    <link rel="author" href="/humans.txt" />
+
+    <!-- DocPad Meta -->
+    <meta http-equiv="X-Powered-By" content="DocPad" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/assets/styles/main.css" /><link rel="stylesheet" href="/assets/styles/highlight/github.css" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+
+    <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
+    <script type="text/javascript">Typekit.load()</script>
+
+</head>
+<body>
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+
+    <hgroup class="header">
+        <div class="logo"><a href="/">axelhzf</a></div>
+    </hgroup>
+
+    <div class="wrapper">
+
+        <nav role="navigation">
+            <ul class="main-navigation">
+                <li><a href="/blog/archives">Blog</a></li>
+                <li><a href="/learn">Learn to code</a></li>
+                <li><a href="/talks">Talks</a></li>
+                <li><a href="/experiments">Experiments</a></li>
+                <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank">RSS</a></li>
+            </ul>
+        </nav>
+
+        <div id="content" class="container">
+            <h1>Deploy automatizado con Capistrano</h1>
+<p><img src="/images/posts/capistrano.jpg" alt="Capistrano" />
+
+</p>
+<p>Además picar código, últimamente también me estoy dedicando a labores de <a href="http://en.wikipedia.org/wiki/DevOps">devOp</a> en <a href="http://www.stat4you.com">stat4you</a>. Prefiero pasar mi tiempo programando y estaba pasando mucho tiempo haciendo despliegues en servidores. Por eso busqué cómo automatizar el proceso y lo que encontré fue <a href="http://capistranorb.com/">Capistrano</a>, una herramienta de automatización multiservidor.
+
+</p>
+<p>Capistrano es una gema ruby que está preparada para hacer despliegues de aplicaciones rails. Con algo de personalización permite hacer despliegues de cualquier tipo de aplicación. En resumen es una herramienta que permite ejecutar comandos bash en servidores remotos.
+
+</p>
+<h2>Configuracion básica</h2>
+<p>Lo primero es instalar Capistrano
+
+</p>
+<pre class="highlighted"><code class="bash">gem install capistrano</code></pre>
+<p>Luego con el comando <code>capify</code> se genera la configuración básica
+
+</p>
+<pre class="highlighted"><code class="bash">capify .</code></pre>
+<p>Esto genera una serie de ficheros de configuración
+
+</p>
+<pre class="highlighted"><code class="bash">.
+├── Capfile
+└── config
+    └── deploy.rb</code></pre>
+<p>En mi caso como no utilizo rails en el fichero <code>Capfile</code> comenté la primera linea para no cargar las tareas por defecto de rails
+
+</p>
+<pre class="highlighted"><code class="ruby"><span class="comment"># load 'deploy'</span></code></pre>
+<p>En las primeras lineas del fichero <code>config/deploy.rb</code> está la configuración del servidor
+
+</p>
+<pre class="highlighted"><code class="ruby">role <span class="symbol">:web</span>, <span class="string">"root@you-server"</span></code></pre>
+<h2>Definir nuevas tareas</h2>
+<p>Por ejemplo, una tarea para ver los logs del servidor se podría definir como
+
+</p>
+<pre class="highlighted"><code class="ruby">task <span class="symbol">:logs</span>, <span class="symbol">:roles</span> =&gt; <span class="symbol">:app</span> <span class="keyword">do</span>
+    <span class="comment"># task code...</span>
+<span class="keyword">end</span></code></pre>
+<p>Para ejecutar esta tarea
+
+</p>
+<pre class="highlighted"><code class="bash">cap logs</code></pre>
+<p>Las tareas se pueden agrupar en namespaces
+
+</p>
+<pre class="highlighted"><code class="ruby">namespace <span class="symbol">:solr</span> <span class="keyword">do</span>
+    task <span class="symbol">:start</span>, <span class="symbol">:roles</span> =&gt; <span class="symbol">:app</span> <span class="keyword">do</span>
+        <span class="comment"># task code...</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
+<pre class="highlighted"><code class="bash">cap solr:start</code></pre>
+<p><a href="https://github.com/capistrano/capistrano/wiki/2.x-DSL-Documentation-Configuration-Module">Documentación completa del módulo de configuración</a>
+
+</p>
+<h2>Acciones</h2>
+<p>Capistrano viene con algunos métodos que podemos utilizar dentro de las tareas
+
+</p>
+<pre class="highlighted"><code class="ruby">get <span class="string">"remotePath"</span>, <span class="string">"localPath"</span>
+put <span class="string">"localPath"</span>, <span class="string">"remotePath"</span>
+run <span class="string">"ls -l"</span>
+returnValue = capture <span class="string">"ls -l"</span>
+stream <span class="string">"tail -f file"</span></code></pre>
+<p><a href="https://github.com/capistrano/capistrano/wiki/2.x-DSL-Documentation-Action-Module">Documentación completa del módulo de acciones</a>
+
+</p>
+<h2>¿Cómo uso Capistrano?</h2>
+<p>En stat4you utilizamos un servidor de integración continua que se encarga de hacer las compilaciones que se van a desplegar. Mi proceso de deploy consiste en bajar la última versión compilada del servidor de integración continua, subirla al servidor y hacer el despliegue. Es algo parecido a esto
+
+</p>
+<pre class="highlighted"><code class="ruby">task <span class="symbol">:deploy</span>, <span class="symbol">:roles</span> =&gt; <span class="symbol">:app</span> <span class="keyword">do</span>
+    `wget -<span class="constant">O</span> /tmp/stat4you.war <span class="symbol">http:</span>/<span class="regexp">/ciserver/stat</span>4you-last-build.war`
+    upload <span class="string">"/tmp/stat4you.war"</span>, <span class="string">"/deploy/stat4you.war"</span>
+    run <span class="string">"service server stop"</span>
+    run <span class="string">"mv /deploy/stat4you.war /tomcat/webapps/stat4you.war"</span>
+    run <span class="string">"service server start"</span>
+<span class="keyword">end</span></code></pre>
+<p>Otra tarea muy útil es esta que permite ver los logs del servidor
+
+</p>
+<pre class="highlighted"><code class="ruby">task <span class="symbol">:logs</span>, <span class="symbol">:roles</span> =&gt; <span class="symbol">:app</span> <span class="keyword">do</span>
+    stream <span class="string">"tail -f /tomcat/logs/catalina.out"</span>
+<span class="keyword">end</span></code></pre>
+<h1>Conclusion</h1>
+<p>Automatiza todo lo que puedas, ya sea con Capistrano o con alguna otra herramienta del estilo. Ahorra mucho tiempo y reduce   los errores que puedes cometer en el proceso.</p>
+
+
+<h2>Comments</h2>
+<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+
+
+    // var disqus_developer = 1;
+    var disqus_identifier = 'http://axelhzf.com/blog/2013-04-17-capistrano.html';
+    var disqus_url = 'http://axelhzf.com/blog/2013-04-17-capistrano.html';
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row license">
+                This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+                <br />
+                Axel Hernández Ferrea
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-31904298-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+</body>
+</html>

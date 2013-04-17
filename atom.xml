@@ -3,7 +3,7 @@
     <title>axelhzf</title>
     <link href="http://axelhzf.com/atom.xml" rel="self"/>
     <link href="http://axelhzf.com"/>
-    <updated>2012-12-21T02:21:05.282Z</updated>
+    <updated>2013-04-17T20:44:40.516Z</updated>
     <id>http://axelhzf.com</id>
     <author>
         <name>Axel Hernández Ferrea</name>
@@ -12,9 +12,104 @@
 
     
         <entry>
+            <title>Deploy automatizado con Capistrano</title>
+            <link href="http://axelhzf.com/blog/2013-04-17-capistrano.html"/>
+            <updated>2013-04-17T20:30:00.000Z</updated>
+            <id>http://axelhzf.com/blog/2013-04-17-capistrano.html</id>
+            <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/capistrano.jpg&quot; alt=&quot;Capistrano&quot; /&gt;
+
+&lt;/p&gt;
+&lt;p&gt;Además picar código, últimamente también me estoy dedicando a labores de &lt;a href=&quot;http://en.wikipedia.org/wiki/DevOps&quot;&gt;devOp&lt;/a&gt; en &lt;a href=&quot;http://www.stat4you.com&quot;&gt;stat4you&lt;/a&gt;. Prefiero pasar mi tiempo programando y estaba pasando mucho tiempo haciendo despliegues en servidores. Por eso busqué cómo automatizar el proceso y lo que encontré fue &lt;a href=&quot;http://capistranorb.com/&quot;&gt;Capistrano&lt;/a&gt;, una herramienta de automatización multiservidor.
+
+&lt;/p&gt;
+&lt;p&gt;Capistrano es una gema ruby que está preparada para hacer despliegues de aplicaciones rails. Con algo de personalización permite hacer despliegues de cualquier tipo de aplicación. En resumen es una herramienta que permite ejecutar comandos bash en servidores remotos.
+
+&lt;/p&gt;
+&lt;h2&gt;Configuracion básica&lt;/h2&gt;
+&lt;p&gt;Lo primero es instalar Capistrano
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;gem install capistrano&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Luego con el comando &lt;code&gt;capify&lt;/code&gt; se genera la configuración básica
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;capify .&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Esto genera una serie de ficheros de configuración
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;.
+├── Capfile
+└── config
+    └── deploy.rb&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;En mi caso como no utilizo rails en el fichero &lt;code&gt;Capfile&lt;/code&gt; comenté la primera linea para no cargar las tareas por defecto de rails
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# load 'deploy'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;En las primeras lineas del fichero &lt;code&gt;config/deploy.rb&lt;/code&gt; está la configuración del servidor
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;ruby&quot;&gt;role &lt;span class=&quot;symbol&quot;&gt;:web&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;root@you-server&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Definir nuevas tareas&lt;/h2&gt;
+&lt;p&gt;Por ejemplo, una tarea para ver los logs del servidor se podría definir como
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;ruby&quot;&gt;task &lt;span class=&quot;symbol&quot;&gt;:logs&lt;/span&gt;, &lt;span class=&quot;symbol&quot;&gt;:roles&lt;/span&gt; =&amp;gt; &lt;span class=&quot;symbol&quot;&gt;:app&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;comment&quot;&gt;# task code...&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Para ejecutar esta tarea
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;cap logs&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Las tareas se pueden agrupar en namespaces
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;ruby&quot;&gt;namespace &lt;span class=&quot;symbol&quot;&gt;:solr&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt;
+    task &lt;span class=&quot;symbol&quot;&gt;:start&lt;/span&gt;, &lt;span class=&quot;symbol&quot;&gt;:roles&lt;/span&gt; =&amp;gt; &lt;span class=&quot;symbol&quot;&gt;:app&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt;
+        &lt;span class=&quot;comment&quot;&gt;# task code...&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;cap solr:start&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/capistrano/capistrano/wiki/2.x-DSL-Documentation-Configuration-Module&quot;&gt;Documentación completa del módulo de configuración&lt;/a&gt;
+
+&lt;/p&gt;
+&lt;h2&gt;Acciones&lt;/h2&gt;
+&lt;p&gt;Capistrano viene con algunos métodos que podemos utilizar dentro de las tareas
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;ruby&quot;&gt;get &lt;span class=&quot;string&quot;&gt;&quot;remotePath&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;localPath&quot;&lt;/span&gt;
+put &lt;span class=&quot;string&quot;&gt;&quot;localPath&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;remotePath&quot;&lt;/span&gt;
+run &lt;span class=&quot;string&quot;&gt;&quot;ls -l&quot;&lt;/span&gt;
+returnValue = capture &lt;span class=&quot;string&quot;&gt;&quot;ls -l&quot;&lt;/span&gt;
+stream &lt;span class=&quot;string&quot;&gt;&quot;tail -f file&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/capistrano/capistrano/wiki/2.x-DSL-Documentation-Action-Module&quot;&gt;Documentación completa del módulo de acciones&lt;/a&gt;
+
+&lt;/p&gt;
+&lt;h2&gt;¿Cómo uso Capistrano?&lt;/h2&gt;
+&lt;p&gt;En stat4you utilizamos un servidor de integración continua que se encarga de hacer las compilaciones que se van a desplegar. Mi proceso de deploy consiste en bajar la última versión compilada del servidor de integración continua, subirla al servidor y hacer el despliegue. Es algo parecido a esto
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;ruby&quot;&gt;task &lt;span class=&quot;symbol&quot;&gt;:deploy&lt;/span&gt;, &lt;span class=&quot;symbol&quot;&gt;:roles&lt;/span&gt; =&amp;gt; &lt;span class=&quot;symbol&quot;&gt;:app&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt;
+    `wget -&lt;span class=&quot;constant&quot;&gt;O&lt;/span&gt; /tmp/stat4you.war &lt;span class=&quot;symbol&quot;&gt;http:&lt;/span&gt;/&lt;span class=&quot;regexp&quot;&gt;/ciserver/stat&lt;/span&gt;4you-last-build.war`
+    upload &lt;span class=&quot;string&quot;&gt;&quot;/tmp/stat4you.war&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;/deploy/stat4you.war&quot;&lt;/span&gt;
+    run &lt;span class=&quot;string&quot;&gt;&quot;service server stop&quot;&lt;/span&gt;
+    run &lt;span class=&quot;string&quot;&gt;&quot;mv /deploy/stat4you.war /tomcat/webapps/stat4you.war&quot;&lt;/span&gt;
+    run &lt;span class=&quot;string&quot;&gt;&quot;service server start&quot;&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Otra tarea muy útil es esta que permite ver los logs del servidor
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;ruby&quot;&gt;task &lt;span class=&quot;symbol&quot;&gt;:logs&lt;/span&gt;, &lt;span class=&quot;symbol&quot;&gt;:roles&lt;/span&gt; =&amp;gt; &lt;span class=&quot;symbol&quot;&gt;:app&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt;
+    stream &lt;span class=&quot;string&quot;&gt;&quot;tail -f /tomcat/logs/catalina.out&quot;&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;Automatiza todo lo que puedas, ya sea con Capistrano o con alguna otra herramienta del estilo. Ahorra mucho tiempo y reduce   los errores que puedes cometer en el proceso.&lt;/p&gt;
+</content>
+        </entry>
+    
+        <entry>
             <title>View communication in iOS</title>
             <link href="http://axelhzf.com/blog/2012-12-21-views-communication.html"/>
-            <updated>2012-12-21T00:01:00.120Z</updated>
+            <updated>2012-12-21T00:01:00.000Z</updated>
             <id>http://axelhzf.com/blog/2012-12-21-views-communication.html</id>
             <content type="html">&lt;p&gt;Unos de los problemas más comunes que nos encontramos cuando estamos desarrollando una aplicación para iOS es cómo pasar información de una vista a otra. Pongamos por ejemplo las pantallas de Settings.app que se muestra en la imagen.
 
@@ -218,7 +313,7 @@ NSLog(nameInfo&lt;span class=&quot;preprocessor&quot;&gt;.name&lt;/span&gt;)&lt;
         <entry>
             <title>CocoaPods</title>
             <link href="http://axelhzf.com/blog/2012-11-10-cocoapods.html"/>
-            <updated>2012-11-10T00:00:00.124Z</updated>
+            <updated>2012-11-10T00:00:00.000Z</updated>
             <id>http://axelhzf.com/blog/2012-11-10-cocoapods.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/cocoapods.png&quot; alt=&quot;CocoaPods&quot; /&gt;
 
@@ -256,7 +351,7 @@ NSLog(nameInfo&lt;span class=&quot;preprocessor&quot;&gt;.name&lt;/span&gt;)&lt;
         <entry>
             <title>Grunt Live-Reload</title>
             <link href="http://axelhzf.com/blog/2012-06-15-grunt-live-reload.html"/>
-            <updated>2012-06-15T23:34:00.116Z</updated>
+            <updated>2012-06-15T22:34:00.000Z</updated>
             <id>http://axelhzf.com/blog/2012-06-15-grunt-live-reload.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/grunt-reload.jpg&quot; alt=&quot;Grunt Reload&quot; /&gt;
 
@@ -398,7 +493,7 @@ NSLog(nameInfo&lt;span class=&quot;preprocessor&quot;&gt;.name&lt;/span&gt;)&lt;
         <entry>
             <title>Labs : Canvas Star Wars</title>
             <link href="http://axelhzf.com/blog/2012-05-30-labs-canvas-star-wars.html"/>
-            <updated>2012-05-30T09:15:00.114Z</updated>
+            <updated>2012-05-30T08:15:00.000Z</updated>
             <id>http://axelhzf.com/blog/2012-05-30-labs-canvas-star-wars.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/star_wars.png&quot; alt=&quot;Star Wars&quot;&gt;
 
@@ -419,7 +514,7 @@ Estos últimos días he estado aprendiendo &lt;a href=&quot;https://developer.mo
         <entry>
             <title>Grunt vs Wro4j</title>
             <link href="http://axelhzf.com/blog/2012-05-28-grunt-vs-wro4j.html"/>
-            <updated>2012-05-28T22:01:00.108Z</updated>
+            <updated>2012-05-28T21:01:00.000Z</updated>
             <id>http://axelhzf.com/blog/2012-05-28-grunt-vs-wro4j.html</id>
             <content type="html">&lt;p&gt;En el post anterior hice la siguiente afirmación sin dar ningún dato:
 
@@ -634,7 +729,7 @@ sys    0m0.177s&lt;/code&gt;&lt;/pre&gt;
         <entry>
             <title>grunt</title>
             <link href="http://axelhzf.com/blog/2012-05-27-grunt.html"/>
-            <updated>2012-05-27T16:07:00.110Z</updated>
+            <updated>2012-05-27T15:07:00.000Z</updated>
             <id>http://axelhzf.com/blog/2012-05-27-grunt.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/grunt.png&quot; alt=&quot;grunt&quot; /&gt;
 
@@ -777,7 +872,7 @@ sys    0m0.177s&lt;/code&gt;&lt;/pre&gt;
         <entry>
             <title>IntelliJ Idea keyboard shortcuts</title>
             <link href="http://axelhzf.com/blog/2012-05-20-intellij-idea-keyboard-shortcuts.html"/>
-            <updated>2012-05-20T11:30:00.104Z</updated>
+            <updated>2012-05-20T10:30:00.000Z</updated>
             <id>http://axelhzf.com/blog/2012-05-20-intellij-idea-keyboard-shortcuts.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/intellij_idea.gif&quot; alt=&quot;Intellij Idea&quot;&gt;
 Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en los que sale ganador de comparativas con Eclipse o Netbeans. El año pasado le intenté dar una oportunidad pero la cosa no fue bien. En ese momento estaba desarrollando un plugin para Eclipse por lo que no tenía mucho sentido que utilizara en IntelliJ. Mi situación cambió hace unos dos meses, cambié de trabajo y ahora me dedico casi exclusivamente a desarrollo front-end. Estoy ampliando mucho mis conocimientos de javascript que antes se limitaba a lo básico de jQuery. El soporte que tiene Eclipse para javascript me daba la sensación de que perjudicaba más que ayudar. Incluso editores de textos con esteroides como &lt;a href=&quot;http://www.sublimetext.com/&quot;&gt;SublimeText&lt;/a&gt; ayudan más a la hora de escribir javascript. Dada esta situación decidí darle una segunda oportunidad a IntelliJ, que si tiene un soporte de verdad para javascript, resaltado de sintaxis, refactor, integración con jslint, búsqueda usos dinámicos, etc.
@@ -816,7 +911,7 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
         <entry>
             <title>octopress</title>
             <link href="http://axelhzf.com/blog/2012-05-20-octopress.html"/>
-            <updated>2012-05-20T11:00:00.105Z</updated>
+            <updated>2012-05-20T10:00:00.000Z</updated>
             <id>http://axelhzf.com/blog/2012-05-20-octopress.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/octopress.png&quot; alt=&quot;Ocotpress&quot;&gt;
 
@@ -834,7 +929,7 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
         <entry>
             <title>Ampliando el módulo de Google Guice</title>
             <link href="http://axelhzf.com/blog/2012-02-04-ampliando-el-modulo-de-google-guice.html"/>
-            <updated>2012-02-04T22:34:00.101Z</updated>
+            <updated>2012-02-04T22:34:00.000Z</updated>
             <id>http://axelhzf.com/blog/2012-02-04-ampliando-el-modulo-de-google-guice.html</id>
             <content type="html">&lt;p&gt;Como comenté al final de mi &lt;a href=&quot;http://axelhzf.tumblr.com/post/16930248351/play-framework-google-guice&quot;&gt;post&lt;/a&gt; anterior mi intención era añadir al módulo de play las clases que añaden el scope LazySingleton.
 
@@ -883,7 +978,7 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
         <entry>
             <title>Play Framework + Google Guice</title>
             <link href="http://axelhzf.com/blog/2012-02-02-play-framework-plus-google-guice.html"/>
-            <updated>2012-02-02T22:18:00.093Z</updated>
+            <updated>2012-02-02T22:18:00.000Z</updated>
             <id>http://axelhzf.com/blog/2012-02-02-play-framework-plus-google-guice.html</id>
             <content type="html">&lt;p&gt;En el proyecto en el que estoy trabajando actualmente empezamos a utilizar Google Guice. Para quien no lo sepa, Guice es un framework de inyección de dependencias. La idea básica de la inyección de dependencias consiste en sumistrar a una clase sus dependencias, en lugar de que sea esta quien tenga que instanciarlas.
 
@@ -1254,7 +1349,7 @@ INFO: production - después del getInstance&lt;/code&gt;&lt;/pre&gt;
         <entry>
             <title>knockout.js (Ejemplo completo)</title>
             <link href="http://axelhzf.com/blog/2011-09-26-knockout-dot-js-ejemplo-completo.html"/>
-            <updated>2011-09-26T22:05:00.090Z</updated>
+            <updated>2011-09-26T21:05:00.000Z</updated>
             <id>http://axelhzf.com/blog/2011-09-26-knockout-dot-js-ejemplo-completo.html</id>
             <content type="html">&lt;p&gt;En el anterior post hice un pequeña &lt;a href=&quot;http://axelhzf.tumblr.com/post/10638045853/knockout&quot;&gt;introducción a la librería knockout.js&lt;/a&gt;.  Este post, continuación del anterior, tiene un ejemplo más completo en el cual espero que se vea mejor la utilidad de la librería. En el ejemplo crearemos una tabla de Posts, donde mostraremos el título y el texto. Le añadiremos a la tabla filtrado y edición inline. Con esto veremos cómo utilizar variables observables, dependentObservables y observableArrays.
 También haremos uso de jquery tmpl para renderizar la vista.
@@ -1484,7 +1579,7 @@ viewModel.deletePosts = &lt;span class=&quot;keyword&quot;&gt;function&lt;/span&
         <entry>
             <title>knockout.js</title>
             <link href="http://axelhzf.com/blog/2011-09-25-knockout-dot-js.html"/>
-            <updated>2011-09-25T22:01:00.081Z</updated>
+            <updated>2011-09-25T21:01:00.000Z</updated>
             <id>http://axelhzf.com/blog/2011-09-25-knockout-dot-js.html</id>
             <content type="html">&lt;p&gt;&lt;a href=&quot;http://knockoutjs.com/&quot;&gt;knockout.js&lt;/a&gt; es una librería javascript que implementa el patrón Model View View-Model.
 
@@ -1522,7 +1617,7 @@ Describe cómo mantener de una forma simple una interfaz de usuario sofisticada 
         <entry>
             <title>Vim dentro de Eclipse</title>
             <link href="http://axelhzf.com/blog/2011-09-10-vim-dentro-de-eclipse.html"/>
-            <updated>2011-09-10T21:54:00.089Z</updated>
+            <updated>2011-09-10T20:54:00.000Z</updated>
             <id>http://axelhzf.com/blog/2011-09-10-vim-dentro-de-eclipse.html</id>
             <content type="html">&lt;p&gt;A raíz de un artículo &amp;quot;&lt;a href=&quot;http://yannesposito.com/Scratch/en/blog/Learn-Vim-Progressively/&quot;&gt;Learn Vim Progressively&lt;/a&gt;&amp;quot;
 recordé la potencia que tenía vim y los tiempos en los que lo utilizaba a diario
@@ -1546,7 +1641,7 @@ para hacerle un &lt;a href=&quot;http://java.decompiler.free.fr/&quot;&gt;apaño
         <entry>
             <title>Creando una presentación con HTML+CSS+JS</title>
             <link href="http://axelhzf.com/blog/2011-06-19-creando-una-presentacion-con-html-plus-css-plus-js.html"/>
-            <updated>2011-06-19T20:58:00.077Z</updated>
+            <updated>2011-06-19T19:58:00.000Z</updated>
             <id>http://axelhzf.com/blog/2011-06-19-creando-una-presentacion-con-html-plus-css-plus-js.html</id>
             <content type="html">&lt;p&gt;Me encanta la presentación &lt;a href=&quot;http://slides.html5rocks.com/&quot;&gt;html5rocks&lt;/a&gt;. Es interactiva,
 puedes ir probando todo lo que va explicando. Incluso dibujar un Doraemon en la diapositiva 47.
@@ -1601,7 +1696,7 @@ que estoy escribiendo el post.
         <entry>
             <title>Eclipse Color Themes</title>
             <link href="http://axelhzf.com/blog/2011-05-22-eclipse-color-themes.html"/>
-            <updated>2011-05-22T20:48:00.096Z</updated>
+            <updated>2011-05-22T19:48:00.000Z</updated>
             <id>http://axelhzf.com/blog/2011-05-22-eclipse-color-themes.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/eclipseColorThemes.jpeg&quot; alt=&quot;Eclipse Color Themes&quot;&gt;
 
@@ -1617,7 +1712,7 @@ y también puedes crearte tu propio tema desde su &lt;a href=&quot;http://www.ec
         <entry>
             <title>FireQuery</title>
             <link href="http://axelhzf.com/blog/2010-09-02-firequery.html"/>
-            <updated>2010-09-02T20:39:00.099Z</updated>
+            <updated>2010-09-02T19:39:00.000Z</updated>
             <id>http://axelhzf.com/blog/2010-09-02-firequery.html</id>
             <content type="html">&lt;p&gt;&lt;a href=&quot;http://firequery.binaryage.com/&quot;&gt;FireQuery&lt;/a&gt; es un plugin para Firefox que se integra con Firebug.
 Permite inyectar jquery en cualquier página web, tiene muchas otras &lt;a href=&quot;http://firequery.binaryage.com/#features&quot;&gt;características&lt;/a&gt;
@@ -1641,7 +1736,7 @@ Con un poquito de magia de jQuery podemos extraer todos los enlaces de megauploa
         <entry>
             <title>seriesmonkey</title>
             <link href="http://axelhzf.com/blog/2010-08-23-seriesmonkey.html"/>
-            <updated>2010-08-23T20:27:00.073Z</updated>
+            <updated>2010-08-23T19:27:00.000Z</updated>
             <id>http://axelhzf.com/blog/2010-08-23-seriesmonkey.html</id>
             <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/seriesmonkey.png&quot; alt=&quot;SeriesMonkey&quot;&gt;
 
