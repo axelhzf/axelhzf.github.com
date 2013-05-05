@@ -1,0 +1,187 @@
+
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+
+    <!-- Site Properities -->
+    <title>Web scrapping con NodeJS | axelhzf</title>
+    <meta name="description" content="Axelhzf" />
+    <meta name="keywords" content="axelhzf, ios, javascript, programming, iphone" />
+    <link rel="author" href="/humans.txt" />
+
+    <!-- DocPad Meta -->
+    <meta http-equiv="X-Powered-By" content="DocPad" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/assets/styles/main.css" /><link rel="stylesheet" href="/assets/styles/highlight/github.css" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+
+    <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
+    <script type="text/javascript">Typekit.load()</script>
+
+</head>
+<body>
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+
+    <hgroup class="header">
+        <div class="logo"><a href="/">axelhzf</a></div>
+    </hgroup>
+
+    <div class="wrapper">
+
+        <nav role="navigation">
+            <ul class="main-navigation">
+                <li><a href="/blog/archives">Blog</a></li>
+                <li><a href="/learn">Learn to code</a></li>
+                <li><a href="/talks">Talks</a></li>
+                <li><a href="/experiments">Experiments</a></li>
+                <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank">RSS</a></li>
+            </ul>
+        </nav>
+
+        <div id="content" class="container">
+            <h1>Web scrapping con NodeJS</h1>
+<p>Estaba dando un paseo por <a href="http://thepiratebay.sx/">thepiratebay</a> para buscar mi dosis de cultura y se me ocurrió que podía hacer la tarea más fácil usando web scrapping. Web scrapping es una técnica que permite extraer información de páginas web. El programa hace una petición a la web en cuestión y analiza la respuesta del servidor para extraer la información.
+
+</p>
+<p>El código utiliza principalmente dos librerías:
+
+</p>
+<ul>
+<li><a href="https://github.com/mikeal/request">request</a> : un cliente http</li>
+<li><a href="https://github.com/MatthewMueller/cheerio">cheerio</a> : un parser con una interfaz similar a jQuery.</li>
+</ul>
+<p>Aquí está el código completo
+
+</p>
+<pre class="highlighted"><code class="javascript"><span class="keyword">var</span> _ = require(<span class="string">"underscore"</span>);
+<span class="keyword">var</span> request = require(<span class="string">"request"</span>);
+<span class="keyword">var</span> cheerio = require(<span class="string">"cheerio"</span>);
+<span class="keyword">var</span> prompt = require(<span class="string">"prompt"</span>);
+<span class="keyword">var</span> exec = require(<span class="string">'child_process'</span>).exec;
+
+prompt.start();
+prompt.get([<span class="string">"query"</span>], <span class="function"><span class="keyword">function</span> <span class="params">(err, result)</span> {</span>
+    <span class="keyword">if</span>(!err) {
+        <span class="keyword">var</span> encodeQuery = encodeURIComponent(result.query + <span class="string">" 720p"</span>);
+        <span class="keyword">var</span> url = <span class="string">'http://thepiratebay.sx/search/'</span> + encodeQuery + <span class="string">'/0/7/0'</span>;
+        <span class="keyword">var</span> options = {
+            url : url,
+            headers : {
+                <span class="string">'User-Agent'</span> : <span class="string">'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13'</span>
+            }
+        };
+
+        request(options, <span class="function"><span class="keyword">function</span> <span class="params">(error, response, body)</span> {</span>
+            $ = cheerio.load(body);
+
+            <span class="keyword">var</span> titles = $(<span class="string">'.detName a'</span>).map(<span class="function"><span class="keyword">function</span> <span class="params">(i, a)</span> {</span>
+                <span class="keyword">return</span> a.attribs.title;
+            });
+
+            <span class="keyword">var</span> links = $(<span class="string">'#searchResult a[title="Download this torrent using magnet"]'</span>).map(<span class="function"><span class="keyword">function</span> <span class="params">(i, magnet)</span> {</span>
+                <span class="keyword">return</span> magnet.attribs.href;
+            });
+
+            _.each(titles, <span class="function"><span class="keyword">function</span> <span class="params">(title, i)</span> {</span>
+                console.log(i + <span class="string">") "</span> + title);
+            });
+
+            prompt.get([<span class="string">'index'</span>], <span class="function"><span class="keyword">function</span> <span class="params">(err, result)</span> {</span>
+                <span class="keyword">if</span>(!err) {
+                    _.each(result.index.split(<span class="string">" "</span>), <span class="function"><span class="keyword">function</span> <span class="params">(index)</span> {</span>
+                        <span class="keyword">var</span> cmd = <span class="string">'ssh imac "open /Applications/uTorrent.app '</span> + links[index] + <span class="string">'"'</span>;
+                        console.log(cmd);
+                        exec(cmd);
+                    });
+                }
+            });
+
+        });
+    }
+});</code></pre>
+<p>La ventaja de utilizar una librería como cheerio es que puedes probar los selectores en el navegador. Cuando tengas el selector adecuado para extraer la información que necesitas es cuando lo añades al programa.
+
+</p>
+<p>El programa pide una búsqueda y devuelve los resultados de esa búsqueda en thepiratebay, ordenados por el número de seeds. Después pregunta qué enlaces quieres descargar.
+
+</p>
+<p>El comando que termina de hacer la magia es este
+
+</p>
+<pre class="highlighted"><code class="bash">ssh imac <span class="string">"open /Applications/uTorrent.app magnet:…"</span></code></pre>
+<p>Se conecta por ssh a la máquina donde tengo el uTorrent para añadirlo a la lista de descargas.
+
+</p>
+<p>Un ejemplo de uso
+
+</p>
+<pre class="highlighted"><code class="bash">$ node piratescrapper.js 
+prompt: query:  the office s09e21
+0) Details <span class="keyword">for</span> The.Office.US.S09E21.720p.HDTV.X264-DIMENSION [PublicHD]
+1) Details <span class="keyword">for</span> The.Office.US.S09E21.720p.HDTV.X264-DIMENSION
+2) Details <span class="keyword">for</span> The.Office.US.S09E21.720p.HDTV.X264-DIMENSION[rartv]
+3) Details <span class="keyword">for</span> The.Office.S09E21.720p.PROPER.WEB-DL.DD5.1.H.264-BS [PublicHD]
+prompt: index:  0
+ssh imac <span class="string">"open /Applications/uTorrent.app magnet:?xt=..."</span></code></pre>
+
+
+<h2>Comments</h2>
+<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+
+
+    // var disqus_developer = 1;
+    var disqus_identifier = 'http://axelhzf.com/blog/2013-05-05-web-scrapping-nodejs.html';
+    var disqus_url = 'http://axelhzf.com/blog/2013-05-05-web-scrapping-nodejs.html';
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row license">
+                This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+                <br />
+                Axel Hernández Ferrea
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-31904298-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+</body>
+</html>

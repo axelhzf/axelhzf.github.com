@@ -3,13 +3,104 @@
     <title>axelhzf</title>
     <link href="http://axelhzf.com/atom.xml" rel="self"/>
     <link href="http://axelhzf.com"/>
-    <updated>2013-04-17T20:44:40.516Z</updated>
+    <updated>2013-05-05T17:38:39.720Z</updated>
     <id>http://axelhzf.com</id>
     <author>
         <name>Axel Hernández Ferrea</name>
         <email></email>
     </author>
 
+    
+        <entry>
+            <title>Web scrapping con NodeJS</title>
+            <link href="http://axelhzf.com/blog/2013-05-05-web-scrapping-nodejs.html"/>
+            <updated>2013-05-05T17:36:47.000Z</updated>
+            <id>http://axelhzf.com/blog/2013-05-05-web-scrapping-nodejs.html</id>
+            <content type="html">&lt;p&gt;Estaba dando un paseo por &lt;a href=&quot;http://thepiratebay.sx/&quot;&gt;thepiratebay&lt;/a&gt; para buscar mi dosis de cultura y se me ocurrió que podía hacer la tarea más fácil usando web scrapping. Web scrapping es una técnica que permite extraer información de páginas web. El programa hace una petición a la web en cuestión y analiza la respuesta del servidor para extraer la información.
+
+&lt;/p&gt;
+&lt;p&gt;El código utiliza principalmente dos librerías:
+
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/mikeal/request&quot;&gt;request&lt;/a&gt; : un cliente http&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/MatthewMueller/cheerio&quot;&gt;cheerio&lt;/a&gt; : un parser con una interfaz similar a jQuery.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Aquí está el código completo
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; _ = require(&lt;span class=&quot;string&quot;&gt;&quot;underscore&quot;&lt;/span&gt;);
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; request = require(&lt;span class=&quot;string&quot;&gt;&quot;request&quot;&lt;/span&gt;);
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; cheerio = require(&lt;span class=&quot;string&quot;&gt;&quot;cheerio&quot;&lt;/span&gt;);
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; prompt = require(&lt;span class=&quot;string&quot;&gt;&quot;prompt&quot;&lt;/span&gt;);
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; exec = require(&lt;span class=&quot;string&quot;&gt;'child_process'&lt;/span&gt;).exec;
+
+prompt.start();
+prompt.get([&lt;span class=&quot;string&quot;&gt;&quot;query&quot;&lt;/span&gt;], &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(err, result)&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(!err) {
+        &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; encodeQuery = encodeURIComponent(result.query + &lt;span class=&quot;string&quot;&gt;&quot; 720p&quot;&lt;/span&gt;);
+        &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; url = &lt;span class=&quot;string&quot;&gt;'http://thepiratebay.sx/search/'&lt;/span&gt; + encodeQuery + &lt;span class=&quot;string&quot;&gt;'/0/7/0'&lt;/span&gt;;
+        &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; options = {
+            url : url,
+            headers : {
+                &lt;span class=&quot;string&quot;&gt;'User-Agent'&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13'&lt;/span&gt;
+            }
+        };
+
+        request(options, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(error, response, body)&lt;/span&gt; {&lt;/span&gt;
+            $ = cheerio.load(body);
+
+            &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; titles = $(&lt;span class=&quot;string&quot;&gt;'.detName a'&lt;/span&gt;).map(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(i, a)&lt;/span&gt; {&lt;/span&gt;
+                &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; a.attribs.title;
+            });
+
+            &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; links = $(&lt;span class=&quot;string&quot;&gt;'#searchResult a[title=&quot;Download this torrent using magnet&quot;]'&lt;/span&gt;).map(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(i, magnet)&lt;/span&gt; {&lt;/span&gt;
+                &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; magnet.attribs.href;
+            });
+
+            _.each(titles, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(title, i)&lt;/span&gt; {&lt;/span&gt;
+                console.log(i + &lt;span class=&quot;string&quot;&gt;&quot;) &quot;&lt;/span&gt; + title);
+            });
+
+            prompt.get([&lt;span class=&quot;string&quot;&gt;'index'&lt;/span&gt;], &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(err, result)&lt;/span&gt; {&lt;/span&gt;
+                &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(!err) {
+                    _.each(result.index.split(&lt;span class=&quot;string&quot;&gt;&quot; &quot;&lt;/span&gt;), &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(index)&lt;/span&gt; {&lt;/span&gt;
+                        &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; cmd = &lt;span class=&quot;string&quot;&gt;'ssh imac &quot;open /Applications/uTorrent.app '&lt;/span&gt; + links[index] + &lt;span class=&quot;string&quot;&gt;'&quot;'&lt;/span&gt;;
+                        console.log(cmd);
+                        exec(cmd);
+                    });
+                }
+            });
+
+        });
+    }
+});&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;La ventaja de utilizar una librería como cheerio es que puedes probar los selectores en el navegador. Cuando tengas el selector adecuado para extraer la información que necesitas es cuando lo añades al programa.
+
+&lt;/p&gt;
+&lt;p&gt;El programa pide una búsqueda y devuelve los resultados de esa búsqueda en thepiratebay, ordenados por el número de seeds. Después pregunta qué enlaces quieres descargar.
+
+&lt;/p&gt;
+&lt;p&gt;El comando que termina de hacer la magia es este
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;ssh imac &lt;span class=&quot;string&quot;&gt;&quot;open /Applications/uTorrent.app magnet:…&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Se conecta por ssh a la máquina donde tengo el uTorrent para añadirlo a la lista de descargas.
+
+&lt;/p&gt;
+&lt;p&gt;Un ejemplo de uso
+
+&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;$ node piratescrapper.js 
+prompt: query:  the office s09e21
+0) Details &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; The.Office.US.S09E21.720p.HDTV.X264-DIMENSION [PublicHD]
+1) Details &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; The.Office.US.S09E21.720p.HDTV.X264-DIMENSION
+2) Details &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; The.Office.US.S09E21.720p.HDTV.X264-DIMENSION[rartv]
+3) Details &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; The.Office.S09E21.720p.PROPER.WEB-DL.DD5.1.H.264-BS [PublicHD]
+prompt: index:  0
+ssh imac &lt;span class=&quot;string&quot;&gt;&quot;open /Applications/uTorrent.app magnet:?xt=...&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+</content>
+        </entry>
     
         <entry>
             <title>Deploy automatizado con Capistrano</title>
