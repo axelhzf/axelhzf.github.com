@@ -3,7 +3,7 @@
     <title>axelhzf</title>
     <link href="http://axelhzf.com/atom.xml" rel="self"/>
     <link href="http://axelhzf.com"/>
-    <updated>2013-05-05T17:38:39.720Z</updated>
+    <updated>2013-05-06T19:46:03.863Z</updated>
     <id>http://axelhzf.com</id>
     <author>
         <name>Axel Hernández Ferrea</name>
@@ -14,7 +14,7 @@
         <entry>
             <title>Web scrapping con NodeJS</title>
             <link href="http://axelhzf.com/blog/2013-05-05-web-scrapping-nodejs.html"/>
-            <updated>2013-05-05T17:36:47.000Z</updated>
+            <updated>2013-05-05T18:12:39.000Z</updated>
             <id>http://axelhzf.com/blog/2013-05-05-web-scrapping-nodejs.html</id>
             <content type="html">&lt;p&gt;Estaba dando un paseo por &lt;a href=&quot;http://thepiratebay.sx/&quot;&gt;thepiratebay&lt;/a&gt; para buscar mi dosis de cultura y se me ocurrió que podía hacer la tarea más fácil usando web scrapping. Web scrapping es una técnica que permite extraer información de páginas web. El programa hace una petición a la web en cuestión y analiza la respuesta del servidor para extraer la información.
 
