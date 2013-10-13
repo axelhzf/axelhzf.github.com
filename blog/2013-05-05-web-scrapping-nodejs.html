@@ -1,28 +1,32 @@
-
+<!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <!-- Standard Meta -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width" />
+	<!-- Standard Meta -->
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width" />
 
-    <!-- Site Properities -->
-    <title>Web scrapping con NodeJS | axelhzf</title>
-    <meta name="description" content="Axelhzf" />
-    <meta name="keywords" content="axelhzf, ios, javascript, programming, iphone" />
+	<!-- Site Properities -->
+	<title>Web scrapping con NodeJS | axelhzf</title>
+	<meta name="description" content="Axelhzf" />
+	<meta name="keywords" content="axelhzf, ios, javascript, programming, iphone" />
     <link rel="author" href="/humans.txt" />
 
-    <!-- DocPad Meta -->
-    <meta http-equiv="X-Powered-By" content="DocPad" />
+	<!-- DocPad Meta -->
+	<meta name="generator" content="DocPad v6.53.4" />
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="/assets/styles/main.css" /><link rel="stylesheet" href="/assets/styles/highlight/github.css" />
+	<!-- Styles -->
+	<style >html.wait {
+	cursor: wait !important;
+	opacity: 0;
+	transition: opacity 0.5s ease;
+}</style><link  rel="stylesheet" href="/assets/styles/main.css" /><link  rel="stylesheet" href="/assets/styles/highlight/github.css" />
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="/favicon.ico" />
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="/favicon.ico" />
 
 
     <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
@@ -52,19 +56,13 @@
 
         <div id="content" class="container">
             <h1>Web scrapping con NodeJS</h1>
-<p>Estaba dando un paseo por <a href="http://thepiratebay.sx/">thepiratebay</a> para buscar mi dosis de cultura y se me ocurrió que podía hacer la tarea más fácil usando web scrapping. Web scrapping es una técnica que permite extraer información de páginas web. El programa hace una petición a la web en cuestión y analiza la respuesta del servidor para extraer la información.
-
-</p>
-<p>El código utiliza principalmente dos librerías:
-
-</p>
+<p>Estaba dando un paseo por <a href="http://thepiratebay.sx/">thepiratebay</a> para buscar mi dosis de cultura y se me ocurrió que podía hacer la tarea más fácil usando web scrapping. Web scrapping es una técnica que permite extraer información de páginas web. El programa hace una petición a la web en cuestión y analiza la respuesta del servidor para extraer la información.</p>
+<p>El código utiliza principalmente dos librerías:</p>
 <ul>
 <li><a href="https://github.com/mikeal/request">request</a> : un cliente http</li>
 <li><a href="https://github.com/MatthewMueller/cheerio">cheerio</a> : un parser con una interfaz similar a jQuery.</li>
 </ul>
-<p>Aquí está el código completo
-
-</p>
+<p>Aquí está el código completo</p>
 <pre class="highlighted"><code class="javascript"><span class="keyword">var</span> _ = require(<span class="string">"underscore"</span>);
 <span class="keyword">var</span> request = require(<span class="string">"request"</span>);
 <span class="keyword">var</span> cheerio = require(<span class="string">"cheerio"</span>);
@@ -111,22 +109,12 @@ prompt.get([<span class="string">"query"</span>], <span class="function"><span c
         });
     }
 });</code></pre>
-<p>La ventaja de utilizar una librería como cheerio es que puedes probar los selectores en el navegador. Cuando tengas el selector adecuado para extraer la información que necesitas es cuando lo añades al programa.
-
-</p>
-<p>El programa pide una búsqueda y devuelve los resultados de esa búsqueda en thepiratebay, ordenados por el número de seeds. Después pregunta qué enlaces quieres descargar.
-
-</p>
-<p>El comando que termina de hacer la magia es este
-
-</p>
+<p>La ventaja de utilizar una librería como cheerio es que puedes probar los selectores en el navegador. Cuando tengas el selector adecuado para extraer la información que necesitas es cuando lo añades al programa.</p>
+<p>El programa pide una búsqueda y devuelve los resultados de esa búsqueda en thepiratebay, ordenados por el número de seeds. Después pregunta qué enlaces quieres descargar.</p>
+<p>El comando que termina de hacer la magia es este</p>
 <pre class="highlighted"><code class="bash">ssh imac <span class="string">"open /Applications/uTorrent.app magnet:…"</span></code></pre>
-<p>Se conecta por ssh a la máquina donde tengo el uTorrent para añadirlo a la lista de descargas.
-
-</p>
-<p>Un ejemplo de uso
-
-</p>
+<p>Se conecta por ssh a la máquina donde tengo el uTorrent para añadirlo a la lista de descargas.</p>
+<p>Un ejemplo de uso</p>
 <pre class="highlighted"><code class="bash">$ node piratescrapper.js 
 prompt: query:  the office s09e21
 0) Details <span class="keyword">for</span> The.Office.US.S09E21.720p.HDTV.X264-DIMENSION [PublicHD]
@@ -165,7 +153,7 @@ ssh imac <span class="string">"open /Applications/uTorrent.app magnet:?xt=..."</
         <div class="container">
             <div class="row license">
                 This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
-                <br />
+                <br/>
                 Axel Hernández Ferrea
             </div>
         </div>

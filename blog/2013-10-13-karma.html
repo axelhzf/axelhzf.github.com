@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+	<!-- Standard Meta -->
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width" />
+
+	<!-- Site Properities -->
+	<title>En busca del entorno de tests perdido | axelhzf</title>
+	<meta name="description" content="Axelhzf" />
+	<meta name="keywords" content="axelhzf, ios, javascript, programming, iphone" />
+    <link rel="author" href="/humans.txt" />
+
+	<!-- DocPad Meta -->
+	<meta name="generator" content="DocPad v6.53.4" />
+
+	<!-- Styles -->
+	<style >html.wait {
+	cursor: wait !important;
+	opacity: 0;
+	transition: opacity 0.5s ease;
+}</style><link  rel="stylesheet" href="/assets/styles/main.css" /><link  rel="stylesheet" href="/assets/styles/highlight/github.css" />
+
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="/favicon.ico" />
+
+
+    <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
+    <script type="text/javascript">Typekit.load()</script>
+
+</head>
+<body>
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+
+    <hgroup class="header">
+        <div class="logo"><a href="/">axelhzf</a></div>
+    </hgroup>
+
+    <div class="wrapper">
+
+        <nav role="navigation">
+            <ul class="main-navigation">
+                <li><a href="/blog/archives">Blog</a></li>
+                <li><a href="/learn">Learn to code</a></li>
+                <li><a href="/talks">Talks</a></li>
+                <li><a href="/experiments">Experiments</a></li>
+                <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank">RSS</a></li>
+            </ul>
+        </nav>
+
+        <div id="content" class="container">
+            <h1>En busca del entorno de tests perdido</h1>
+<p>Desde hace algún tiempo he estado trabajando con JavaScript y desde el principio he buscado el entorno de tests perfecto. En el mundo Java todo está más estandarizado. Si trabajas en un proyecto Java seguramente te encuentres con JUnit, alguna librería de mocks, por ejemplo Mockito, y todo ello configurado con Maven. También te encontrarás una integración perfecta con el IDE y si usas integración continua tendrás alguna herramienta como Jenkins que pasa los tests por ti. </p>
+<h2>Jasmine</h2>
+<p>Cuando empecé a trabajar con JavaScript encontré que había muchas librerías y me costó decidirme por una. Decidí utilizar <a href="http://pivotal.github.io/jasmine">Jasmine</a> por su sintaxis y que tuviese soporte para <a href="http://pivotal.github.io/jasmine/#section-Spies">espías</a>. El único inconveniente que encontré fue su <a href="http://pivotal.github.io/jasmine/#section-Asynchronous_Support">sintaxis para ejecutar código asíncrono</a>. Me parece que hace que los tests sean menos legibles. La utilicé durante un tiempo pero me sentía incómodo cada vez que escribía un test de código asíncrono.</p>
+<h2>Mocha</h2>
+<p>Buscando alternativas a Jasmine encontré <a href="http://visionmedia.github.io/mocha/">Mocha</a>. La principal característica que me llamó la atención fue lo simple que se volvían los test de código asíncrono, simplemente un callback que se llama cuando el test haya finalizado. Viniendo de Jasmine me pareció una solución brillante. A raíz de empezar a utilizar Mocha descubrí otras características interesantes, como por ejemplo los diffs cuando un test falla o la detección de variables globales. Mocha tiene soporte para NodeJS y para código de navegador.</p>
+<p>Para poder ejecutar los tests de navegador desde la consola utlicé <a href="https://github.com/kmiyashiro/grunt-mocha">grunt-mocha</a>. Un plugin de grunt que permite ejecutar los tests en un PhantomJS. El problema con este plugin es que para especificar los ficheros de fuentes y de tests necesitas crear un fichero html donde se incluyen todos los ficheros. Al principio me pareció bien porque simplemente abriendo ese fichero con cualquier navegador se ejecutaba la batería de tests. El problema con el fichero html es que no permite wildcards (test/*.js) y debía especificar los ficheros uno a uno.</p>
+<h2>Karma</h2>
+<p>Hace tiempo vi en HackerNews una herramienta llamada Testacular. Hice unas pequeñas pruebas pero no fue hasta este fin de semana que decidí hacer pruebas más en profundidad. Testacular es un juego de palabras entre testing y spectacular un poco desafortunado ya que recuerda a una parte del cuerpo… Los creadores decidieron, de forma muy acertada, renombrar el proyecto y ahora se llama <a href="http://karma-runner.github.io/">Karma</a>. Sus creadores son los mismos que los de <a href="http://angularjs.org/">AngularJS</a>.</p>
+<p>Karma permite probar el código en navegadores y dispositivos reales o en instancias de PhantomJS. Es agnóstico al framework de testing con el que están escrito los tests, por 
+lo tanto puedo seguir utilizando Mocha y simplemente configurar Karma con el adapter adecuado para Mocha.</p>
+<p>Karma se instala utilizando NPM.</p>
+<pre class="highlighted"><code class="bash">$ npm install karma --save-dev</code></pre>
+<p>Para las pruebas vamos a utilizar un ejemplo de la vida real, un proyecto muy complejo: una calculadora.</p>
+<p><strong>src/Calculator.js</strong></p>
+<pre class="highlighted"><code class="javascript">(<span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="string">"use strict"</span>;
+
+    <span class="keyword">var</span> Calculator = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>};
+
+    Calculator.prototype = {
+        add : <span class="function"><span class="keyword">function</span> <span class="params">(a, b)</span> {</span>
+            <span class="keyword">return</span> a + b;
+        }
+    };
+
+    window.Calculator = Calculator;
+
+}());</code></pre>
+<p><strong>test/Calculator.test.js</strong></p>
+<pre class="highlighted"><code class="javascript">describe(<span class="string">'Calculator'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    it(<span class="string">'should add two numbers'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        <span class="keyword">var</span> calculator = <span class="keyword">new</span> Calculator();
+        expect(calculator.add(<span class="number">1</span>, <span class="number">2</span>)).to.equal(<span class="number">3</span>);
+    });
+});</code></pre>
+<p>Lo primero que tenemos que hacer es configurar Karma.</p>
+<pre class="highlighted"><code class="bash">$ karma init</code></pre>
+<p>Este comando mostrará un asistente para configurar Karma. La configuración que utilicé fue:</p>
+<ul>
+<li>testing framework: <code>mocha</code></li>
+<li>require.js: <code>no</code></li>
+<li>browser: <code>Chrome, Firefox, PhantomJS</code></li>
+<li>source and test files: <code>src/**/*.js, test/**/*.js</code></li>
+<li>exclude patterns : ``</li>
+<li>watch: <code>yes</code></li>
+</ul>
+<p>El resultado del comando es un fichero karma.conf.js con la configuración que hemos especificado. </p>
+<p>Mocha permite trabajar con varias librerías de assertions. En mi caso utilizo <a href="http://chaijs.com/">chai</a>. Esto también es necesario configurarlo en Karma, por suerte existe el plugin <a href="http://xdissent.github.io/karma-chai/">karma-chai</a>.</p>
+<pre class="highlighted"><code class="bash">npm install karma-chai --save-dev</code></pre>
+<p>Y añadimos chai en la lista de frameworks del fichero karma.conf.js</p>
+<pre class="highlighted"><code class="javascript">frameworks: [<span class="string">'mocha'</span>, <span class="string">'chai'</span>],</code></pre>
+<p>Esta es la configuración mínima necesaria para que Karma sea capaz de ejecutar los tests del proyecto.</p>
+<pre class="highlighted"><code class="bash">$ karma start</code></pre>
+<p>Con el comando <code>start</code> se abrirán todos los navegadores configurados y se ejecutarán los tests en todos ellos. Karma se queda a la escucha y cuando detecta un cambio en alguno de los ficheros vuelve a ejecutar los tests automáticamente.</p>
+<p>Desde la primera vez que probé Karma el proyecto ha madurado bastante. Ha simplificando mucho su configuración y se ha convertido en una herramienta muy modular con bastantes plugins.</p>
+<h2>Integración con Grunt.js</h2>
+<p>Es muy importante tener los test integrados con el ciclo de empaquetado de la aplicación. Ya hablé sobre Grunt.js en un <a href="http://axelhzf.com/blog/2012-05-27-grunt.html">post anterior</a>.  Para integrar estas dos herramientas podemos utilizar el plugin <a href="https://github.com/karma-runner/grunt-karma">grunt-karma</a>.</p>
+<pre class="highlighted"><code class="bash">$ npm install grunt grunt-karma --save-dev</code></pre>
+<p>La configuración de Grunt sería la siguiente</p>
+<pre class="highlighted"><code class="javascript">module.exports = <span class="function"><span class="keyword">function</span> <span class="params">(grunt)</span> {</span>
+
+    grunt.loadNpmTasks(<span class="string">"grunt-karma"</span>);
+
+    grunt.initConfig({
+        karma  :{
+            test : {
+                configFile : <span class="string">'karma.conf.js'</span>,
+                singleRun: <span class="literal">true</span>
+            },
+            dev : {
+                configFile : <span class="string">'karma.conf.js'</span>
+            }
+        }
+    });
+
+    grunt.registerTask(<span class="string">"test"</span>, <span class="string">"karma:test"</span>);
+    grunt.registerTask(<span class="string">"dev"</span>, <span class="string">"karma:dev"</span>);
+};</code></pre>
+<p>De esta forma estamos configurando dos tareas:</p>
+<ul>
+<li><code>grunt test</code> - Realiza una única ejecución de los tests. Esta tarea será la que incluyamos en el ciclo de empaquetado de la aplicación.</li>
+<li><code>grunt dev</code> - Ejecuta los tests de forma similar a karma start. Abrirá los navegadores y se quedará escuchando cambios en los ficheros para volver a ejecutar los tests.</li>
+</ul>
+<h2>Integración con IntelliJ IDEA</h2>
+<p>Hasta ahora tenemos una configuración perfecta para trabajar con un editor de texto y la consola. En mi día a día trabajo con IntelliJ IDEA que cuenta con un plugin para Karma. El <a href="http://plugins.jetbrains.com/plugin/7287">plugin</a> se puede instalar desde el repositorio de plugins. Está disponible únicamente para IntelliJ IDEA 13 EAP.</p>
+<p>La configuración del plugin es muy sencilla, después de instalarlo, añade una nueva run/debug configuration de tipo karma y configura la ruta del fichero karma.conf.js. Al ejecutar los tests podemos ver el resultado dentro del IDE.</p>
+<p><img src="/images/posts/karma-run.png" alt="Karma run"></p>
+<p>La ejecución de los tests se puede depurar pero sólo conseguí que funcionara con Chrome.</p>
+<p><img src="/images/posts/karma-debug.png" alt="Karma debug"></p>
+<p>Por último también, se puede hacer un análisis de coverage modificando el fichero karma.conf.js.</p>
+<pre class="highlighted"><code class="javascript">    reporters: [<span class="string">'progress'</span>, <span class="string">'coverage'</span>],
+
+    preprocessors: {
+      <span class="string">'src/*.js'</span>: [<span class="string">'coverage'</span>]
+    },</code></pre>
+<p><img src="/images/posts/karma-coverage.png" alt="Karma coverage"></p>
+<h2>Integración continua con Travis CI</h2>
+<p>La integración continua es muy importante para garantizar la calidad del código. En mi trabajo utilizamos Jenkins, pero si estas trabajando en un proyecto open source quizás no tengas la infraestructura necesaria para poder instalarlo. <a href="https://travis-ci.org">Travis CI</a> es una herramienta totalmente gratuita para este tipo de proyectos. Se integra perfectamente con GitHub y require muy poca configuración.</p>
+<p>Para empezar a utilizar Travis CI es necesario que el código esté subido a un repositorio público de GitHub. Aquí está el código de ejemplo de este post
+<a href=""><a href="https://github.com/axelhzf/post-karma">https://github.com/axelhzf/post-karma</a></a>.</p>
+<p>Para integrar Travis con Karma seguí las instrucciones de la <a href="http://karma-runner.github.io/0.8/plus/Travis-CI.html">documentación de karma</a>. Añadí una nueva tarea en el Gruntfile.js para que karma se ejecutara únicamente en PhantomJS.</p>
+<pre class="highlighted"><code class="javascript">module.exports = <span class="function"><span class="keyword">function</span> <span class="params">(grunt)</span> {</span>
+
+    grunt.loadNpmTasks(<span class="string">"grunt-karma"</span>);
+
+    grunt.initConfig({
+        karma  :{
+            test : {
+                configFile : <span class="string">'karma.conf.js'</span>,
+                singleRun: <span class="literal">true</span>
+            },
+            dev : {
+                configFile : <span class="string">'karma.conf.js'</span>
+            },
+            ci : {
+                configFile : <span class="string">'karma.conf.js'</span>,
+                singleRun: <span class="literal">true</span>,
+                browsers: [<span class="string">'PhantomJS'</span>]
+            }
+        }
+    });
+
+    grunt.registerTask(<span class="string">"test"</span>, <span class="string">"karma:test"</span>);
+    grunt.registerTask(<span class="string">"dev"</span>, <span class="string">"karma:dev"</span>);
+    grunt.registerTask(<span class="string">"ci"</span>, <span class="string">"karma:ci"</span>);
+};</code></pre>
+<p>Configuré el fichero package.json con el comando que va a ejecutar Travis para pasar los tests:</p>
+<pre class="highlighted"><code class="json">{
+    "<span class="attribute">name</span>" : <span class="value"><span class="string">"karma-post"</span></span>,
+    "<span class="attribute">version</span>" : <span class="value"><span class="string">"0.0.1"</span></span>,
+    "<span class="attribute">description</span>" : <span class="value"><span class="string">"Karma post"</span></span>,
+    "<span class="attribute">dependencies</span>" : <span class="value">{
+
+    }</span>,
+    "<span class="attribute">devDependencies</span>" : <span class="value">{
+        "<span class="attribute">grunt</span>" : <span class="value"><span class="string">"~0.4.1"</span></span>,
+        "<span class="attribute">grunt-karma</span>" : <span class="value"><span class="string">"~0.6.2"</span></span>,
+        "<span class="attribute">karma</span>" : <span class="value"><span class="string">"~0.10.2"</span></span>,
+        "<span class="attribute">karma-mocha</span>" : <span class="value"><span class="string">"~0.1.0"</span></span>,
+        "<span class="attribute">karma-chai</span>" : <span class="value"><span class="string">"~0.0.2"</span></span>,
+        "<span class="attribute">karma-coverage</span>" : <span class="value"><span class="string">"~0.1.0"</span></span>,
+        "<span class="attribute">karma-chrome-launcher</span>" : <span class="value"><span class="string">"~0.1.0"</span></span>,
+        "<span class="attribute">karma-firefox-launcher</span>" : <span class="value"><span class="string">"~0.1.0"</span></span>,
+        "<span class="attribute">karma-phantomjs-launcher</span>" : <span class="value"><span class="string">"~0.1.0"</span></span>,
+        "<span class="attribute">karma-html2js-preprocessor</span>" : <span class="value"><span class="string">"~0.1.0"</span></span>,
+        "<span class="attribute">mocha</span>" : <span class="value"><span class="string">"~1.13.0"</span></span>,
+        "<span class="attribute">grunt-cli</span>": <span class="value"><span class="string">"~0.1.9"</span>
+    }</span></span>,
+    "<span class="attribute">scripts</span>" : <span class="value">{
+        "<span class="attribute">test</span>": <span class="value"><span class="string">"node_modules/grunt-cli/bin/grunt ci"</span>
+    }</span></span>,
+    "<span class="attribute">repository</span>" : <span class="value">{
+        "<span class="attribute">type</span>" : <span class="value"><span class="string">"git"</span></span>,
+        "<span class="attribute">url</span>" : <span class="value"><span class="string">"https://github.com/axelhzf/post-karma.git"</span>
+    }</span></span>,
+    "<span class="attribute">author</span>" : <span class="value"><span class="string">"Axel Hernández Ferrera &lt;axelhzf@gmail.com&gt;"</span></span>,
+    "<span class="attribute">license</span>" : <span class="value"><span class="string">"MIT"</span></span>,
+    "<span class="attribute">bugs</span>" : <span class="value">{
+        "<span class="attribute">url</span>" : <span class="value"><span class="string">"https://github.com/axelhzf/post-karma/issues"</span>
+    }</span>
+}</span></code></pre>
+<p>Y creé el fichero <code>.travis.yml</code></p>
+<pre class="highlighted"><code class="haskell"><span class="title">language</span>: node_js
+<span class="title">node_js</span>:
+  - <span class="number">0.10</span></code></pre>
+<p>Lo último que falta es habilitar los tests para este repositorio desde <a href="https://travis-ci.org/profile"><a href="https://travis-ci.org/profile">https://travis-ci.org/profile</a></a>. </p>
+<p>Con esta configuración, Travis ejecutará los tests cada vez que hagamos un push al repositorio. Aquí se puede ver el resultado <a href="https://travis-ci.org/axelhzf/post-karma"><a href="https://travis-ci.org/axelhzf/post-karma">https://travis-ci.org/axelhzf/post-karma</a></a></p>
+<h2>Conclusiones</h2>
+<p>Buscar un entorno que permita ejecutar los tests de un proyecto de forma adecuada es muy importante. Merece la pena invertir tiempo en la configuración del entorno de test adecuado. JavaScript es una plataforma en constante evolución por lo que es importante estar atento a las nuevas herramientas que se desarrollan y analizar si son adecuadas para mejorar el proyecto.</p>
+<p>Encontrar el entorno perfecto para ejecutar los tests es una tarea complicada y depende mucho de las preferiencias de cada uno. Este post explica la configuración que a día de hoy me parece más adecuada por cumplir mis requisitos:</p>
+<ul>
+<li>Permite ejecutar los tests desde la consola.</li>
+<li>Permite ejecutar los tests en navegadores reales.</li>
+<li>Tiene modo watch que ejecuta los tests automáticamente cada vez que se modifica un fichero.</li>
+<li>Se integra con Grunt.js</li>
+<li>Se integra con IntelliJ IDEA de manera que permite ver los resultados de los tests directamente en el IDE, depurar y analizar el coverage.</li>
+<li>Se integra con herramientas de integración continua como Travis CI.</li>
+</ul>
+
+
+<h2>Comments</h2>
+<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+
+
+    // var disqus_developer = 1;
+    var disqus_identifier = 'http://axelhzf.com/blog/2013-10-13-karma.html';
+    var disqus_url = 'http://axelhzf.com/blog/2013-10-13-karma.html';
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row license">
+                This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+                <br/>
+                Axel Hernández Ferrea
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-31904298-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+</body>
+</html>

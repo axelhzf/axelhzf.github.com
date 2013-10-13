@@ -1,34 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <title>axelhzf</title>
-    <link href="http://axelhzf.com/atom.xml" rel="self"/>
-    <link href="http://axelhzf.com"/>
-    <updated>2013-05-06T19:46:03.863Z</updated>
-    <id>http://axelhzf.com</id>
-    <author>
-        <name>Axel Hernández Ferrea</name>
-        <email></email>
-    </author>
+	<title>axelhzf</title>
+	<link href="http://axelhzf.com/atom.xml" rel="self"/>
+	<link href="http://axelhzf.com"/>
+	<updated>2013-10-13T20:09:56.966Z</updated>
+	<id>http://axelhzf.com</id>
+	<author>
+		<name>Axel Hernández Ferrea</name>
+		<email></email>
+	</author>
 
     
-        <entry>
-            <title>Web scrapping con NodeJS</title>
-            <link href="http://axelhzf.com/blog/2013-05-05-web-scrapping-nodejs.html"/>
-            <updated>2013-05-05T18:12:39.000Z</updated>
-            <id>http://axelhzf.com/blog/2013-05-05-web-scrapping-nodejs.html</id>
-            <content type="html">&lt;p&gt;Estaba dando un paseo por &lt;a href=&quot;http://thepiratebay.sx/&quot;&gt;thepiratebay&lt;/a&gt; para buscar mi dosis de cultura y se me ocurrió que podía hacer la tarea más fácil usando web scrapping. Web scrapping es una técnica que permite extraer información de páginas web. El programa hace una petición a la web en cuestión y analiza la respuesta del servidor para extraer la información.
+		<entry>
+			<title>En busca del entorno de tests perdido</title>
+			<link href="http://axelhzf.com/blog/2013-10-13-karma.html"/>
+			<updated>2013-10-13T20:30:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2013-10-13-karma.html</id>
+			<content type="html">&lt;p&gt;Desde hace algún tiempo he estado trabajando con JavaScript y desde el principio he buscado el entorno de tests perfecto. En el mundo Java todo está más estandarizado. Si trabajas en un proyecto Java seguramente te encuentres con JUnit, alguna librería de mocks, por ejemplo Mockito, y todo ello configurado con Maven. También te encontrarás una integración perfecta con el IDE y si usas integración continua tendrás alguna herramienta como Jenkins que pasa los tests por ti. &lt;/p&gt;
+&lt;h2&gt;Jasmine&lt;/h2&gt;
+&lt;p&gt;Cuando empecé a trabajar con JavaScript encontré que había muchas librerías y me costó decidirme por una. Decidí utilizar &lt;a href=&quot;http://pivotal.github.io/jasmine&quot;&gt;Jasmine&lt;/a&gt; por su sintaxis y que tuviese soporte para &lt;a href=&quot;http://pivotal.github.io/jasmine/#section-Spies&quot;&gt;espías&lt;/a&gt;. El único inconveniente que encontré fue su &lt;a href=&quot;http://pivotal.github.io/jasmine/#section-Asynchronous_Support&quot;&gt;sintaxis para ejecutar código asíncrono&lt;/a&gt;. Me parece que hace que los tests sean menos legibles. La utilicé durante un tiempo pero me sentía incómodo cada vez que escribía un test de código asíncrono.&lt;/p&gt;
+&lt;h2&gt;Mocha&lt;/h2&gt;
+&lt;p&gt;Buscando alternativas a Jasmine encontré &lt;a href=&quot;http://visionmedia.github.io/mocha/&quot;&gt;Mocha&lt;/a&gt;. La principal característica que me llamó la atención fue lo simple que se volvían los test de código asíncrono, simplemente un callback que se llama cuando el test haya finalizado. Viniendo de Jasmine me pareció una solución brillante. A raíz de empezar a utilizar Mocha descubrí otras características interesantes, como por ejemplo los diffs cuando un test falla o la detección de variables globales. Mocha tiene soporte para NodeJS y para código de navegador.&lt;/p&gt;
+&lt;p&gt;Para poder ejecutar los tests de navegador desde la consola utlicé &lt;a href=&quot;https://github.com/kmiyashiro/grunt-mocha&quot;&gt;grunt-mocha&lt;/a&gt;. Un plugin de grunt que permite ejecutar los tests en un PhantomJS. El problema con este plugin es que para especificar los ficheros de fuentes y de tests necesitas crear un fichero html donde se incluyen todos los ficheros. Al principio me pareció bien porque simplemente abriendo ese fichero con cualquier navegador se ejecutaba la batería de tests. El problema con el fichero html es que no permite wildcards (test/*.js) y debía especificar los ficheros uno a uno.&lt;/p&gt;
+&lt;h2&gt;Karma&lt;/h2&gt;
+&lt;p&gt;Hace tiempo vi en HackerNews una herramienta llamada Testacular. Hice unas pequeñas pruebas pero no fue hasta este fin de semana que decidí hacer pruebas más en profundidad. Testacular es un juego de palabras entre testing y spectacular un poco desafortunado ya que recuerda a una parte del cuerpo… Los creadores decidieron, de forma muy acertada, renombrar el proyecto y ahora se llama &lt;a href=&quot;http://karma-runner.github.io/&quot;&gt;Karma&lt;/a&gt;. Sus creadores son los mismos que los de &lt;a href=&quot;http://angularjs.org/&quot;&gt;AngularJS&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Karma permite probar el código en navegadores y dispositivos reales o en instancias de PhantomJS. Es agnóstico al framework de testing con el que están escrito los tests, por 
+lo tanto puedo seguir utilizando Mocha y simplemente configurar Karma con el adapter adecuado para Mocha.&lt;/p&gt;
+&lt;p&gt;Karma se instala utilizando NPM.&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;$ npm install karma --save-dev&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Para las pruebas vamos a utilizar un ejemplo de la vida real, un proyecto muy complejo: una calculadora.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;src/Calculator.js&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;string&quot;&gt;&quot;use strict&quot;&lt;/span&gt;;
 
-&lt;/p&gt;
-&lt;p&gt;El código utiliza principalmente dos librerías:
+    &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; Calculator = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;};
 
-&lt;/p&gt;
+    Calculator.prototype = {
+        add : &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(a, b)&lt;/span&gt; {&lt;/span&gt;
+            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; a + b;
+        }
+    };
+
+    window.Calculator = Calculator;
+
+}());&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;test/Calculator.test.js&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;describe(&lt;span class=&quot;string&quot;&gt;'Calculator'&lt;/span&gt;, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+    it(&lt;span class=&quot;string&quot;&gt;'should add two numbers'&lt;/span&gt;, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; calculator = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Calculator();
+        expect(calculator.add(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;)).to.equal(&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;);
+    });
+});&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Lo primero que tenemos que hacer es configurar Karma.&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;$ karma init&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Este comando mostrará un asistente para configurar Karma. La configuración que utilicé fue:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;testing framework: &lt;code&gt;mocha&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;require.js: &lt;code&gt;no&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;browser: &lt;code&gt;Chrome, Firefox, PhantomJS&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;source and test files: &lt;code&gt;src/**/*.js, test/**/*.js&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;exclude patterns : ``&lt;/li&gt;
+&lt;li&gt;watch: &lt;code&gt;yes&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;El resultado del comando es un fichero karma.conf.js con la configuración que hemos especificado. &lt;/p&gt;
+&lt;p&gt;Mocha permite trabajar con varias librerías de assertions. En mi caso utilizo &lt;a href=&quot;http://chaijs.com/&quot;&gt;chai&lt;/a&gt;. Esto también es necesario configurarlo en Karma, por suerte existe el plugin &lt;a href=&quot;http://xdissent.github.io/karma-chai/&quot;&gt;karma-chai&lt;/a&gt;.&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;npm install karma-chai --save-dev&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Y añadimos chai en la lista de frameworks del fichero karma.conf.js&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;frameworks: [&lt;span class=&quot;string&quot;&gt;'mocha'&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'chai'&lt;/span&gt;],&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Esta es la configuración mínima necesaria para que Karma sea capaz de ejecutar los tests del proyecto.&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;$ karma start&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Con el comando &lt;code&gt;start&lt;/code&gt; se abrirán todos los navegadores configurados y se ejecutarán los tests en todos ellos. Karma se queda a la escucha y cuando detecta un cambio en alguno de los ficheros vuelve a ejecutar los tests automáticamente.&lt;/p&gt;
+&lt;p&gt;Desde la primera vez que probé Karma el proyecto ha madurado bastante. Ha simplificando mucho su configuración y se ha convertido en una herramienta muy modular con bastantes plugins.&lt;/p&gt;
+&lt;h2&gt;Integración con Grunt.js&lt;/h2&gt;
+&lt;p&gt;Es muy importante tener los test integrados con el ciclo de empaquetado de la aplicación. Ya hablé sobre Grunt.js en un &lt;a href=&quot;http://axelhzf.com/blog/2012-05-27-grunt.html&quot;&gt;post anterior&lt;/a&gt;.  Para integrar estas dos herramientas podemos utilizar el plugin &lt;a href=&quot;https://github.com/karma-runner/grunt-karma&quot;&gt;grunt-karma&lt;/a&gt;.&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;$ npm install grunt grunt-karma --save-dev&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;La configuración de Grunt sería la siguiente&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;module.exports = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(grunt)&lt;/span&gt; {&lt;/span&gt;
+
+    grunt.loadNpmTasks(&lt;span class=&quot;string&quot;&gt;&quot;grunt-karma&quot;&lt;/span&gt;);
+
+    grunt.initConfig({
+        karma  :{
+            test : {
+                configFile : &lt;span class=&quot;string&quot;&gt;'karma.conf.js'&lt;/span&gt;,
+                singleRun: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;
+            },
+            dev : {
+                configFile : &lt;span class=&quot;string&quot;&gt;'karma.conf.js'&lt;/span&gt;
+            }
+        }
+    });
+
+    grunt.registerTask(&lt;span class=&quot;string&quot;&gt;&quot;test&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;karma:test&quot;&lt;/span&gt;);
+    grunt.registerTask(&lt;span class=&quot;string&quot;&gt;&quot;dev&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;karma:dev&quot;&lt;/span&gt;);
+};&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;De esta forma estamos configurando dos tareas:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;grunt test&lt;/code&gt; - Realiza una única ejecución de los tests. Esta tarea será la que incluyamos en el ciclo de empaquetado de la aplicación.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;grunt dev&lt;/code&gt; - Ejecuta los tests de forma similar a karma start. Abrirá los navegadores y se quedará escuchando cambios en los ficheros para volver a ejecutar los tests.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Integración con IntelliJ IDEA&lt;/h2&gt;
+&lt;p&gt;Hasta ahora tenemos una configuración perfecta para trabajar con un editor de texto y la consola. En mi día a día trabajo con IntelliJ IDEA que cuenta con un plugin para Karma. El &lt;a href=&quot;http://plugins.jetbrains.com/plugin/7287&quot;&gt;plugin&lt;/a&gt; se puede instalar desde el repositorio de plugins. Está disponible únicamente para IntelliJ IDEA 13 EAP.&lt;/p&gt;
+&lt;p&gt;La configuración del plugin es muy sencilla, después de instalarlo, añade una nueva run/debug configuration de tipo karma y configura la ruta del fichero karma.conf.js. Al ejecutar los tests podemos ver el resultado dentro del IDE.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/karma-run.png&quot; alt=&quot;Karma run&quot;&gt;&lt;/p&gt;
+&lt;p&gt;La ejecución de los tests se puede depurar pero sólo conseguí que funcionara con Chrome.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/karma-debug.png&quot; alt=&quot;Karma debug&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Por último también, se puede hacer un análisis de coverage modificando el fichero karma.conf.js.&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;    reporters: [&lt;span class=&quot;string&quot;&gt;'progress'&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'coverage'&lt;/span&gt;],
+
+    preprocessors: {
+      &lt;span class=&quot;string&quot;&gt;'src/*.js'&lt;/span&gt;: [&lt;span class=&quot;string&quot;&gt;'coverage'&lt;/span&gt;]
+    },&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/karma-coverage.png&quot; alt=&quot;Karma coverage&quot;&gt;&lt;/p&gt;
+&lt;h2&gt;Integración continua con Travis CI&lt;/h2&gt;
+&lt;p&gt;La integración continua es muy importante para garantizar la calidad del código. En mi trabajo utilizamos Jenkins, pero si estas trabajando en un proyecto open source quizás no tengas la infraestructura necesaria para poder instalarlo. &lt;a href=&quot;https://travis-ci.org&quot;&gt;Travis CI&lt;/a&gt; es una herramienta totalmente gratuita para este tipo de proyectos. Se integra perfectamente con GitHub y require muy poca configuración.&lt;/p&gt;
+&lt;p&gt;Para empezar a utilizar Travis CI es necesario que el código esté subido a un repositorio público de GitHub. Aquí está el código de ejemplo de este post
+&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;https://github.com/axelhzf/post-karma&quot;&gt;https://github.com/axelhzf/post-karma&lt;/a&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Para integrar Travis con Karma seguí las instrucciones de la &lt;a href=&quot;http://karma-runner.github.io/0.8/plus/Travis-CI.html&quot;&gt;documentación de karma&lt;/a&gt;. Añadí una nueva tarea en el Gruntfile.js para que karma se ejecutara únicamente en PhantomJS.&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;module.exports = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(grunt)&lt;/span&gt; {&lt;/span&gt;
+
+    grunt.loadNpmTasks(&lt;span class=&quot;string&quot;&gt;&quot;grunt-karma&quot;&lt;/span&gt;);
+
+    grunt.initConfig({
+        karma  :{
+            test : {
+                configFile : &lt;span class=&quot;string&quot;&gt;'karma.conf.js'&lt;/span&gt;,
+                singleRun: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;
+            },
+            dev : {
+                configFile : &lt;span class=&quot;string&quot;&gt;'karma.conf.js'&lt;/span&gt;
+            },
+            ci : {
+                configFile : &lt;span class=&quot;string&quot;&gt;'karma.conf.js'&lt;/span&gt;,
+                singleRun: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,
+                browsers: [&lt;span class=&quot;string&quot;&gt;'PhantomJS'&lt;/span&gt;]
+            }
+        }
+    });
+
+    grunt.registerTask(&lt;span class=&quot;string&quot;&gt;&quot;test&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;karma:test&quot;&lt;/span&gt;);
+    grunt.registerTask(&lt;span class=&quot;string&quot;&gt;&quot;dev&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;karma:dev&quot;&lt;/span&gt;);
+    grunt.registerTask(&lt;span class=&quot;string&quot;&gt;&quot;ci&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;karma:ci&quot;&lt;/span&gt;);
+};&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Configuré el fichero package.json con el comando que va a ejecutar Travis para pasar los tests:&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;json&quot;&gt;{
+    &quot;&lt;span class=&quot;attribute&quot;&gt;name&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;karma-post&quot;&lt;/span&gt;&lt;/span&gt;,
+    &quot;&lt;span class=&quot;attribute&quot;&gt;version&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;0.0.1&quot;&lt;/span&gt;&lt;/span&gt;,
+    &quot;&lt;span class=&quot;attribute&quot;&gt;description&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;Karma post&quot;&lt;/span&gt;&lt;/span&gt;,
+    &quot;&lt;span class=&quot;attribute&quot;&gt;dependencies&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;{
+
+    }&lt;/span&gt;,
+    &quot;&lt;span class=&quot;attribute&quot;&gt;devDependencies&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;{
+        &quot;&lt;span class=&quot;attribute&quot;&gt;grunt&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;~0.4.1&quot;&lt;/span&gt;&lt;/span&gt;,
+        &quot;&lt;span class=&quot;attribute&quot;&gt;grunt-karma&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;~0.6.2&quot;&lt;/span&gt;&lt;/span&gt;,
+        &quot;&lt;span class=&quot;attribute&quot;&gt;karma&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;~0.10.2&quot;&lt;/span&gt;&lt;/span&gt;,
+        &quot;&lt;span class=&quot;attribute&quot;&gt;karma-mocha&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;~0.1.0&quot;&lt;/span&gt;&lt;/span&gt;,
+        &quot;&lt;span class=&quot;attribute&quot;&gt;karma-chai&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;~0.0.2&quot;&lt;/span&gt;&lt;/span&gt;,
+        &quot;&lt;span class=&quot;attribute&quot;&gt;karma-coverage&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;~0.1.0&quot;&lt;/span&gt;&lt;/span&gt;,
+        &quot;&lt;span class=&quot;attribute&quot;&gt;karma-chrome-launcher&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;~0.1.0&quot;&lt;/span&gt;&lt;/span&gt;,
+        &quot;&lt;span class=&quot;attribute&quot;&gt;karma-firefox-launcher&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;~0.1.0&quot;&lt;/span&gt;&lt;/span&gt;,
+        &quot;&lt;span class=&quot;attribute&quot;&gt;karma-phantomjs-launcher&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;~0.1.0&quot;&lt;/span&gt;&lt;/span&gt;,
+        &quot;&lt;span class=&quot;attribute&quot;&gt;karma-html2js-preprocessor&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;~0.1.0&quot;&lt;/span&gt;&lt;/span&gt;,
+        &quot;&lt;span class=&quot;attribute&quot;&gt;mocha&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;~1.13.0&quot;&lt;/span&gt;&lt;/span&gt;,
+        &quot;&lt;span class=&quot;attribute&quot;&gt;grunt-cli&lt;/span&gt;&quot;: &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;~0.1.9&quot;&lt;/span&gt;
+    }&lt;/span&gt;&lt;/span&gt;,
+    &quot;&lt;span class=&quot;attribute&quot;&gt;scripts&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;{
+        &quot;&lt;span class=&quot;attribute&quot;&gt;test&lt;/span&gt;&quot;: &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;node_modules/grunt-cli/bin/grunt ci&quot;&lt;/span&gt;
+    }&lt;/span&gt;&lt;/span&gt;,
+    &quot;&lt;span class=&quot;attribute&quot;&gt;repository&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;{
+        &quot;&lt;span class=&quot;attribute&quot;&gt;type&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;git&quot;&lt;/span&gt;&lt;/span&gt;,
+        &quot;&lt;span class=&quot;attribute&quot;&gt;url&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;https://github.com/axelhzf/post-karma.git&quot;&lt;/span&gt;
+    }&lt;/span&gt;&lt;/span&gt;,
+    &quot;&lt;span class=&quot;attribute&quot;&gt;author&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;Axel Hernández Ferrera &amp;lt;axelhzf@gmail.com&amp;gt;&quot;&lt;/span&gt;&lt;/span&gt;,
+    &quot;&lt;span class=&quot;attribute&quot;&gt;license&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;MIT&quot;&lt;/span&gt;&lt;/span&gt;,
+    &quot;&lt;span class=&quot;attribute&quot;&gt;bugs&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;{
+        &quot;&lt;span class=&quot;attribute&quot;&gt;url&lt;/span&gt;&quot; : &lt;span class=&quot;value&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;https://github.com/axelhzf/post-karma/issues&quot;&lt;/span&gt;
+    }&lt;/span&gt;
+}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Y creé el fichero &lt;code&gt;.travis.yml&lt;/code&gt;&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;haskell&quot;&gt;&lt;span class=&quot;title&quot;&gt;language&lt;/span&gt;: node_js
+&lt;span class=&quot;title&quot;&gt;node_js&lt;/span&gt;:
+  - &lt;span class=&quot;number&quot;&gt;0.10&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Lo último que falta es habilitar los tests para este repositorio desde &lt;a href=&quot;https://travis-ci.org/profile&quot;&gt;&lt;a href=&quot;https://travis-ci.org/profile&quot;&gt;https://travis-ci.org/profile&lt;/a&gt;&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;Con esta configuración, Travis ejecutará los tests cada vez que hagamos un push al repositorio. Aquí se puede ver el resultado &lt;a href=&quot;https://travis-ci.org/axelhzf/post-karma&quot;&gt;&lt;a href=&quot;https://travis-ci.org/axelhzf/post-karma&quot;&gt;https://travis-ci.org/axelhzf/post-karma&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusiones&lt;/h2&gt;
+&lt;p&gt;Buscar un entorno que permita ejecutar los tests de un proyecto de forma adecuada es muy importante. Merece la pena invertir tiempo en la configuración del entorno de test adecuado. JavaScript es una plataforma en constante evolución por lo que es importante estar atento a las nuevas herramientas que se desarrollan y analizar si son adecuadas para mejorar el proyecto.&lt;/p&gt;
+&lt;p&gt;Encontrar el entorno perfecto para ejecutar los tests es una tarea complicada y depende mucho de las preferiencias de cada uno. Este post explica la configuración que a día de hoy me parece más adecuada por cumplir mis requisitos:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Permite ejecutar los tests desde la consola.&lt;/li&gt;
+&lt;li&gt;Permite ejecutar los tests en navegadores reales.&lt;/li&gt;
+&lt;li&gt;Tiene modo watch que ejecuta los tests automáticamente cada vez que se modifica un fichero.&lt;/li&gt;
+&lt;li&gt;Se integra con Grunt.js&lt;/li&gt;
+&lt;li&gt;Se integra con IntelliJ IDEA de manera que permite ver los resultados de los tests directamente en el IDE, depurar y analizar el coverage.&lt;/li&gt;
+&lt;li&gt;Se integra con herramientas de integración continua como Travis CI.&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+		</entry>
+	
+		<entry>
+			<title>Web scrapping con NodeJS</title>
+			<link href="http://axelhzf.com/blog/2013-05-05-web-scrapping-nodejs.html"/>
+			<updated>2013-05-05T18:12:39.000Z</updated>
+			<id>http://axelhzf.com/blog/2013-05-05-web-scrapping-nodejs.html</id>
+			<content type="html">&lt;p&gt;Estaba dando un paseo por &lt;a href=&quot;http://thepiratebay.sx/&quot;&gt;thepiratebay&lt;/a&gt; para buscar mi dosis de cultura y se me ocurrió que podía hacer la tarea más fácil usando web scrapping. Web scrapping es una técnica que permite extraer información de páginas web. El programa hace una petición a la web en cuestión y analiza la respuesta del servidor para extraer la información.&lt;/p&gt;
+&lt;p&gt;El código utiliza principalmente dos librerías:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/mikeal/request&quot;&gt;request&lt;/a&gt; : un cliente http&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/MatthewMueller/cheerio&quot;&gt;cheerio&lt;/a&gt; : un parser con una interfaz similar a jQuery.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Aquí está el código completo
-
-&lt;/p&gt;
+&lt;p&gt;Aquí está el código completo&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; _ = require(&lt;span class=&quot;string&quot;&gt;&quot;underscore&quot;&lt;/span&gt;);
 &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; request = require(&lt;span class=&quot;string&quot;&gt;&quot;request&quot;&lt;/span&gt;);
 &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; cheerio = require(&lt;span class=&quot;string&quot;&gt;&quot;cheerio&quot;&lt;/span&gt;);
@@ -75,22 +255,12 @@ prompt.get([&lt;span class=&quot;string&quot;&gt;&quot;query&quot;&lt;/span&gt;]
         });
     }
 });&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;La ventaja de utilizar una librería como cheerio es que puedes probar los selectores en el navegador. Cuando tengas el selector adecuado para extraer la información que necesitas es cuando lo añades al programa.
-
-&lt;/p&gt;
-&lt;p&gt;El programa pide una búsqueda y devuelve los resultados de esa búsqueda en thepiratebay, ordenados por el número de seeds. Después pregunta qué enlaces quieres descargar.
-
-&lt;/p&gt;
-&lt;p&gt;El comando que termina de hacer la magia es este
-
-&lt;/p&gt;
+&lt;p&gt;La ventaja de utilizar una librería como cheerio es que puedes probar los selectores en el navegador. Cuando tengas el selector adecuado para extraer la información que necesitas es cuando lo añades al programa.&lt;/p&gt;
+&lt;p&gt;El programa pide una búsqueda y devuelve los resultados de esa búsqueda en thepiratebay, ordenados por el número de seeds. Después pregunta qué enlaces quieres descargar.&lt;/p&gt;
+&lt;p&gt;El comando que termina de hacer la magia es este&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;ssh imac &lt;span class=&quot;string&quot;&gt;&quot;open /Applications/uTorrent.app magnet:…&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Se conecta por ssh a la máquina donde tengo el uTorrent para añadirlo a la lista de descargas.
-
-&lt;/p&gt;
-&lt;p&gt;Un ejemplo de uso
-
-&lt;/p&gt;
+&lt;p&gt;Se conecta por ssh a la máquina donde tengo el uTorrent para añadirlo a la lista de descargas.&lt;/p&gt;
+&lt;p&gt;Un ejemplo de uso&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;$ node piratescrapper.js 
 prompt: query:  the office s09e21
 0) Details &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; The.Office.US.S09E21.720p.HDTV.X264-DIMENSION [PublicHD]
@@ -100,85 +270,55 @@ prompt: query:  the office s09e21
 prompt: index:  0
 ssh imac &lt;span class=&quot;string&quot;&gt;&quot;open /Applications/uTorrent.app magnet:?xt=...&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>Deploy automatizado con Capistrano</title>
-            <link href="http://axelhzf.com/blog/2013-04-17-capistrano.html"/>
-            <updated>2013-04-17T20:30:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2013-04-17-capistrano.html</id>
-            <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/capistrano.jpg&quot; alt=&quot;Capistrano&quot; /&gt;
-
-&lt;/p&gt;
-&lt;p&gt;Además picar código, últimamente también me estoy dedicando a labores de &lt;a href=&quot;http://en.wikipedia.org/wiki/DevOps&quot;&gt;devOp&lt;/a&gt; en &lt;a href=&quot;http://www.stat4you.com&quot;&gt;stat4you&lt;/a&gt;. Prefiero pasar mi tiempo programando y estaba pasando mucho tiempo haciendo despliegues en servidores. Por eso busqué cómo automatizar el proceso y lo que encontré fue &lt;a href=&quot;http://capistranorb.com/&quot;&gt;Capistrano&lt;/a&gt;, una herramienta de automatización multiservidor.
-
-&lt;/p&gt;
-&lt;p&gt;Capistrano es una gema ruby que está preparada para hacer despliegues de aplicaciones rails. Con algo de personalización permite hacer despliegues de cualquier tipo de aplicación. En resumen es una herramienta que permite ejecutar comandos bash en servidores remotos.
-
-&lt;/p&gt;
+		</entry>
+	
+		<entry>
+			<title>Deploy automatizado con Capistrano</title>
+			<link href="http://axelhzf.com/blog/2013-04-17-capistrano.html"/>
+			<updated>2013-04-17T20:30:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2013-04-17-capistrano.html</id>
+			<content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/capistrano.jpg&quot; alt=&quot;Capistrano&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Además picar código, últimamente también me estoy dedicando a labores de &lt;a href=&quot;http://en.wikipedia.org/wiki/DevOps&quot;&gt;devOp&lt;/a&gt; en &lt;a href=&quot;http://www.stat4you.com&quot;&gt;stat4you&lt;/a&gt;. Prefiero pasar mi tiempo programando y estaba pasando mucho tiempo haciendo despliegues en servidores. Por eso busqué cómo automatizar el proceso y lo que encontré fue &lt;a href=&quot;http://capistranorb.com/&quot;&gt;Capistrano&lt;/a&gt;, una herramienta de automatización multiservidor.&lt;/p&gt;
+&lt;p&gt;Capistrano es una gema ruby que está preparada para hacer despliegues de aplicaciones rails. Con algo de personalización permite hacer despliegues de cualquier tipo de aplicación. En resumen es una herramienta que permite ejecutar comandos bash en servidores remotos.&lt;/p&gt;
 &lt;h2&gt;Configuracion básica&lt;/h2&gt;
-&lt;p&gt;Lo primero es instalar Capistrano
-
-&lt;/p&gt;
+&lt;p&gt;Lo primero es instalar Capistrano&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;gem install capistrano&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Luego con el comando &lt;code&gt;capify&lt;/code&gt; se genera la configuración básica
-
-&lt;/p&gt;
+&lt;p&gt;Luego con el comando &lt;code&gt;capify&lt;/code&gt; se genera la configuración básica&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;capify .&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Esto genera una serie de ficheros de configuración
-
-&lt;/p&gt;
+&lt;p&gt;Esto genera una serie de ficheros de configuración&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;.
 ├── Capfile
 └── config
     └── deploy.rb&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;En mi caso como no utilizo rails en el fichero &lt;code&gt;Capfile&lt;/code&gt; comenté la primera linea para no cargar las tareas por defecto de rails
-
-&lt;/p&gt;
+&lt;p&gt;En mi caso como no utilizo rails en el fichero &lt;code&gt;Capfile&lt;/code&gt; comenté la primera linea para no cargar las tareas por defecto de rails&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# load 'deploy'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;En las primeras lineas del fichero &lt;code&gt;config/deploy.rb&lt;/code&gt; está la configuración del servidor
-
-&lt;/p&gt;
+&lt;p&gt;En las primeras lineas del fichero &lt;code&gt;config/deploy.rb&lt;/code&gt; está la configuración del servidor&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;ruby&quot;&gt;role &lt;span class=&quot;symbol&quot;&gt;:web&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;root@you-server&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;Definir nuevas tareas&lt;/h2&gt;
-&lt;p&gt;Por ejemplo, una tarea para ver los logs del servidor se podría definir como
-
-&lt;/p&gt;
+&lt;p&gt;Por ejemplo, una tarea para ver los logs del servidor se podría definir como&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;ruby&quot;&gt;task &lt;span class=&quot;symbol&quot;&gt;:logs&lt;/span&gt;, &lt;span class=&quot;symbol&quot;&gt;:roles&lt;/span&gt; =&amp;gt; &lt;span class=&quot;symbol&quot;&gt;:app&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt;
     &lt;span class=&quot;comment&quot;&gt;# task code...&lt;/span&gt;
 &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Para ejecutar esta tarea
-
-&lt;/p&gt;
+&lt;p&gt;Para ejecutar esta tarea&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;cap logs&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Las tareas se pueden agrupar en namespaces
-
-&lt;/p&gt;
+&lt;p&gt;Las tareas se pueden agrupar en namespaces&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;ruby&quot;&gt;namespace &lt;span class=&quot;symbol&quot;&gt;:solr&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt;
     task &lt;span class=&quot;symbol&quot;&gt;:start&lt;/span&gt;, &lt;span class=&quot;symbol&quot;&gt;:roles&lt;/span&gt; =&amp;gt; &lt;span class=&quot;symbol&quot;&gt;:app&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt;
         &lt;span class=&quot;comment&quot;&gt;# task code...&lt;/span&gt;
     &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;
 &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;cap solr:start&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/capistrano/capistrano/wiki/2.x-DSL-Documentation-Configuration-Module&quot;&gt;Documentación completa del módulo de configuración&lt;/a&gt;
-
-&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/capistrano/capistrano/wiki/2.x-DSL-Documentation-Configuration-Module&quot;&gt;Documentación completa del módulo de configuración&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;Acciones&lt;/h2&gt;
-&lt;p&gt;Capistrano viene con algunos métodos que podemos utilizar dentro de las tareas
-
-&lt;/p&gt;
+&lt;p&gt;Capistrano viene con algunos métodos que podemos utilizar dentro de las tareas&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;ruby&quot;&gt;get &lt;span class=&quot;string&quot;&gt;&quot;remotePath&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;localPath&quot;&lt;/span&gt;
 put &lt;span class=&quot;string&quot;&gt;&quot;localPath&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;remotePath&quot;&lt;/span&gt;
 run &lt;span class=&quot;string&quot;&gt;&quot;ls -l&quot;&lt;/span&gt;
 returnValue = capture &lt;span class=&quot;string&quot;&gt;&quot;ls -l&quot;&lt;/span&gt;
 stream &lt;span class=&quot;string&quot;&gt;&quot;tail -f file&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/capistrano/capistrano/wiki/2.x-DSL-Documentation-Action-Module&quot;&gt;Documentación completa del módulo de acciones&lt;/a&gt;
-
-&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/capistrano/capistrano/wiki/2.x-DSL-Documentation-Action-Module&quot;&gt;Documentación completa del módulo de acciones&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;¿Cómo uso Capistrano?&lt;/h2&gt;
-&lt;p&gt;En stat4you utilizamos un servidor de integración continua que se encarga de hacer las compilaciones que se van a desplegar. Mi proceso de deploy consiste en bajar la última versión compilada del servidor de integración continua, subirla al servidor y hacer el despliegue. Es algo parecido a esto
-
-&lt;/p&gt;
+&lt;p&gt;En stat4you utilizamos un servidor de integración continua que se encarga de hacer las compilaciones que se van a desplegar. Mi proceso de deploy consiste en bajar la última versión compilada del servidor de integración continua, subirla al servidor y hacer el despliegue. Es algo parecido a esto&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;ruby&quot;&gt;task &lt;span class=&quot;symbol&quot;&gt;:deploy&lt;/span&gt;, &lt;span class=&quot;symbol&quot;&gt;:roles&lt;/span&gt; =&amp;gt; &lt;span class=&quot;symbol&quot;&gt;:app&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt;
     `wget -&lt;span class=&quot;constant&quot;&gt;O&lt;/span&gt; /tmp/stat4you.war &lt;span class=&quot;symbol&quot;&gt;http:&lt;/span&gt;/&lt;span class=&quot;regexp&quot;&gt;/ciserver/stat&lt;/span&gt;4you-last-build.war`
     upload &lt;span class=&quot;string&quot;&gt;&quot;/tmp/stat4you.war&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;/deploy/stat4you.war&quot;&lt;/span&gt;
@@ -186,59 +326,41 @@ stream &lt;span class=&quot;string&quot;&gt;&quot;tail -f file&quot;&lt;/span&gt
     run &lt;span class=&quot;string&quot;&gt;&quot;mv /deploy/stat4you.war /tomcat/webapps/stat4you.war&quot;&lt;/span&gt;
     run &lt;span class=&quot;string&quot;&gt;&quot;service server start&quot;&lt;/span&gt;
 &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Otra tarea muy útil es esta que permite ver los logs del servidor
-
-&lt;/p&gt;
+&lt;p&gt;Otra tarea muy útil es esta que permite ver los logs del servidor&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;ruby&quot;&gt;task &lt;span class=&quot;symbol&quot;&gt;:logs&lt;/span&gt;, &lt;span class=&quot;symbol&quot;&gt;:roles&lt;/span&gt; =&amp;gt; &lt;span class=&quot;symbol&quot;&gt;:app&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt;
     stream &lt;span class=&quot;string&quot;&gt;&quot;tail -f /tomcat/logs/catalina.out&quot;&lt;/span&gt;
 &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;h1&gt;Conclusion&lt;/h1&gt;
 &lt;p&gt;Automatiza todo lo que puedas, ya sea con Capistrano o con alguna otra herramienta del estilo. Ahorra mucho tiempo y reduce   los errores que puedes cometer en el proceso.&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>View communication in iOS</title>
-            <link href="http://axelhzf.com/blog/2012-12-21-views-communication.html"/>
-            <updated>2012-12-21T00:01:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2012-12-21-views-communication.html</id>
-            <content type="html">&lt;p&gt;Unos de los problemas más comunes que nos encontramos cuando estamos desarrollando una aplicación para iOS es cómo pasar información de una vista a otra. Pongamos por ejemplo las pantallas de Settings.app que se muestra en la imagen.
-
-&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/posts/view-communication.png&quot; alt=&quot;View communication&quot; /&gt;
-
-&lt;/p&gt;
-&lt;p&gt;Este es un ejemplo de controladores que deben comunicarse entre ellos. La primera vista tiene una celda donde aparece el nombre del dispositivo. Al pulsar la celda, se muestra la siguiente vista donde se puede editar el nombre del dispositivo. Una vez se termine la edición, el texto nuevo debe volver a la primera vista.
-
-&lt;/p&gt;
-&lt;p&gt;Existen varios métodos para resolver este problema:
-
-&lt;/p&gt;
+		</entry>
+	
+		<entry>
+			<title>View communication in iOS</title>
+			<link href="http://axelhzf.com/blog/2012-12-21-views-communication.html"/>
+			<updated>2012-12-21T00:01:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2012-12-21-views-communication.html</id>
+			<content type="html">&lt;p&gt;Unos de los problemas más comunes que nos encontramos cuando estamos desarrollando una aplicación para iOS es cómo pasar información de una vista a otra. Pongamos por ejemplo las pantallas de Settings.app que se muestra en la imagen.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/view-communication.png&quot; alt=&quot;View communication&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Este es un ejemplo de controladores que deben comunicarse entre ellos. La primera vista tiene una celda donde aparece el nombre del dispositivo. Al pulsar la celda, se muestra la siguiente vista donde se puede editar el nombre del dispositivo. Una vez se termine la edición, el texto nuevo debe volver a la primera vista.&lt;/p&gt;
+&lt;p&gt;Existen varios métodos para resolver este problema:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Singleton&lt;/li&gt;
 &lt;li&gt;Delegate + protocol&lt;/li&gt;
 &lt;li&gt;Bloques&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;En el &lt;a href=&quot;http://axelhzf.com/ios-curso&quot;&gt;curso&lt;/a&gt; hay ejemplos de código que utilizan los dos primeros métodos, vamos a repasarlos y vamos a ver cómo funciona el método de comunicación de controladores mediante bloques.
-
-&lt;/p&gt;
+&lt;p&gt;En el &lt;a href=&quot;http://axelhzf.com/ios-curso&quot;&gt;curso&lt;/a&gt; hay ejemplos de código que utilizan los dos primeros métodos, vamos a repasarlos y vamos a ver cómo funciona el método de comunicación de controladores mediante bloques.&lt;/p&gt;
 &lt;h2&gt;Singleton&lt;/h2&gt;
-&lt;p&gt;El patrón Singleton consiste en restringir la creación de una única instancia para una clase determinada.En nuestro podemos compartir esta instancia única entre las dos vistas de forma que podamos comunicar las vistas hacia delante y hacia detrás.
-
-&lt;/p&gt;
-&lt;p&gt;Tal como se comenta en este &lt;a href=&quot;http://lukeredpath.co.uk/blog/a-note-on-objective-c-singletons.html&quot;&gt;post&lt;/a&gt; existe varias formas de crear un Singleton. Utilizando el autocompletado de &lt;a href=&quot;http://www.jetbrains.com/objc/&quot;&gt;AppCode&lt;/a&gt; (se ha convertido en mi IDE habitual, lo recomiendo totalmente) se genera el siguiente código:
-
-&lt;/p&gt;
+&lt;p&gt;El patrón Singleton consiste en restringir la creación de una única instancia para una clase determinada.En nuestro podemos compartir esta instancia única entre las dos vistas de forma que podamos comunicar las vistas hacia delante y hacia detrás.&lt;/p&gt;
+&lt;p&gt;Tal como se comenta en este &lt;a href=&quot;http://lukeredpath.co.uk/blog/a-note-on-objective-c-singletons.html&quot;&gt;post&lt;/a&gt; existe varias formas de crear un Singleton. Utilizando el autocompletado de &lt;a href=&quot;http://www.jetbrains.com/objc/&quot;&gt;AppCode&lt;/a&gt; (se ha convertido en mi IDE habitual, lo recomiendo totalmente) se genera el siguiente código:&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;actionscript&quot;&gt;@&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;NameInfo&lt;/span&gt; : &lt;span class=&quot;title&quot;&gt;NSObject&lt;/span&gt;
 
 @&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;strong&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;NSString&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt;;
 
 + (&lt;span class=&quot;title&quot;&gt;NameInfo&lt;/span&gt; *)&lt;span class=&quot;title&quot;&gt;instance&lt;/span&gt;;
 
-@&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;La clase &lt;strong&gt;NameInfo&lt;/strong&gt; es un Singleton que permitirá la comunicación entre las dos vistas. 
-
-&lt;/p&gt;
+@&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;La clase &lt;strong&gt;NameInfo&lt;/strong&gt; es un Singleton que permitirá la comunicación entre las dos vistas. &lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;lua&quot;&gt;@implementation NameInfo
 
 + (NameInfo *)instance {
@@ -253,23 +375,15 @@ stream &lt;span class=&quot;string&quot;&gt;&quot;tail -f file&quot;&lt;/span&gt
     return _instance;
 }
 
-@end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;La implementación se asegura de que se llama una única vez al método init.
-
-&lt;/p&gt;
-&lt;p&gt;El código para utilizar el singleton es
-
-&lt;/p&gt;
+@end&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;La implementación se asegura de que se llama una única vez al método init.&lt;/p&gt;
+&lt;p&gt;El código para utilizar el singleton es&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;avrasm&quot;&gt;NameInfo *nameInfo = [NameInfo instance]&lt;span class=&quot;comment&quot;&gt;;&lt;/span&gt;
 nameInfo&lt;span class=&quot;preprocessor&quot;&gt;.name&lt;/span&gt; = @&lt;span class=&quot;string&quot;&gt;&quot;Axel&quot;&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;;&lt;/span&gt;
 NSLog(nameInfo&lt;span class=&quot;preprocessor&quot;&gt;.name&lt;/span&gt;)&lt;span class=&quot;comment&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;El código es bastante sencillo. El principal problema que tiene este método es que nos obliga a crear una clase nueva cada vez que queramos realizar comunicación entre vistas. Además, la segunda vista debe escribir directamente en la propiedad &lt;strong&gt;name&lt;/strong&gt;, por lo tanto podemos tener problemas para reutilizar la vista. 
-
-&lt;/p&gt;
+&lt;p&gt;El código es bastante sencillo. El principal problema que tiene este método es que nos obliga a crear una clase nueva cada vez que queramos realizar comunicación entre vistas. Además, la segunda vista debe escribir directamente en la propiedad &lt;strong&gt;name&lt;/strong&gt;, por lo tanto podemos tener problemas para reutilizar la vista. &lt;/p&gt;
 &lt;h2&gt;Delegate + protocol&lt;/h2&gt;
-&lt;p&gt;Este patrón es el recomendado en la &lt;a href=&quot;https://developer.apple.com/library/ios/#featuredarticles/ViewControllerPGforiPhoneOS/ManagingDataFlowBetweenViewControllers/ManagingDataFlowBetweenViewControllers.html#//apple_ref/doc/uid/TP40007457-CH8-SW1&quot;&gt;documentación de Apple&lt;/a&gt;. Un ejemplo de uso suponiendo la utilización de segues es:
-
-&lt;/p&gt;
+&lt;p&gt;Este patrón es el recomendado en la &lt;a href=&quot;https://developer.apple.com/library/ios/#featuredarticles/ViewControllerPGforiPhoneOS/ManagingDataFlowBetweenViewControllers/ManagingDataFlowBetweenViewControllers.html#//apple_ref/doc/uid/TP40007457-CH8-SW1&quot;&gt;documentación de Apple&lt;/a&gt;. Un ejemplo de uso suponiendo la utilización de segues es:&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;objectivec&quot;&gt;@&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;implementation&lt;/span&gt; &lt;span class=&quot;id&quot;&gt;AViewController&lt;/span&gt;&lt;/span&gt;
 
 - (&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)prepareForSegue:(UIStoryboardSegue *)segue sender:(&lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt;)sender {
@@ -279,84 +393,56 @@ NSLog(nameInfo&lt;span class=&quot;preprocessor&quot;&gt;.name&lt;/span&gt;)&lt;
         controller&lt;span class=&quot;variable&quot;&gt;.delegate&lt;/span&gt; = &lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;;
     }
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;En el método &lt;strong&gt;prepareForSegue&lt;/strong&gt; es donde se comunica la vista A con la vista B. En este caso se está pasando el valor de la propiedad &lt;strong&gt;name&lt;/strong&gt;. Además se esta asignando la propiedad &lt;strong&gt;delegate&lt;/strong&gt;, de forma que la vista B tiene una referencia a la vista A. Esto permitirá hacer la comunicación en el sentido contrario.
-
-&lt;/p&gt;
+&lt;p&gt;En el método &lt;strong&gt;prepareForSegue&lt;/strong&gt; es donde se comunica la vista A con la vista B. En este caso se está pasando el valor de la propiedad &lt;strong&gt;name&lt;/strong&gt;. Además se esta asignando la propiedad &lt;strong&gt;delegate&lt;/strong&gt;, de forma que la vista B tiene una referencia a la vista A. Esto permitirá hacer la comunicación en el sentido contrario.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;actionscript&quot;&gt;@&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;BViewController&lt;/span&gt; : &lt;span class=&quot;title&quot;&gt;UIViewController&lt;/span&gt;
 
 @&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;strong&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;NSString&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt;;
 @&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;weak&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;delegate&lt;/span&gt;;
 
-@&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;El código para el controlador B tiene la definición de la propiedad &lt;strong&gt;delegate&lt;/strong&gt;. Esta propiedad es importante que sea &lt;strong&gt;weak&lt;/strong&gt;, para que no se produzca una referencia cíclica y que la memoria pueda liberarse correctamente.
-
-&lt;/p&gt;
-&lt;p&gt;La comunicación desde la vista B hasta la vista A se puede hacer en el momento en que la vista B va a desaparecer.
-
-&lt;/p&gt;
+@&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;El código para el controlador B tiene la definición de la propiedad &lt;strong&gt;delegate&lt;/strong&gt;. Esta propiedad es importante que sea &lt;strong&gt;weak&lt;/strong&gt;, para que no se produzca una referencia cíclica y que la memoria pueda liberarse correctamente.&lt;/p&gt;
+&lt;p&gt;La comunicación desde la vista B hasta la vista A se puede hacer en el momento en que la vista B va a desaparecer.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;vala&quot;&gt;- (&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)viewWillDisappear:(BOOL)animated {
    &lt;span class=&quot;constant&quot;&gt; SEL &lt;/span&gt;setNameSelector = @selector(setName:);
     if([self.&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;delegate&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;respondsToSelector&lt;/span&gt;:&lt;span class=&quot;title&quot;&gt;setNameSelector&lt;/span&gt;]) {&lt;/span&gt;
         [self.&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;delegate&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;performSelector&lt;/span&gt;:&lt;span class=&quot;title&quot;&gt;setNameSelector&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;withObject&lt;/span&gt;:&lt;span class=&quot;title&quot;&gt;self&lt;/span&gt;.&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt;];
     }
-}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;El código llama al método &lt;strong&gt;setName&lt;/strong&gt; del objeto delegate en el caso de que exista. Se utiliza el método &lt;strong&gt;performSelector&lt;/strong&gt; porque no hemos definido el tipo de dato del delegate.
-
-&lt;/p&gt;
-&lt;p&gt;En el caso de que quisiéramos que el código fuese type checked podemos utilizar un protocolo.
-
-&lt;/p&gt;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;El código llama al método &lt;strong&gt;setName&lt;/strong&gt; del objeto delegate en el caso de que exista. Se utiliza el método &lt;strong&gt;performSelector&lt;/strong&gt; porque no hemos definido el tipo de dato del delegate.&lt;/p&gt;
+&lt;p&gt;En el caso de que quisiéramos que el código fuese type checked podemos utilizar un protocolo.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;objectivec&quot;&gt;@&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protocol&lt;/span&gt; &lt;span class=&quot;id&quot;&gt;BViewControllerDelegate&lt;/span&gt; &amp;lt;&lt;span class=&quot;id&quot;&gt;NSObject&lt;/span&gt;&amp;gt;&lt;/span&gt;
 
 - (&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)setName:(&lt;span class=&quot;built_in&quot;&gt;NSString&lt;/span&gt; *)name;
 
 @&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;El protocolo define un único método &lt;strong&gt;setName&lt;/strong&gt;
-
-&lt;/p&gt;
+&lt;p&gt;El protocolo define un único método &lt;strong&gt;setName&lt;/strong&gt;&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;actionscript&quot;&gt;@&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;AViewController&lt;/span&gt; : &lt;span class=&quot;title&quot;&gt;UIViewController&lt;/span&gt; &amp;lt;&lt;span class=&quot;title&quot;&gt;BViewControllerDelegate&lt;/span&gt;&amp;gt;
 
 @&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;strong&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;NSString&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt;;
 
-@&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Ahora la clase &lt;strong&gt;AViewController&lt;/strong&gt; debe implementar el protocolo &lt;strong&gt;BViewControllerDelegate&lt;/strong&gt;.
-
-&lt;/p&gt;
+@&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ahora la clase &lt;strong&gt;AViewController&lt;/strong&gt; debe implementar el protocolo &lt;strong&gt;BViewControllerDelegate&lt;/strong&gt;.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;actionscript&quot;&gt;@&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;BViewController&lt;/span&gt; : &lt;span class=&quot;title&quot;&gt;UIViewController&lt;/span&gt;
 
 @&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;strong&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;NSString&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt;;
 @&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;weak&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;id&lt;/span&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;BViewControllerDelegate&lt;/span&gt;&amp;gt; &lt;span class=&quot;title&quot;&gt;delegate&lt;/span&gt;;
 
-@&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Se modifica la definición del &lt;strong&gt;delegate&lt;/strong&gt; para especificar que es el tipo de dato una clase que implementa el protocolo &lt;strong&gt;BViewControllerDelegate&lt;/strong&gt;.
-
-&lt;/p&gt;
-&lt;p&gt;El código del controlador B se reduce a invocar el método &lt;strong&gt;setName&lt;/strong&gt; directamente.
-
-&lt;/p&gt;
+@&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Se modifica la definición del &lt;strong&gt;delegate&lt;/strong&gt; para especificar que es el tipo de dato una clase que implementa el protocolo &lt;strong&gt;BViewControllerDelegate&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;El código del controlador B se reduce a invocar el método &lt;strong&gt;setName&lt;/strong&gt; directamente.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;vala&quot;&gt;- (&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)viewWillDisappear:(BOOL)animated {
     [self.&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;delegate&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;setName&lt;/span&gt;:&lt;span class=&quot;title&quot;&gt;self&lt;/span&gt;.&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt;];
-}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Este método está muy extendido en las librerías que hace Apple, por ejemplo el controlador &lt;a href=&quot;http://developer.apple.com/library/ios/#documentation/MessageUI/Reference/MFMailComposeViewController_class/Reference/Reference.html&quot;&gt;&lt;strong&gt;MFMailComposeViewController&lt;/strong&gt;&lt;/a&gt; que permite el envío de correos utiliza el protocolo &lt;strong&gt; MFMailComposeViewControllerDelegate&lt;/strong&gt; para comunicarse con la vista anterior e informa si el correo se envió correctamente o se produjo un error.
-
-&lt;/p&gt;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Este método está muy extendido en las librerías que hace Apple, por ejemplo el controlador &lt;a href=&quot;http://developer.apple.com/library/ios/#documentation/MessageUI/Reference/MFMailComposeViewController_class/Reference/Reference.html&quot;&gt;&lt;strong&gt;MFMailComposeViewController&lt;/strong&gt;&lt;/a&gt; que permite el envío de correos utiliza el protocolo &lt;strong&gt; MFMailComposeViewControllerDelegate&lt;/strong&gt; para comunicarse con la vista anterior e informa si el correo se envió correctamente o se produjo un error.&lt;/p&gt;
 &lt;h2&gt;Bloques&lt;/h2&gt;
-&lt;p&gt;La última opción para comunicar dos controladores es utilizar bloques. Un bloque es lo que en otros lenguajes de programación se conoce en  como una closure. En pocas palabras se trata de una función definida de forma inline y que tiene acceso a las variables locales que están en el mismo scope en el que se ha definido la closure. Los bloques son una característica nueva del lenguaje que fue introducida en iOS 4.
-
-&lt;/p&gt;
-&lt;p&gt;Aquí tienes dos artículos     que explican cómo trabajar con bloques.
-
-&lt;/p&gt;
+&lt;p&gt;La última opción para comunicar dos controladores es utilizar bloques. Un bloque es lo que en otros lenguajes de programación se conoce en  como una closure. En pocas palabras se trata de una función definida de forma inline y que tiene acceso a las variables locales que están en el mismo scope en el que se ha definido la closure. Los bloques son una característica nueva del lenguaje que fue introducida en iOS 4.&lt;/p&gt;
+&lt;p&gt;Aquí tienes dos artículos     que explican cómo trabajar con bloques.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://pragmaticstudio.com/blog/2010/7/28/ios4-blocks-1&quot;&gt;iOS4 blocks 1&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://pragmaticstudio.com/blog/2010/9/15/ios4-blocks-2&quot;&gt;iOS4 blocks 2&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Si prefieres puedes consultar la documentación oficial de &lt;a href=&quot;http://developer.apple.com/library/ios/#documentation/cocoa/Conceptual/Blocks/Articles/00_Introduction.html&quot;&gt;introducción a los bloques&lt;/a&gt;
-
-&lt;/p&gt;
-&lt;p&gt;Los bloques permiten resolver el problema de comunicar dos vistas de una manera muy elegante.
-
-&lt;/p&gt;
+&lt;p&gt;Si prefieres puedes consultar la documentación oficial de &lt;a href=&quot;http://developer.apple.com/library/ios/#documentation/cocoa/Conceptual/Blocks/Articles/00_Introduction.html&quot;&gt;introducción a los bloques&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Los bloques permiten resolver el problema de comunicar dos vistas de una manera muy elegante.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;actionscript&quot;&gt;typedef &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;(^BViewControllerCallback)(NSString *name);
 
 @&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;BViewController&lt;/span&gt; : &lt;span class=&quot;title&quot;&gt;UIViewController&lt;/span&gt;
@@ -364,18 +450,14 @@ NSLog(nameInfo&lt;span class=&quot;preprocessor&quot;&gt;.name&lt;/span&gt;)&lt;
 @&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;strong&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;NSString&lt;/span&gt; *&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt;;
 @&lt;span class=&quot;title&quot;&gt;property&lt;/span&gt;(&lt;span class=&quot;title&quot;&gt;copy&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;nonatomic&lt;/span&gt;) &lt;span class=&quot;title&quot;&gt;BViewControllerCallback&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;callback&lt;/span&gt;;
 
-@&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;En el código se define el tipo &lt;strong&gt;BViewControllerCallback&lt;/strong&gt; como un bloque que recibe un parámetro &lt;strong&gt;name&lt;/strong&gt;.
-
-&lt;/p&gt;
+@&lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;En el código se define el tipo &lt;strong&gt;BViewControllerCallback&lt;/strong&gt; como un bloque que recibe un parámetro &lt;strong&gt;name&lt;/strong&gt;.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;objectivec&quot;&gt;- (&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)viewWillDisappear:(&lt;span class=&quot;built_in&quot;&gt;BOOL&lt;/span&gt;)animated {
     &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;.callback&lt;/span&gt; != &lt;span class=&quot;literal&quot;&gt;nil&lt;/span&gt;) {
         &lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;.callback&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;.name&lt;/span&gt;);
     }
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Cuando la vista va a desaparecer, si hay definido un callback se invoca pasando como parámetro el valor actual.
-
-&lt;/p&gt;
+&lt;p&gt;Cuando la vista va a desaparecer, si hay definido un callback se invoca pasando como parámetro el valor actual.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;objectivec&quot;&gt;- (&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)prepareForSegue:(UIStoryboardSegue *)segue sender:(&lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt;)sender {
     &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;([segue&lt;span class=&quot;variable&quot;&gt;.identifier&lt;/span&gt; isEqualToString:@&lt;span class=&quot;string&quot;&gt;&quot;toB&quot;&lt;/span&gt;]) {
         BViewController *controller = segue&lt;span class=&quot;variable&quot;&gt;.destinationViewController&lt;/span&gt;;
@@ -387,39 +469,25 @@ NSLog(nameInfo&lt;span class=&quot;preprocessor&quot;&gt;.name&lt;/span&gt;)&lt;
         };
     }
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;El método &lt;strong&gt;prepareForSegue&lt;/strong&gt; debe definir el código que se debe ejecutar cuando la vista B haya terminado.
-
-&lt;/p&gt;
-&lt;p&gt;La clase &lt;a href=&quot;http://developer.apple.com/library/ios/#documentation/Twitter/Reference/TWTweetSheetViewControllerClassRef/Reference/Reference.html&quot;&gt;&lt;strong&gt;TWTweetComposeViewController&lt;/strong&gt;&lt;/a&gt; que permite compartir contenido en Twitter utiliza esta técnica. Define una propiedad &lt;strong&gt;completionHandler&lt;/strong&gt; que es el bloque se invoca cuando el controlador ha terminado de enviar el tweet.
-
-&lt;/p&gt;
-&lt;p&gt;La principal ventaja de utilizar bloques es que permite reutilizar la vista B más fácilmente. Lo único que hay que hacer es definir un callback distinto cada una de las veces que se invoque la vista.
-
-&lt;/p&gt;
+&lt;p&gt;El método &lt;strong&gt;prepareForSegue&lt;/strong&gt; debe definir el código que se debe ejecutar cuando la vista B haya terminado.&lt;/p&gt;
+&lt;p&gt;La clase &lt;a href=&quot;http://developer.apple.com/library/ios/#documentation/Twitter/Reference/TWTweetSheetViewControllerClassRef/Reference/Reference.html&quot;&gt;&lt;strong&gt;TWTweetComposeViewController&lt;/strong&gt;&lt;/a&gt; que permite compartir contenido en Twitter utiliza esta técnica. Define una propiedad &lt;strong&gt;completionHandler&lt;/strong&gt; que es el bloque se invoca cuando el controlador ha terminado de enviar el tweet.&lt;/p&gt;
+&lt;p&gt;La principal ventaja de utilizar bloques es que permite reutilizar la vista B más fácilmente. Lo único que hay que hacer es definir un callback distinto cada una de las veces que se invoque la vista.&lt;/p&gt;
 &lt;h2&gt;Conclusiones&lt;/h2&gt;
 &lt;p&gt;En el post hemos visto varias formas de resolver el problema de la comunicación entre dos controladores. Cada una de los métodos tiene sus ventajas e inconvenientes y puede ser más adecuada para ciertas situaciones. Últimamente me estoy decantando por definir la comunicación utilizando bloques porque me permite reutilizar el código más fácilmente. También puede ser que de trabajar mucho con javascript, diseñar apis utilizando callbacks se esta convirtiendo en una práctica muy habitual en mi código.&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>CocoaPods</title>
-            <link href="http://axelhzf.com/blog/2012-11-10-cocoapods.html"/>
-            <updated>2012-11-10T00:00:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2012-11-10-cocoapods.html</id>
-            <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/cocoapods.png&quot; alt=&quot;CocoaPods&quot; /&gt;
-
-&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://cocoapods.org/&quot;&gt;CocoaPods&lt;/a&gt; es una librería para la gestión de dependencias de proyectos de XCode. Se encarga de resolver las dependencias, descargar los fuentes y de gestionar el workspace. Esto simplifica mucho utilizar librerías de terceros en nuestro proyecto.
-
-&lt;/p&gt;
-&lt;p&gt;CocoaPods se distribuye como una gema de ruby, para instalarlo:
-
-&lt;/p&gt;
+		</entry>
+	
+		<entry>
+			<title>CocoaPods</title>
+			<link href="http://axelhzf.com/blog/2012-11-10-cocoapods.html"/>
+			<updated>2012-11-10T00:00:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2012-11-10-cocoapods.html</id>
+			<content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/cocoapods.png&quot; alt=&quot;CocoaPods&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://cocoapods.org/&quot;&gt;CocoaPods&lt;/a&gt; es una librería para la gestión de dependencias de proyectos de XCode. Se encarga de resolver las dependencias, descargar los fuentes y de gestionar el workspace. Esto simplifica mucho utilizar librerías de terceros en nuestro proyecto.&lt;/p&gt;
+&lt;p&gt;CocoaPods se distribuye como una gema de ruby, para instalarlo:&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;haskell&quot;&gt;&lt;span class=&quot;title&quot;&gt;gem&lt;/span&gt; install cocoapods
 &lt;span class=&quot;title&quot;&gt;pod&lt;/span&gt; setup&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Una vez instalado tenemos que indicar las dependencias que tiene nuestro proyecto. Para ello creamos el fichero &lt;strong&gt;Podfile&lt;/strong&gt;. Este fichero es el equivalente al pom.xml en Maven. La sintaxis de este fichero es la siguiente:
-
-&lt;/p&gt;
+&lt;p&gt;Una vez instalado tenemos que indicar las dependencias que tiene nuestro proyecto. Para ello creamos el fichero &lt;strong&gt;Podfile&lt;/strong&gt;. Este fichero es el equivalente al pom.xml en Maven. La sintaxis de este fichero es la siguiente:&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;haskell&quot;&gt;&lt;span class=&quot;title&quot;&gt;platform&lt;/span&gt; :ios
 &lt;span class=&quot;title&quot;&gt;pod&lt;/span&gt;&lt;span class=&quot;string&quot;&gt; 'MagicalRecord'&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt; '~&amp;gt; 2.0.6'&lt;/span&gt;
 &lt;span class=&quot;title&quot;&gt;pod&lt;/span&gt;&lt;span class=&quot;string&quot;&gt; 'SVProgressHUD'&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt; '~&amp;gt; 0.8'&lt;/span&gt;
@@ -428,56 +496,32 @@ NSLog(nameInfo&lt;span class=&quot;preprocessor&quot;&gt;.name&lt;/span&gt;)&lt;
 &lt;span class=&quot;title&quot;&gt;target&lt;/span&gt; :test, :exclusive =&amp;gt; true &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt;
    pod&lt;span class=&quot;string&quot;&gt; 'OCMock'&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt; '~&amp;gt; 2.0.1'&lt;/span&gt; 
 &lt;span class=&quot;title&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;En este fichero de configuración se especifica que el proyecto depende de las librerias &lt;em&gt;MagicalRecord&lt;/em&gt;, &lt;em&gt;SVProgressHUD&lt;/em&gt; y &lt;em&gt;Underscore.m&lt;/em&gt;. En el target &lt;em&gt;test&lt;/em&gt; se especifica las dependencias que sólo estarán disponibles para la ejecución de los tests. En la página de &lt;a href=&quot;http://cocoapods.org/&quot;&gt;CocoaPods&lt;/a&gt; hay un buscador donde puedes encontrar las librerías disponibles.
-
-&lt;/p&gt;
-&lt;p&gt;Cada vez que se modifique el fichero Podfile es necesario actualizar las dependencias. Para ello se utiliza el comando:
-
-&lt;/p&gt;
+&lt;p&gt;En este fichero de configuración se especifica que el proyecto depende de las librerias &lt;em&gt;MagicalRecord&lt;/em&gt;, &lt;em&gt;SVProgressHUD&lt;/em&gt; y &lt;em&gt;Underscore.m&lt;/em&gt;. En el target &lt;em&gt;test&lt;/em&gt; se especifica las dependencias que sólo estarán disponibles para la ejecución de los tests. En la página de &lt;a href=&quot;http://cocoapods.org/&quot;&gt;CocoaPods&lt;/a&gt; hay un buscador donde puedes encontrar las librerías disponibles.&lt;/p&gt;
+&lt;p&gt;Cada vez que se modifique el fichero Podfile es necesario actualizar las dependencias. Para ello se utiliza el comando:&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;nginx&quot;&gt;&lt;span class=&quot;title&quot;&gt;pod&lt;/span&gt; install&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;CocoaPods creará un workspace (fichero que termina con la extensión .xcworkspace). Este es el fichero que tenemos que abrir con XCode a partir de ahora. Este workspace está compuesto por dos proyectos, uno que contiene aplicación y el otro que está gestionado por CocoaPods que es donde se encuentran los fuentes de todas las librerías que se han descargado.&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>Grunt Live-Reload</title>
-            <link href="http://axelhzf.com/blog/2012-06-15-grunt-live-reload.html"/>
-            <updated>2012-06-15T22:34:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2012-06-15-grunt-live-reload.html</id>
-            <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/grunt-reload.jpg&quot; alt=&quot;Grunt Reload&quot; /&gt;
-
-&lt;/p&gt;
+		</entry>
+	
+		<entry>
+			<title>Grunt Live-Reload</title>
+			<link href="http://axelhzf.com/blog/2012-06-15-grunt-live-reload.html"/>
+			<updated>2012-06-15T22:34:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2012-06-15-grunt-live-reload.html</id>
+			<content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/grunt-reload.jpg&quot; alt=&quot;Grunt Reload&quot;&gt;&lt;/p&gt;
 &lt;h2&gt;LiveReload&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;http://livereload.com/&quot;&gt;LiveReload&lt;/a&gt; es una aplicación genial. Su funcionalidad es muy sencilla, se encarga de refrescar el navegador automáticamente mientras estas desarrollando. Imagina que estas trabajando en el diseño de una web y estas haciendo pequeñas modificaciones en los estilos para ver cómo va quedando el diseño. Para visualizar cada pequeño cambio es necesario cambiar a la ventana del navegador y refrescar las página. Livereload elimina ese cambio de contexto, monitoriza los ficheros fuentes y cuando detecta que se ha modifica un fichero fuerza a que el navegador se actualice automáticamente.
-
-
-&lt;/p&gt;
-&lt;p&gt;LiveReload trae incorporado varios preprocesadores como por ejemplo CoffeeScript, LESS o SASS. Esto ya se vuelve mucho más interesante, puedes estar modificando un fichero less y el cambio se refleja automáticamente en el navegador. Sin tener que compilar manualmente ese fichero. Esto es una clara ventaja a utilizar las herramientas de desarrollo del navegador para probar los cambios de diseño y luego llevar esos cambios al fichero.
-
-&lt;/p&gt;
-&lt;p&gt;LiveReload está disponible para OS X en la App Store por $9.99 y para windows está en versión beta. 
-
-&lt;/p&gt;
-&lt;p&gt;Si prefieres no utilizar una aplicación con GUI, en la página recomiendan utilizar &lt;a href=&quot;https://github.com/guard/guard-livereload&quot;&gt;guard-livereload&lt;/a&gt;. Una librería escrita en ruby que permite hacer de servidor livereload. En este post explican cómo configurarlo: &lt;a href=&quot;http://icoloma.blogspot.com.es/2012/06/using-livereload-on-linux.html&quot;&gt;&lt;a href=&quot;http://icoloma.blogspot.com.es/2012/06/using-livereload-on-linux.html&quot;&gt;http://icoloma.blogspot.com.es/2012/06/using-livereload-on-linux.html&lt;/a&gt;&lt;/a&gt;
-
-&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://livereload.com/&quot;&gt;LiveReload&lt;/a&gt; es una aplicación genial. Su funcionalidad es muy sencilla, se encarga de refrescar el navegador automáticamente mientras estas desarrollando. Imagina que estas trabajando en el diseño de una web y estas haciendo pequeñas modificaciones en los estilos para ver cómo va quedando el diseño. Para visualizar cada pequeño cambio es necesario cambiar a la ventana del navegador y refrescar las página. Livereload elimina ese cambio de contexto, monitoriza los ficheros fuentes y cuando detecta que se ha modifica un fichero fuerza a que el navegador se actualice automáticamente.&lt;/p&gt;
+&lt;p&gt;LiveReload trae incorporado varios preprocesadores como por ejemplo CoffeeScript, LESS o SASS. Esto ya se vuelve mucho más interesante, puedes estar modificando un fichero less y el cambio se refleja automáticamente en el navegador. Sin tener que compilar manualmente ese fichero. Esto es una clara ventaja a utilizar las herramientas de desarrollo del navegador para probar los cambios de diseño y luego llevar esos cambios al fichero.&lt;/p&gt;
+&lt;p&gt;LiveReload está disponible para OS X en la App Store por $9.99 y para windows está en versión beta. &lt;/p&gt;
+&lt;p&gt;Si prefieres no utilizar una aplicación con GUI, en la página recomiendan utilizar &lt;a href=&quot;https://github.com/guard/guard-livereload&quot;&gt;guard-livereload&lt;/a&gt;. Una librería escrita en ruby que permite hacer de servidor livereload. En este post explican cómo configurarlo: &lt;a href=&quot;http://icoloma.blogspot.com.es/2012/06/using-livereload-on-linux.html&quot;&gt;&lt;a href=&quot;http://icoloma.blogspot.com.es/2012/06/using-livereload-on-linux.html&quot;&gt;http://icoloma.blogspot.com.es/2012/06/using-livereload-on-linux.html&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h3&gt;Desventajas de utilizar LiveReload&lt;/h3&gt;
-&lt;p&gt;El principal problema que le encuentro a LiveReload es que no se integra con el ciclo de compilación de la aplicación. Es una aplicación externa que duplica la configuración de los preprocesadores. Por un lado está la configuración en grunt, para empaquetar la aplicación y por otro lado livereload para hacer el desarrollo más cómodo. Mantener la misma configuración en dos sitios distintos puede llevar a errores de sincronización.
-
-&lt;/p&gt;
+&lt;p&gt;El principal problema que le encuentro a LiveReload es que no se integra con el ciclo de compilación de la aplicación. Es una aplicación externa que duplica la configuración de los preprocesadores. Por un lado está la configuración en grunt, para empaquetar la aplicación y por otro lado livereload para hacer el desarrollo más cómodo. Mantener la misma configuración en dos sitios distintos puede llevar a errores de sincronización.&lt;/p&gt;
 &lt;h2&gt;grunt-reload&lt;/h2&gt;
-&lt;p&gt;Buscando entre los plugins que tiene grunt encontré uno que hace una funcionalidad similar,  se llama &lt;a href=&quot;https://github.com/webxl/grunt-reload&quot;&gt;grunt-reload&lt;/a&gt;. Para que funcione no hace falta instalar ninguna extensión en el navegador y lo mejor de todo es que es completamente gratis.
-
-&lt;/p&gt;
+&lt;p&gt;Buscando entre los plugins que tiene grunt encontré uno que hace una funcionalidad similar,  se llama &lt;a href=&quot;https://github.com/webxl/grunt-reload&quot;&gt;grunt-reload&lt;/a&gt;. Para que funcione no hace falta instalar ninguna extensión en el navegador y lo mejor de todo es que es completamente gratis.&lt;/p&gt;
 &lt;h3&gt;Configuración de un proyecto usando grunt-reload&lt;/h3&gt;
-&lt;p&gt;Lo primero, ya que vamos a trabajar con grunt, debemos tener instalado &lt;a href=&quot;http://nodejs.org/#download&quot;&gt;node.js y NPM&lt;/a&gt;.
-
-&lt;/p&gt;
-&lt;p&gt;Para el proyecto de ejemplo vamos a ver como integrar &lt;a href=&quot;https://github.com/jharding/grunt-less&quot;&gt;grunt-less&lt;/a&gt; y &lt;a href=&quot;https://github.com/webxl/grunt-reload&quot;&gt;grunt-reload&lt;/a&gt;. Lo primero que vamos a hacer es crear un fichero &lt;code&gt;package.json&lt;/code&gt; donde vamos a configurar las dependencias del proyecto. Para la gente que viene del mundo de Java, este fichero es el equivalente al &lt;code&gt;pom.xml&lt;/code&gt; de maven.
-
-&lt;/p&gt;
-&lt;p&gt;package.json
-&lt;/p&gt;
+&lt;p&gt;Lo primero, ya que vamos a trabajar con grunt, debemos tener instalado &lt;a href=&quot;http://nodejs.org/#download&quot;&gt;node.js y NPM&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Para el proyecto de ejemplo vamos a ver como integrar &lt;a href=&quot;https://github.com/jharding/grunt-less&quot;&gt;grunt-less&lt;/a&gt; y &lt;a href=&quot;https://github.com/webxl/grunt-reload&quot;&gt;grunt-reload&lt;/a&gt;. Lo primero que vamos a hacer es crear un fichero &lt;code&gt;package.json&lt;/code&gt; donde vamos a configurar las dependencias del proyecto. Para la gente que viene del mundo de Java, este fichero es el equivalente al &lt;code&gt;pom.xml&lt;/code&gt; de maven.&lt;/p&gt;
+&lt;p&gt;package.json&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;{
     &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;post-grunt-reload&quot;&lt;/span&gt;,
     &lt;span class=&quot;string&quot;&gt;&quot;description&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;Source code from post&quot;&lt;/span&gt;,
@@ -490,15 +534,10 @@ NSLog(nameInfo&lt;span class=&quot;preprocessor&quot;&gt;.name&lt;/span&gt;)&lt;
     },
     &lt;span class=&quot;string&quot;&gt;&quot;engine&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;node 0.6.0&quot;&lt;/span&gt;
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Ya tenemos las dependencias definidas, para instalarlas:
-
-&lt;/p&gt;
+&lt;p&gt;Ya tenemos las dependencias definidas, para instalarlas:&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;nginx&quot;&gt;&lt;span class=&quot;title&quot;&gt;npm&lt;/span&gt; install&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Ahora vamos a preparar un ejemplo sencillo que utilice less:
-
-&lt;/p&gt;
-&lt;p&gt;index.html
-&lt;/p&gt;
+&lt;p&gt;Ahora vamos a preparar un ejemplo sencillo que utilice less:&lt;/p&gt;
+&lt;p&gt;index.html&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;doctype&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;html&lt;/span&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;head&lt;/span&gt;&amp;gt;&lt;/span&gt;
@@ -509,8 +548,7 @@ NSLog(nameInfo&lt;span class=&quot;preprocessor&quot;&gt;.name&lt;/span&gt;)&lt;
     &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;msg&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;This page reload automatically when a file is modified :D&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;body&lt;/span&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;html&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;style.less
-&lt;/p&gt;
+&lt;p&gt;style.less&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;css&quot;&gt;&lt;span class=&quot;at_rule&quot;&gt;@bgColor: #ff5412&lt;/span&gt;;
 &lt;span class=&quot;at_rule&quot;&gt;@textColor: #fff&lt;/span&gt;;
 
@@ -518,11 +556,8 @@ NSLog(nameInfo&lt;span class=&quot;preprocessor&quot;&gt;.name&lt;/span&gt;)&lt;
     &lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;background-color&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; @bgColor;&lt;/span&gt;&lt;/span&gt;
     &lt;span class=&quot;rule&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;color&lt;/span&gt;:&lt;span class=&quot;value&quot;&gt; @textColor;&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;rule&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Por último nos queda configurar grunt para integrar las dos tasks.
-
-&lt;/p&gt;
-&lt;p&gt;grunt.js
-&lt;/p&gt;
+&lt;p&gt;Por último nos queda configurar grunt para integrar las dos tasks.&lt;/p&gt;
+&lt;p&gt;grunt.js&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;module.exports = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(grunt)&lt;/span&gt; {&lt;/span&gt;
 
     &lt;span class=&quot;comment&quot;&gt;// Project configuration.&lt;/span&gt;
@@ -554,71 +589,43 @@ NSLog(nameInfo&lt;span class=&quot;preprocessor&quot;&gt;.name&lt;/span&gt;)&lt;
     grunt.registerTask(&lt;span class=&quot;string&quot;&gt;'default'&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'less'&lt;/span&gt;);
     grunt.registerTask(&lt;span class=&quot;string&quot;&gt;'dev'&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'server reload watch'&lt;/span&gt;);
 };&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Ejecutando el comando
-
-&lt;/p&gt;
+&lt;p&gt;Ejecutando el comando&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;nginx&quot;&gt;&lt;span class=&quot;title&quot;&gt;grunt&lt;/span&gt; dev&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Se arrancará un servidor en el puerto 8000 y un proxy en el 8001. Accediendo a &lt;a href=&quot;http://localhost:8001/&quot;&gt;&lt;a href=&quot;http://localhost:8001/&quot;&gt;http://localhost:8001/&lt;/a&gt;&lt;/a&gt; con un navegador que tenga soporte para websockets, los cambios que hagamos en el fichero .less producieran que se actualice la página automáticamente. El último paso y más importante es buscar un monitor lo suficientemente grande donde quepa el editor de texto y el navegador a la vez.
-
-&lt;/p&gt;
+&lt;p&gt;Se arrancará un servidor en el puerto 8000 y un proxy en el 8001. Accediendo a &lt;a href=&quot;http://localhost:8001/&quot;&gt;&lt;a href=&quot;http://localhost:8001/&quot;&gt;http://localhost:8001/&lt;/a&gt;&lt;/a&gt; con un navegador que tenga soporte para websockets, los cambios que hagamos en el fichero .less producieran que se actualice la página automáticamente. El último paso y más importante es buscar un monitor lo suficientemente grande donde quepa el editor de texto y el navegador a la vez.&lt;/p&gt;
 &lt;h2&gt;¿Cómo funciona?&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&quot;https://docs.google.com/drawings/pub?id=1cDIetWqZmVvZzag7ec1QhhbNGkbUa-wCCFNWz2cFvL4&amp;amp;w=960&amp;amp;h=720&quot; alt=&quot;Grun Live Reload diagram&quot; /&gt;
-
-&lt;/p&gt;
-&lt;p&gt;El funcionamiento es muy sencillo. Al ejecutar el comando &lt;code&gt;grunt dev&lt;/code&gt; se lanza un servidor, en el puerto 8000, un proxy en el puerto 80001 y un servidor que se encargará de gestionar las conexiones de webscokets.
-
-&lt;/p&gt;
-&lt;p&gt;La función del reload proxy es inyectar un javascript en la página. Este javascript se va a encargar de las funciones de livereload. Cuando se cargue la página abrirá una conexión con el servidor websocket.
-
-&lt;/p&gt;
-&lt;p&gt;Cuando la tarea grunt watch detecte cambios en alguno de los ficheros que está monitorizando, ejecutará los preprocesadores que tengamos configurados y llamará a la tarea reload. Esta tarea se comunicará con el servidor de webscoket para informarle de que hay que reiniciar la página. El servidor de webscoket se comunicará con todos los navegadores que tengan una conexión abierta enviándoles un mensaje de reload. El javascript inyectado es el que va a forzar la actualización de la página cuando reciba este mensaje.
-
-&lt;/p&gt;
-&lt;p&gt;Aquí tienes una lista de navegadores que soportan websockets
-
-&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://docs.google.com/drawings/pub?id=1cDIetWqZmVvZzag7ec1QhhbNGkbUa-wCCFNWz2cFvL4&amp;amp;w=960&amp;amp;h=720&quot; alt=&quot;Grun Live Reload diagram&quot;&gt;&lt;/p&gt;
+&lt;p&gt;El funcionamiento es muy sencillo. Al ejecutar el comando &lt;code&gt;grunt dev&lt;/code&gt; se lanza un servidor, en el puerto 8000, un proxy en el puerto 80001 y un servidor que se encargará de gestionar las conexiones de webscokets.&lt;/p&gt;
+&lt;p&gt;La función del reload proxy es inyectar un javascript en la página. Este javascript se va a encargar de las funciones de livereload. Cuando se cargue la página abrirá una conexión con el servidor websocket.&lt;/p&gt;
+&lt;p&gt;Cuando la tarea grunt watch detecte cambios en alguno de los ficheros que está monitorizando, ejecutará los preprocesadores que tengamos configurados y llamará a la tarea reload. Esta tarea se comunicará con el servidor de webscoket para informarle de que hay que reiniciar la página. El servidor de webscoket se comunicará con todos los navegadores que tengan una conexión abierta enviándoles un mensaje de reload. El javascript inyectado es el que va a forzar la actualización de la página cuando reciba este mensaje.&lt;/p&gt;
+&lt;p&gt;Aquí tienes una lista de navegadores que soportan websockets&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://caniuse.com/#feat=websockets&quot;&gt;&lt;a href=&quot;http://caniuse.com/#feat=websockets&quot;&gt;http://caniuse.com/#feat=websockets&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>Labs : Canvas Star Wars</title>
-            <link href="http://axelhzf.com/blog/2012-05-30-labs-canvas-star-wars.html"/>
-            <updated>2012-05-30T08:15:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2012-05-30-labs-canvas-star-wars.html</id>
-            <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/star_wars.png&quot; alt=&quot;Star Wars&quot;&gt;
-
-&lt;/p&gt;
+		</entry>
+	
+		<entry>
+			<title>Labs : Canvas Star Wars</title>
+			<link href="http://axelhzf.com/blog/2012-05-30-labs-canvas-star-wars.html"/>
+			<updated>2012-05-30T08:15:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2012-05-30-labs-canvas-star-wars.html</id>
+			<content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/star_wars.png&quot; alt=&quot;Star Wars&quot;&gt;&lt;/p&gt;
 &lt;p&gt;Para el &lt;a href=&quot;http://axelhzf.com/ios-curso/cocos2d.html&quot;&gt;curso de iOS&lt;/a&gt; preparé un pequeño juego de Star Wars para aprender a utilizar Cocos2D.
-Estos últimos días he estado aprendiendo &lt;a href=&quot;https://developer.mozilla.org/en/Canvas_tutorial&quot;&gt;canvas&lt;/a&gt; y me decidí a hacer una versión del juego de Star Wars en canvas.
-
-&lt;/p&gt;
+Estos últimos días he estado aprendiendo &lt;a href=&quot;https://developer.mozilla.org/en/Canvas_tutorial&quot;&gt;canvas&lt;/a&gt; y me decidí a hacer una versión del juego de Star Wars en canvas.&lt;/p&gt;
 &lt;p&gt;El código fuente está disponible en github
-&lt;a href=&quot;https://github.com/axelhzf/starwars-canvas&quot;&gt;&lt;a href=&quot;https://github.com/axelhzf/starwars-canvas&quot;&gt;https://github.com/axelhzf/starwars-canvas&lt;/a&gt;&lt;/a&gt;.
-
-
-&lt;/p&gt;
+&lt;a href=&quot;https://github.com/axelhzf/starwars-canvas&quot;&gt;&lt;a href=&quot;https://github.com/axelhzf/starwars-canvas&quot;&gt;https://github.com/axelhzf/starwars-canvas&lt;/a&gt;&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://axelhzf.com/starwars-canvas/&quot;&gt;Play Game&lt;/a&gt;&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>Grunt vs Wro4j</title>
-            <link href="http://axelhzf.com/blog/2012-05-28-grunt-vs-wro4j.html"/>
-            <updated>2012-05-28T21:01:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2012-05-28-grunt-vs-wro4j.html</id>
-            <content type="html">&lt;p&gt;En el post anterior hice la siguiente afirmación sin dar ningún dato:
-
-
-&lt;/p&gt;
+		</entry>
+	
+		<entry>
+			<title>Grunt vs Wro4j</title>
+			<link href="http://axelhzf.com/blog/2012-05-28-grunt-vs-wro4j.html"/>
+			<updated>2012-05-28T21:01:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2012-05-28-grunt-vs-wro4j.html</id>
+			<content type="html">&lt;p&gt;En el post anterior hice la siguiente afirmación sin dar ningún dato:&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;He probado algunas otras herramientas que tienen el mismo objetivo, como por ejemplo wro4j, pero grunt es mucho más rápido.
-
-&lt;/p&gt;
+&lt;p&gt;He probado algunas otras herramientas que tienen el mismo objetivo, como por ejemplo wro4j, pero grunt es mucho más rápido.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;En realidad no había hecho ninguna prueba, fue la sensación que tuve al utilizar las dos herramientas. &lt;a href=&quot;http://www.twitter.com/alexobjelean&quot;&gt;Alex Objelean&lt;/a&gt;, el creador de wro4j, escribió un comentario preguntando si había hecho alguna prueba de rendimiento. Para ser justos me decidí a hacer una comparativa.
-
-&lt;/p&gt;
+&lt;p&gt;En realidad no había hecho ninguna prueba, fue la sensación que tuve al utilizar las dos herramientas. &lt;a href=&quot;http://www.twitter.com/alexobjelean&quot;&gt;Alex Objelean&lt;/a&gt;, el creador de wro4j, escribió un comentario preguntando si había hecho alguna prueba de rendimiento. Para ser justos me decidí a hacer una comparativa.&lt;/p&gt;
 &lt;h2&gt;Máquina de pruebas&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Intel Core 2 Duo 2,66 GHz&lt;/li&gt;
@@ -626,9 +633,7 @@ Estos últimos días he estado aprendiendo &lt;a href=&quot;https://developer.mo
 &lt;li&gt;OS X Lion 10.7.4&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Pruebas&lt;/h2&gt;
-&lt;p&gt;La prueba consistió en compilar :
-
-&lt;/p&gt;
+&lt;p&gt;La prueba consistió en compilar :&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://code.jquery.com/jquery-1.7.2.js&quot;&gt;jquery 1.7.2&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://underscorejs.org/underscore.js&quot;&gt;underscore 1.3.3&lt;/a&gt;&lt;/li&gt;
@@ -641,14 +646,12 @@ Estos últimos días he estado aprendiendo &lt;a href=&quot;https://developer.mo
 ├── grunt&lt;span class=&quot;variable&quot;&gt;.js&lt;/span&gt;
 └── src
     ├── js
-    │&amp;amp;nbsp;&amp;amp;nbsp; ├── backbone&lt;span class=&quot;variable&quot;&gt;.js&lt;/span&gt;
-    │&amp;amp;nbsp;&amp;amp;nbsp; ├── jquery-&lt;span class=&quot;number&quot;&gt;1.7&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;.2&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;.js&lt;/span&gt;
-    │&amp;amp;nbsp;&amp;amp;nbsp; └── underscore&lt;span class=&quot;variable&quot;&gt;.js&lt;/span&gt;
+    │   ├── backbone&lt;span class=&quot;variable&quot;&gt;.js&lt;/span&gt;
+    │   ├── jquery-&lt;span class=&quot;number&quot;&gt;1.7&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;.2&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;.js&lt;/span&gt;
+    │   └── underscore&lt;span class=&quot;variable&quot;&gt;.js&lt;/span&gt;
     └── less
         ├── *bootstrap&lt;span class=&quot;variable&quot;&gt;.less&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;grunt.js
-
-&lt;/p&gt;
+&lt;p&gt;grunt.js&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;module.exports = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(grunt)&lt;/span&gt; {&lt;/span&gt;
     grunt.initConfig({
         concat : {
@@ -685,13 +688,12 @@ Estos últimos días he estado aprendiendo &lt;a href=&quot;https://developer.mo
 ├── wro&lt;span class=&quot;variable&quot;&gt;.properties&lt;/span&gt;
 └── src
     ├── js
-    │&amp;amp;nbsp;&amp;amp;nbsp; ├── backbone&lt;span class=&quot;variable&quot;&gt;.js&lt;/span&gt;
-    │&amp;amp;nbsp;&amp;amp;nbsp; ├── jquery-&lt;span class=&quot;number&quot;&gt;1.7&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;.2&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;.js&lt;/span&gt;
-    │&amp;amp;nbsp;&amp;amp;nbsp; └── underscore&lt;span class=&quot;variable&quot;&gt;.js&lt;/span&gt;
+    │   ├── backbone&lt;span class=&quot;variable&quot;&gt;.js&lt;/span&gt;
+    │   ├── jquery-&lt;span class=&quot;number&quot;&gt;1.7&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;.2&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;.js&lt;/span&gt;
+    │   └── underscore&lt;span class=&quot;variable&quot;&gt;.js&lt;/span&gt;
     └── less
         ├── *bootstrap&lt;span class=&quot;variable&quot;&gt;.less&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;pom.xml
-&lt;/p&gt;
+&lt;p&gt;pom.xml&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;project&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;http://maven.apache.org/POM/4.0.0&quot;&lt;/span&gt;
          &lt;span class=&quot;attribute&quot;&gt;xmlns:xsi&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&lt;/span&gt;
          &lt;span class=&quot;attribute&quot;&gt;xsi:schemaLocation&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;http://maven.apache.org/POM/4.0.0
@@ -735,8 +737,7 @@ Estos últimos días he estado aprendiendo &lt;a href=&quot;https://developer.mo
         &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;plugins&lt;/span&gt;&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;build&lt;/span&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;project&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;wro.xml
-&lt;/p&gt;
+&lt;p&gt;wro.xml&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;groups&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;http://www.isdc.ro/wro&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;group&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;name&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;all&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;
         &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;css&lt;/span&gt;&amp;gt;&lt;/span&gt;/src/less/bootstrap.less&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;css&lt;/span&gt;&amp;gt;&lt;/span&gt;
@@ -744,13 +745,11 @@ Estos últimos días he estado aprendiendo &lt;a href=&quot;https://developer.mo
         &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;js&lt;/span&gt;&amp;gt;&lt;/span&gt;/src/js/backbone.js&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;js&lt;/span&gt;&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;group&lt;/span&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;groups&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;wro.properties
-&lt;/p&gt;
+&lt;p&gt;wro.properties&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;preProcessors=cssImport
 postProcessors=lessCss, uglifyJs&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;Ejecución&lt;/h2&gt;
-&lt;p&gt;grunt
-&lt;/p&gt;
+&lt;p&gt;grunt&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;axel:grunt axelhzf$ time grunt
 Running &lt;span class=&quot;string&quot;&gt;&quot;concat:dist&quot;&lt;/span&gt; (concat) task
 File &lt;span class=&quot;string&quot;&gt;&quot;dist/built.js&quot;&lt;/span&gt; created.
@@ -770,8 +769,7 @@ Done, without errors.
 real    0m5.620s
 user    0m4.534s
 sys    0m0.177s&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;wro4j
-&lt;/p&gt;
+&lt;p&gt;wro4j&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;axel:wro4j axelhzf$ mvn compile
 [INFO] Scanning &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; projects...
 [INFO]                                                                         
@@ -815,25 +813,17 @@ sys    0m0.177s&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;Conclusión&lt;/h2&gt;
 &lt;p&gt;La diferencia de tiempos es considerable. Creo que la principal diferencia entre las dos herramientas es el motor de javascript que utilizan. Wro4j usa &lt;a href=&quot;http://www.mozilla.org/rhino/&quot;&gt;rhino&lt;/a&gt; mientras que grunt utiliza &lt;a href=&quot;http://code.google.com/p/v8/&quot;&gt;v8&lt;/a&gt;. En &lt;a href=&quot;http://axtaxt.wordpress.com/2011/09/25/benchmark-rhino-vs-chrome-v8-on-server-side/&quot;&gt;este artículo&lt;/a&gt; se realiza una comparativa de rendimiento de los dos motores.&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>grunt</title>
-            <link href="http://axelhzf.com/blog/2012-05-27-grunt.html"/>
-            <updated>2012-05-27T15:07:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2012-05-27-grunt.html</id>
-            <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/grunt.png&quot; alt=&quot;grunt&quot; /&gt;
-
-&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/cowboy/grunt&quot;&gt;Grunt&lt;/a&gt; es una herramienta para construir proyectos javascript. Se encarga de las tareas básicas de la de compilación como puede ser concatenar y minimizar los ficheros, ejecutar los test, validar la sintaxis, etc. Es personalizable y se pueden definir nuevas tareas para cubrir las necesidades de nuestro proyecto.
-
-&lt;/p&gt;
-&lt;p&gt;Lo primero que me llamo la atención es su rapidez. He probado algunas otras herramientas que tienen el mismo objetivo, como por ejemplo &lt;a href=&quot;http://code.google.com/p/wro4j/&quot;&gt;wro4j&lt;/a&gt;, pero grunt es mucho más rápido.
-
-&lt;/p&gt;
-&lt;p&gt;Las tareas que trae grunt por defecto son:
-
-&lt;/p&gt;
+		</entry>
+	
+		<entry>
+			<title>grunt</title>
+			<link href="http://axelhzf.com/blog/2012-05-27-grunt.html"/>
+			<updated>2012-05-27T15:07:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2012-05-27-grunt.html</id>
+			<content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/grunt.png&quot; alt=&quot;grunt&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/cowboy/grunt&quot;&gt;Grunt&lt;/a&gt; es una herramienta para construir proyectos javascript. Se encarga de las tareas básicas de la de compilación como puede ser concatenar y minimizar los ficheros, ejecutar los test, validar la sintaxis, etc. Es personalizable y se pueden definir nuevas tareas para cubrir las necesidades de nuestro proyecto.&lt;/p&gt;
+&lt;p&gt;Lo primero que me llamo la atención es su rapidez. He probado algunas otras herramientas que tienen el mismo objetivo, como por ejemplo &lt;a href=&quot;http://code.google.com/p/wro4j/&quot;&gt;wro4j&lt;/a&gt;, pero grunt es mucho más rápido.&lt;/p&gt;
+&lt;p&gt;Las tareas que trae grunt por defecto son:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;concat&lt;/code&gt; - Concatena ficheros&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;init&lt;/code&gt; - Crea un proyecto a partir de una plantilla&lt;/li&gt;
@@ -845,21 +835,13 @@ sys    0m0.177s&lt;/code&gt;&lt;/pre&gt;
 &lt;li&gt;&lt;code&gt;watch&lt;/code&gt; - Ejecuta tareas automáticamente cuando los ficheros se han modificado&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Instalación&lt;/h2&gt;
-&lt;p&gt;Para instalar grunt.js lo más sencillo es utilizar &lt;a href=&quot;http://npmjs.org/&quot;&gt;npm&lt;/a&gt; el gestor de paquetes de node. El comando es
-
-&lt;/p&gt;
+&lt;p&gt;Para instalar grunt.js lo más sencillo es utilizar &lt;a href=&quot;http://npmjs.org/&quot;&gt;npm&lt;/a&gt; el gestor de paquetes de node. El comando es&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;nginx&quot;&gt;&lt;span class=&quot;title&quot;&gt;npm&lt;/span&gt; install grunt    &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Opcionalmente se le puede pasar la opcion &lt;code&gt;-g&lt;/code&gt; para que instale el paquete de forma global. Esto es particularmente interesante para poder ejecutar la tarea &lt;code&gt;init&lt;/code&gt; en cualquier carpeta.
-
-&lt;/p&gt;
+&lt;p&gt;Opcionalmente se le puede pasar la opcion &lt;code&gt;-g&lt;/code&gt; para que instale el paquete de forma global. Esto es particularmente interesante para poder ejecutar la tarea &lt;code&gt;init&lt;/code&gt; en cualquier carpeta.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;nginx&quot;&gt;&lt;span class=&quot;title&quot;&gt;npm&lt;/span&gt; install -g grunt&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;Configuración&lt;/h2&gt;
-&lt;p&gt;Grunt se configura mediante el fichero &lt;code&gt;grunt.js&lt;/code&gt; en la raíz del proyecto. En este fichero podremos configurar las diferentes tareas que van a intervenir en la compilación del proyecto.
-
-
-&lt;/p&gt;
-&lt;p&gt;grunt.js
-&lt;/p&gt;
+&lt;p&gt;Grunt se configura mediante el fichero &lt;code&gt;grunt.js&lt;/code&gt; en la raíz del proyecto. En este fichero podremos configurar las diferentes tareas que van a intervenir en la compilación del proyecto.&lt;/p&gt;
+&lt;p&gt;grunt.js&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;module.exports = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(grunt)&lt;/span&gt; {&lt;/span&gt;
     grunt.initConfig({
         lint : {
@@ -886,27 +868,15 @@ sys    0m0.177s&lt;/code&gt;&lt;/pre&gt;
     });
     grunt.registerTask(&lt;span class=&quot;string&quot;&gt;'default'&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'lint concat min'&lt;/span&gt;);
 };&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Esta es una configuración básica de grunt en la que estamos validando los ficheros, concatenándolos y minimizánlos. La configuración se hace mediante javascript, nos evitamos problemas definiendo ficheros xml como se hace con otras herramientas.
-
-&lt;/p&gt;
-&lt;p&gt;Al ejecutar el comando
-
-&lt;/p&gt;
-&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;http&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;grunt&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Se ejecuta la tarea &lt;code&gt;default&lt;/code&gt; que tal como definimos, se encarga de ejecutar las otras tareas. Si queremos ejecutar una tarea en concreto
-
-&lt;/p&gt;
+&lt;p&gt;Esta es una configuración básica de grunt en la que estamos validando los ficheros, concatenándolos y minimizánlos. La configuración se hace mediante javascript, nos evitamos problemas definiendo ficheros xml como se hace con otras herramientas.&lt;/p&gt;
+&lt;p&gt;Al ejecutar el comando&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;http&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;grunt&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Se ejecuta la tarea &lt;code&gt;default&lt;/code&gt; que tal como definimos, se encarga de ejecutar las otras tareas. Si queremos ejecutar una tarea en concreto&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;nginx&quot;&gt;&lt;span class=&quot;title&quot;&gt;grunt&lt;/span&gt; lint&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Puedes ver cómo se configuran el resto de tareas en la &lt;a href=&quot;https://github.com/cowboy/grunt/tree/master/docs&quot;&gt;documentación&lt;/a&gt;.
-
-&lt;/p&gt;
-&lt;p&gt;Para utilizar una tarea que no viene por defecto, lo primero que debemos hacer es instarla. En este caso vamos a hacer las pruebas con &lt;a href=&quot;https://github.com/sindresorhus/grunt-recess&quot;&gt;grunt-recess&lt;/a&gt; una tarea que permite validar y minimizar archivos CSS y LESS. Para la instalación también se utiliza npm.
-
-&lt;/p&gt;
+&lt;p&gt;Puedes ver cómo se configuran el resto de tareas en la &lt;a href=&quot;https://github.com/cowboy/grunt/tree/master/docs&quot;&gt;documentación&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Para utilizar una tarea que no viene por defecto, lo primero que debemos hacer es instarla. En este caso vamos a hacer las pruebas con &lt;a href=&quot;https://github.com/sindresorhus/grunt-recess&quot;&gt;grunt-recess&lt;/a&gt; una tarea que permite validar y minimizar archivos CSS y LESS. Para la instalación también se utiliza npm.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;nginx&quot;&gt;&lt;span class=&quot;title&quot;&gt;npm&lt;/span&gt; install grunt-recess&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Una vez instalado lo único que debemos hacer es añadir la configuración al fichero grunt.js
-
-&lt;/p&gt;
+&lt;p&gt;Una vez instalado lo único que debemos hacer es añadir la configuración al fichero grunt.js&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;module.exports = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(grunt)&lt;/span&gt; {&lt;/span&gt;
     grunt.initConfig({
         &lt;span class=&quot;comment&quot;&gt;//....&lt;/span&gt;
@@ -924,12 +894,8 @@ sys    0m0.177s&lt;/code&gt;&lt;/pre&gt;
     grunt.loadNpmTasks(&lt;span class=&quot;string&quot;&gt;'grunt-recess'&lt;/span&gt;);
     grunt.registerTask(&lt;span class=&quot;string&quot;&gt;'default'&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'lint concat min recess'&lt;/span&gt;);
 };&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Lo primero que debemos hacer es incluir la tarea utilizando el comando &lt;code&gt;grunt.loadNpmTasks&lt;/code&gt; y configurarla de la misma forma que las tareas básicas.
-
-&lt;/p&gt;
-&lt;p&gt;Esta tarea se presta a combinarla con la tarea watch. De forma que cada vez que cada vez que se modifique un fichero less se compile automáticamente.
-
-&lt;/p&gt;
+&lt;p&gt;Lo primero que debemos hacer es incluir la tarea utilizando el comando &lt;code&gt;grunt.loadNpmTasks&lt;/code&gt; y configurarla de la misma forma que las tareas básicas.&lt;/p&gt;
+&lt;p&gt;Esta tarea se presta a combinarla con la tarea watch. De forma que cada vez que cada vez que se modifique un fichero less se compile automáticamente.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;module.exports = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(grunt)&lt;/span&gt; {&lt;/span&gt;
     grunt.initConfig({
         &lt;span class=&quot;comment&quot;&gt;//....&lt;/span&gt;
@@ -952,38 +918,24 @@ sys    0m0.177s&lt;/code&gt;&lt;/pre&gt;
     grunt.loadNpmTasks(&lt;span class=&quot;string&quot;&gt;'grunt-recess'&lt;/span&gt;);
     grunt.registerTask(&lt;span class=&quot;string&quot;&gt;'default'&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'lint concat min recess'&lt;/span&gt;);
 };&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Después ejecutamos
-
-&lt;/p&gt;
+&lt;p&gt;Después ejecutamos&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;nginx&quot;&gt;&lt;span class=&quot;title&quot;&gt;grunt&lt;/span&gt; watch&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Y cada vez que modifiquemos un fichero less, se volverá a regerar el fichero css compilado y minimizado.&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>IntelliJ Idea keyboard shortcuts</title>
-            <link href="http://axelhzf.com/blog/2012-05-20-intellij-idea-keyboard-shortcuts.html"/>
-            <updated>2012-05-20T10:30:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2012-05-20-intellij-idea-keyboard-shortcuts.html</id>
-            <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/intellij_idea.gif&quot; alt=&quot;Intellij Idea&quot;&gt;
-Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en los que sale ganador de comparativas con Eclipse o Netbeans. El año pasado le intenté dar una oportunidad pero la cosa no fue bien. En ese momento estaba desarrollando un plugin para Eclipse por lo que no tenía mucho sentido que utilizara en IntelliJ. Mi situación cambió hace unos dos meses, cambié de trabajo y ahora me dedico casi exclusivamente a desarrollo front-end. Estoy ampliando mucho mis conocimientos de javascript que antes se limitaba a lo básico de jQuery. El soporte que tiene Eclipse para javascript me daba la sensación de que perjudicaba más que ayudar. Incluso editores de textos con esteroides como &lt;a href=&quot;http://www.sublimetext.com/&quot;&gt;SublimeText&lt;/a&gt; ayudan más a la hora de escribir javascript. Dada esta situación decidí darle una segunda oportunidad a IntelliJ, que si tiene un soporte de verdad para javascript, resaltado de sintaxis, refactor, integración con jslint, búsqueda usos dinámicos, etc.
-
-&lt;/p&gt;
-&lt;p&gt;El problema de cambiar de IDE es que tienes que cambiar por completo tu flujo de trabajo. Tienes que aprender a crear proyectos, compilarlos y desplegarlos. Realizar las tareas más básicas se convierte en una búsqueda constante por los menús, la ayuda y stackoverflow. Durante este periodo de aprendizaje eres menos productivo. Estás acostumbrado a trabajar de una manera y es complicado cambiarla, aunque sea para mejor. Más vale IDE malo conocido que bueno por conocer (te estoy mirando a ti plugin de maven para Eclipse).
-
-&lt;/p&gt;
-&lt;p&gt;De las cosas más importantes que tienes que aprender cuando estás trabajando con un IDE nuevo si quieres ser productivo son los atajos de teclado. Para ver y editar los atajos de teclado en IntelliJ tienes que ir al menú &lt;code&gt;Settings/keymap&lt;/code&gt;. Por defecto viene con algunos presets, incluso viene con un preset similar a Eclipse para hacer menos traumático el cambio.
-
-&lt;/p&gt;
-&lt;p&gt;Encontré este posts con una recopilación de atajos
-
-&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://stackoverflow.com/questions/294167/what-are-the-most-useful-intellij-idea-keyboard-shortcuts&quot;&gt;&lt;a href=&quot;http://stackoverflow.com/questions/294167/what-are-the-most-useful-intellij-idea-keyboard-shortcuts&quot;&gt;http://stackoverflow.com/questions/294167/what-are-the-most-useful-intellij-idea-keyboard-shortcuts&lt;/a&gt;&lt;/a&gt;
-
-&lt;/p&gt;
-&lt;p&gt;Hay algunos que considero básicos que no estaban en esa lista por lo que dejo mi propia lista de atajos de teclado:
-
-&lt;/p&gt;
+		</entry>
+	
+		<entry>
+			<title>IntelliJ Idea keyboard shortcuts</title>
+			<link href="http://axelhzf.com/blog/2012-05-20-intellij-idea-keyboard-shortcuts.html"/>
+			<updated>2012-05-20T10:30:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2012-05-20-intellij-idea-keyboard-shortcuts.html</id>
+			<content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/intellij_idea.gif&quot; alt=&quot;Intellij Idea&quot;&gt;
+Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en los que sale ganador de comparativas con Eclipse o Netbeans. El año pasado le intenté dar una oportunidad pero la cosa no fue bien. En ese momento estaba desarrollando un plugin para Eclipse por lo que no tenía mucho sentido que utilizara en IntelliJ. Mi situación cambió hace unos dos meses, cambié de trabajo y ahora me dedico casi exclusivamente a desarrollo front-end. Estoy ampliando mucho mis conocimientos de javascript que antes se limitaba a lo básico de jQuery. El soporte que tiene Eclipse para javascript me daba la sensación de que perjudicaba más que ayudar. Incluso editores de textos con esteroides como &lt;a href=&quot;http://www.sublimetext.com/&quot;&gt;SublimeText&lt;/a&gt; ayudan más a la hora de escribir javascript. Dada esta situación decidí darle una segunda oportunidad a IntelliJ, que si tiene un soporte de verdad para javascript, resaltado de sintaxis, refactor, integración con jslint, búsqueda usos dinámicos, etc.&lt;/p&gt;
+&lt;p&gt;El problema de cambiar de IDE es que tienes que cambiar por completo tu flujo de trabajo. Tienes que aprender a crear proyectos, compilarlos y desplegarlos. Realizar las tareas más básicas se convierte en una búsqueda constante por los menús, la ayuda y stackoverflow. Durante este periodo de aprendizaje eres menos productivo. Estás acostumbrado a trabajar de una manera y es complicado cambiarla, aunque sea para mejor. Más vale IDE malo conocido que bueno por conocer (te estoy mirando a ti plugin de maven para Eclipse).&lt;/p&gt;
+&lt;p&gt;De las cosas más importantes que tienes que aprender cuando estás trabajando con un IDE nuevo si quieres ser productivo son los atajos de teclado. Para ver y editar los atajos de teclado en IntelliJ tienes que ir al menú &lt;code&gt;Settings/keymap&lt;/code&gt;. Por defecto viene con algunos presets, incluso viene con un preset similar a Eclipse para hacer menos traumático el cambio.&lt;/p&gt;
+&lt;p&gt;Encontré este posts con una recopilación de atajos&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://stackoverflow.com/questions/294167/what-are-the-most-useful-intellij-idea-keyboard-shortcuts&quot;&gt;&lt;a href=&quot;http://stackoverflow.com/questions/294167/what-are-the-most-useful-intellij-idea-keyboard-shortcuts&quot;&gt;http://stackoverflow.com/questions/294167/what-are-the-most-useful-intellij-idea-keyboard-shortcuts&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Hay algunos que considero básicos que no estaban en esa lista por lo que dejo mi propia lista de atajos de teclado:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Cmd + Shift + A : Este es el atajo de teclado definitivo. Aparecerá una caja de búsqueda donde podrás buscar entre todas las acciones que puedes realizar.&lt;/li&gt;
 &lt;li&gt;Cmd + N : Buscar clase&lt;/li&gt;
@@ -997,45 +949,30 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
 &lt;/ul&gt;
 &lt;p&gt;Iré añadiendo más a la lista a medida que los vaya descubriendo.&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>octopress</title>
-            <link href="http://axelhzf.com/blog/2012-05-20-octopress.html"/>
-            <updated>2012-05-20T10:00:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2012-05-20-octopress.html</id>
-            <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/octopress.png&quot; alt=&quot;Ocotpress&quot;&gt;
-
-&lt;/p&gt;
-&lt;p&gt;Después de un tiempo utilizando &lt;a href=&quot;http://axelhzf.tumblr.com&quot;&gt;tumblr&lt;/a&gt; traslado el blog a &lt;a href=&quot;http://octopress.org/&quot;&gt;Octopress&lt;/a&gt; desplegado en github. 
-
-&lt;/p&gt;
-&lt;p&gt;Octopress es un sistema de blogging basado en &lt;a href=&quot;https://github.com/mojombo/jekyll&quot;&gt;Jekyll&lt;/a&gt;. No es más que un generador estáticos de páginas escrito en ruby por &lt;a href=&quot;https://github.com/mojombo&quot;&gt;mojombo&lt;/a&gt; cofundador de github y es el sistema que utiliza &lt;a href=&quot;http://pages.github.com/&quot;&gt;github:pages&lt;/a&gt;. Octopress añade un conjunto de utilidades que facilitan el trabajo con jekyll.
-
-&lt;/p&gt;
+		</entry>
+	
+		<entry>
+			<title>octopress</title>
+			<link href="http://axelhzf.com/blog/2012-05-20-octopress.html"/>
+			<updated>2012-05-20T10:00:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2012-05-20-octopress.html</id>
+			<content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/octopress.png&quot; alt=&quot;Ocotpress&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Después de un tiempo utilizando &lt;a href=&quot;http://axelhzf.tumblr.com&quot;&gt;tumblr&lt;/a&gt; traslado el blog a &lt;a href=&quot;http://octopress.org/&quot;&gt;Octopress&lt;/a&gt; desplegado en github. &lt;/p&gt;
+&lt;p&gt;Octopress es un sistema de blogging basado en &lt;a href=&quot;https://github.com/mojombo/jekyll&quot;&gt;Jekyll&lt;/a&gt;. No es más que un generador estáticos de páginas escrito en ruby por &lt;a href=&quot;https://github.com/mojombo&quot;&gt;mojombo&lt;/a&gt; cofundador de github y es el sistema que utiliza &lt;a href=&quot;http://pages.github.com/&quot;&gt;github:pages&lt;/a&gt;. Octopress añade un conjunto de utilidades que facilitan el trabajo con jekyll.&lt;/p&gt;
 &lt;p&gt;El principal motivo del cambio es poder escribir los posts de una forma más cómoda desde un editor de texto y no desde una web. A partir de ahora podré utilizar &lt;a href=&quot;http://www.sublimetext.com&quot;&gt;SublimeText&lt;/a&gt; o &lt;a href=&quot;http://www.iawriter.com/&quot;&gt;iA Writer&lt;/a&gt;. Con Octopress publicar trozos de código es mucho más sencillo. Tiene integración con &lt;a href=&quot;http://pygments.org/&quot;&gt;pygments&lt;/a&gt; para el resaltado de sintaxis y algún otro plugin interesante como el de &lt;a href=&quot;http://octopress.org/docs/plugins/gist-tag/&quot;&gt;gist&lt;/a&gt; o el de &lt;a href=&quot;http://octopress.org/docs/plugins/jsfiddle-tag/&quot;&gt;jsFiddle&lt;/a&gt;. Todavía no estoy muy seguro de si voy a hacer una migración de los posts antiguos o no, todo depende de lo complicado que resulte.&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>Ampliando el módulo de Google Guice</title>
-            <link href="http://axelhzf.com/blog/2012-02-04-ampliando-el-modulo-de-google-guice.html"/>
-            <updated>2012-02-04T22:34:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2012-02-04-ampliando-el-modulo-de-google-guice.html</id>
-            <content type="html">&lt;p&gt;Como comenté al final de mi &lt;a href=&quot;http://axelhzf.tumblr.com/post/16930248351/play-framework-google-guice&quot;&gt;post&lt;/a&gt; anterior mi intención era añadir al módulo de play las clases que añaden el scope LazySingleton.
-
-&lt;/p&gt;
-&lt;p&gt;Los cambios están en este &lt;a href=&quot;https://github.com/axelhzf/play-guice-module/commit/30af78bb96c7561a529ac578ff93d2b49a1e5492&quot;&gt;commit&lt;/a&gt;.
-
-&lt;/p&gt;
-&lt;p&gt;Añadí a la clase &lt;em&gt;GuiceSupport&lt;/em&gt; una variable con el stage en función del modo en el que se está ejecutando play y creé la clase &lt;em&gt;PlayAbstractModule&lt;/em&gt; que incluye el método &lt;em&gt;bindLazySingletonOnDev&lt;/em&gt;.
-
-&lt;/p&gt;
-&lt;p&gt;Para utilizarlo:
-
-&lt;/p&gt;
-&lt;p&gt;conf/dependencies.yml
-&lt;/p&gt;
+		</entry>
+	
+		<entry>
+			<title>Ampliando el módulo de Google Guice</title>
+			<link href="http://axelhzf.com/blog/2012-02-04-ampliando-el-modulo-de-google-guice.html"/>
+			<updated>2012-02-04T22:34:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2012-02-04-ampliando-el-modulo-de-google-guice.html</id>
+			<content type="html">&lt;p&gt;Como comenté al final de mi &lt;a href=&quot;http://axelhzf.tumblr.com/post/16930248351/play-framework-google-guice&quot;&gt;post&lt;/a&gt; anterior mi intención era añadir al módulo de play las clases que añaden el scope LazySingleton.&lt;/p&gt;
+&lt;p&gt;Los cambios están en este &lt;a href=&quot;https://github.com/axelhzf/play-guice-module/commit/30af78bb96c7561a529ac578ff93d2b49a1e5492&quot;&gt;commit&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Añadí a la clase &lt;em&gt;GuiceSupport&lt;/em&gt; una variable con el stage en función del modo en el que se está ejecutando play y creé la clase &lt;em&gt;PlayAbstractModule&lt;/em&gt; que incluye el método &lt;em&gt;bindLazySingletonOnDev&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Para utilizarlo:&lt;/p&gt;
+&lt;p&gt;conf/dependencies.yml&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;brainfuck&quot;&gt;&lt;span class=&quot;comment&quot;&gt;require:&lt;/span&gt;
     &lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;play&lt;/span&gt;
     &lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;axelhzf&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&amp;gt; &lt;span class=&quot;comment&quot;&gt;guice&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;1&lt;/span&gt;.&lt;span class=&quot;comment&quot;&gt;3&lt;/span&gt;
@@ -1045,12 +982,9 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
         &lt;span class=&quot;comment&quot;&gt;type:&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;http&lt;/span&gt;
         &lt;span class=&quot;comment&quot;&gt;artifact:&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;&quot;http://cloud&lt;/span&gt;.&lt;span class=&quot;comment&quot;&gt;github&lt;/span&gt;.&lt;span class=&quot;comment&quot;&gt;com/downloads/axelhzf/play&lt;/span&gt;-&lt;span class=&quot;comment&quot;&gt;guice&lt;/span&gt;-&lt;span class=&quot;comment&quot;&gt;module/guice&lt;/span&gt;-&lt;span class=&quot;title&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;revision&lt;/span&gt;]&lt;span class=&quot;string&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;zip&quot;&lt;/span&gt;
         &lt;span class=&quot;comment&quot;&gt;contains:&lt;/span&gt;
-            &lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;axelhzf&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&amp;gt; &lt;span class=&quot;comment&quot;&gt;guice&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Configurar el inyector
-
-&lt;/p&gt;
-&lt;p&gt;GuiceConfig.java
-&lt;/p&gt;
+            &lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;axelhzf&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&amp;gt; &lt;span class=&quot;comment&quot;&gt;guice&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Configurar el inyector&lt;/p&gt;
+&lt;p&gt;GuiceConfig.java&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;java&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;GuiceConfig&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;GuiceSupport&lt;/span&gt; {&lt;/span&gt;
         &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
         &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; Injector configure() {
@@ -1064,38 +998,25 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
         }
     }&lt;/code&gt;&lt;/pre&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>Play Framework + Google Guice</title>
-            <link href="http://axelhzf.com/blog/2012-02-02-play-framework-plus-google-guice.html"/>
-            <updated>2012-02-02T22:18:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2012-02-02-play-framework-plus-google-guice.html</id>
-            <content type="html">&lt;p&gt;En el proyecto en el que estoy trabajando actualmente empezamos a utilizar Google Guice. Para quien no lo sepa, Guice es un framework de inyección de dependencias. La idea básica de la inyección de dependencias consiste en sumistrar a una clase sus dependencias, en lugar de que sea esta quien tenga que instanciarlas.
-
-&lt;/p&gt;
-&lt;p&gt;Play cuenta con un módulo para integrar Guice:
-
-&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;http://www.playframework.org/modules/guice-1.2/home&quot;&gt;http://www.playframework.org/modules/guice-1.2/home&lt;/a&gt;&lt;/a&gt;
-
-&lt;/p&gt;
-&lt;p&gt;Además de la propia documentación del módulo, está este post de &lt;a href=&quot;http://www.twitter.com/_felipera&quot;&gt;@_felipera&lt;/a&gt; que te puede ayudar a dar los primeros pasos:
-
-&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;http://geeks.aretotally.in/dependency-injection-with-play-framework-and-google-guice&quot;&gt;http://geeks.aretotally.in/dependency-injection-with-play-framework-and-google-guice&lt;/a&gt;&lt;/a&gt;
-
-
-&lt;/p&gt;
-&lt;p&gt;Los pasos para empezar a utilizar Guice en tu proyecto play son:
-
-&lt;/p&gt;
+		</entry>
+	
+		<entry>
+			<title>Play Framework + Google Guice</title>
+			<link href="http://axelhzf.com/blog/2012-02-02-play-framework-plus-google-guice.html"/>
+			<updated>2012-02-02T22:18:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2012-02-02-play-framework-plus-google-guice.html</id>
+			<content type="html">&lt;p&gt;En el proyecto en el que estoy trabajando actualmente empezamos a utilizar Google Guice. Para quien no lo sepa, Guice es un framework de inyección de dependencias. La idea básica de la inyección de dependencias consiste en sumistrar a una clase sus dependencias, en lugar de que sea esta quien tenga que instanciarlas.&lt;/p&gt;
+&lt;p&gt;Play cuenta con un módulo para integrar Guice:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;http://www.playframework.org/modules/guice-1.2/home&quot;&gt;http://www.playframework.org/modules/guice-1.2/home&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Además de la propia documentación del módulo, está este post de &lt;a href=&quot;http://www.twitter.com/_felipera&quot;&gt;@_felipera&lt;/a&gt; que te puede ayudar a dar los primeros pasos:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;http://geeks.aretotally.in/dependency-injection-with-play-framework-and-google-guice&quot;&gt;http://geeks.aretotally.in/dependency-injection-with-play-framework-and-google-guice&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Los pasos para empezar a utilizar Guice en tu proyecto play son:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Añadir la dependencia del módulo:&lt;/li&gt;
 &lt;/ul&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;brainfuck&quot;&gt;&lt;span class=&quot;comment&quot;&gt;require:&lt;/span&gt;
 &lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;play&lt;/span&gt;
-&lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;play&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&amp;gt; &lt;span class=&quot;comment&quot;&gt;guice&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;1&lt;/span&gt;.&lt;span class=&quot;comment&quot;&gt;2&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;play&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&amp;gt; &lt;span class=&quot;comment&quot;&gt;guice&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;1&lt;/span&gt;.&lt;span class=&quot;comment&quot;&gt;2&lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;Descargar las dependencias&lt;/li&gt;
 &lt;/ul&gt;
@@ -1103,14 +1024,12 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
 &lt;ul&gt;
 &lt;li&gt;Crear una nueva clase que será la que se inyectará en el controlador.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;services.MyService.java
-&lt;/p&gt;
+&lt;p&gt;services.MyService.java&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; services;
 &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MyService&lt;/span&gt; {&lt;/span&gt;
     &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; sayHello();
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;services.MyServiceImpl.java
-&lt;/p&gt;
+&lt;p&gt;services.MyServiceImpl.java&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; services;
 &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MyServiceImpl&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MyService&lt;/span&gt; {&lt;/span&gt;
     &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; MyServiceImpl(){
@@ -1124,8 +1043,7 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
 &lt;ul&gt;
 &lt;li&gt;Configurar el inyector de dependencias&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;config.GuiceConfig.java
-&lt;/p&gt;
+&lt;p&gt;config.GuiceConfig.java&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; config;
 
 &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;GuiceConfig&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;GuiceSupport&lt;/span&gt; {&lt;/span&gt;
@@ -1141,14 +1059,11 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
     }
 
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;De esta forma se configura la clase como un singleton. Cada vez que una clase tenga la dependencia de MyService se inyectará la misma instancia de MyServiceImpl.
-
-&lt;/p&gt;
+&lt;p&gt;De esta forma se configura la clase como un singleton. Cada vez que una clase tenga la dependencia de MyService se inyectará la misma instancia de MyServiceImpl.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Para inyectar la clase se utiliza la anotación @Inject&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;controllers.Application.java
-&lt;/p&gt;
+&lt;p&gt;controllers.Application.java&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; controllers;
 &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Application&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Controller&lt;/span&gt; {&lt;/span&gt;
 
@@ -1160,37 +1075,17 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
             render();
         }
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Ya con esto está el servicio inyectado en el controlador.
-
-&lt;/p&gt;
-&lt;p&gt;Mi siguiente paso fue crear un test y es aquí cuando me encontré una sorpresa:
-
-&lt;/p&gt;
+&lt;p&gt;Ya con esto está el servicio inyectado en el controlador.&lt;/p&gt;
+&lt;p&gt;Mi siguiente paso fue crear un test y es aquí cuando me encontré una sorpresa:&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;    play test&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;http://localhost:9000/@tests&quot;&gt;http://localhost:9000/@tests&lt;/a&gt;&lt;/a&gt;
-
-&lt;/p&gt;
-&lt;p&gt;Compilation error! El problema está en que el módulo tiene una carpeta que se llama test. Esta carpeta en vez de tener algunos tests unitarios o funcionales, lo que tiene son 3 aplicaciones de ejemplo. Lo normal hubiera sido seguir la convención de play que es poner este tipo de aplicaciones en la carpeta 'samples-and-tests'.
-
-&lt;/p&gt;
-&lt;p&gt;Hice un fork del proyeto para renombrar esta carpeta
-
-&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;https://github.com/axelhzf/play-guice-module&quot;&gt;https://github.com/axelhzf/play-guice-module&lt;/a&gt;&lt;/a&gt;
-
-&lt;/p&gt;
-&lt;p&gt;También hice un pull-request, pero no he tenido respuesta :(
-
-&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;https://github.com/pk11/play-guice-module/pull/5&quot;&gt;https://github.com/pk11/play-guice-module/pull/5&lt;/a&gt;&lt;/a&gt;
-
-
-&lt;/p&gt;
-&lt;p&gt;Renombrando la carpeta test del módulo sería suficiente para poder ejecutar este test:
-
-&lt;/p&gt;
-&lt;p&gt;InjectTest.java
-&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;http://localhost:9000/@tests&quot;&gt;http://localhost:9000/@tests&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Compilation error! El problema está en que el módulo tiene una carpeta que se llama test. Esta carpeta en vez de tener algunos tests unitarios o funcionales, lo que tiene son 3 aplicaciones de ejemplo. Lo normal hubiera sido seguir la convención de play que es poner este tipo de aplicaciones en la carpeta &amp;#39;samples-and-tests&amp;#39;.&lt;/p&gt;
+&lt;p&gt;Hice un fork del proyeto para renombrar esta carpeta&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;https://github.com/axelhzf/play-guice-module&quot;&gt;https://github.com/axelhzf/play-guice-module&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;También hice un pull-request, pero no he tenido respuesta :(&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;https://github.com/pk11/play-guice-module/pull/5&quot;&gt;https://github.com/pk11/play-guice-module/pull/5&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Renombrando la carpeta test del módulo sería suficiente para poder ejecutar este test:&lt;/p&gt;
+&lt;p&gt;InjectTest.java&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;annotation&quot;&gt;@InjectSupport&lt;/span&gt;
 &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;InjectTest&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;UnitTest&lt;/span&gt; {&lt;/span&gt;
     &lt;span class=&quot;annotation&quot;&gt;@Inject&lt;/span&gt;
@@ -1201,22 +1096,15 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
         assertNotNull(myService);
     }
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Por defecto play detecta automáticamente la anotaciones @Inject en las clases que hereden de Controller, Job and Mail. Si queremos poder inyectar dependencias en otras clases debemos anotar la clase con @InjectSupport.
-
-&lt;/p&gt;
-&lt;p&gt;Normalmente nuestros servicios no son tan simples como MyService. Lo normal es tener dependencias entre servicios. Guice resuelve esto analizando las dependencias e instanciando los objetos en el orden adecuado.
-
-
-&lt;/p&gt;
-&lt;p&gt;services.MyDependentService.java
-&lt;/p&gt;
+&lt;p&gt;Por defecto play detecta automáticamente la anotaciones @Inject en las clases que hereden de Controller, Job and Mail. Si queremos poder inyectar dependencias en otras clases debemos anotar la clase con @InjectSupport.&lt;/p&gt;
+&lt;p&gt;Normalmente nuestros servicios no son tan simples como MyService. Lo normal es tener dependencias entre servicios. Guice resuelve esto analizando las dependencias e instanciando los objetos en el orden adecuado.&lt;/p&gt;
+&lt;p&gt;services.MyDependentService.java&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; services;
 
 &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MyDependentService&lt;/span&gt; {&lt;/span&gt;
     &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; sayHelloWorld();
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;services.MyDependentServiceImpl.java
-&lt;/p&gt;
+&lt;p&gt;services.MyDependentServiceImpl.java&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; services;
 
 &lt;span class=&quot;annotation&quot;&gt;@InjectSupport&lt;/span&gt;
@@ -1234,8 +1122,7 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
         play.Logger.info(&lt;span class=&quot;string&quot;&gt;&quot;world&quot;&lt;/span&gt;);
     }
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;InjectTest.java
-&lt;/p&gt;
+&lt;p&gt;InjectTest.java&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;annotation&quot;&gt;@InjectSupport&lt;/span&gt;
 &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;InjectTest&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;UnitTest&lt;/span&gt; {&lt;/span&gt;
 
@@ -1249,41 +1136,22 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
     }
 
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Incluimos el binding
-
-&lt;/p&gt;
+&lt;p&gt;Incluimos el binding&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;java&quot;&gt;bind(MyDependentService.class).to(MyDependentServiceImpl.class).in(Singleton.class);&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Y esta es la salida por la consola
-
-&lt;/p&gt;
+&lt;p&gt;Y esta es la salida por la consola&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;20:34:39,090 INFO  ~ Inicializando MyServiceImpl
 20:34:39,095 INFO  ~ Inicializando MyDependentServiceImpl
 20:34:39,095 INFO  ~ Application &lt;span class=&quot;string&quot;&gt;'lazySingleton'&lt;/span&gt; is now started !
 20:34:39,136 INFO  ~ hello
 20:34:39,136 INFO  ~ world&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Se inicializa primero MyService y luego MyDependentService
-
-&lt;/p&gt;
-&lt;p&gt;Una de las cosas que no me gusta del módulo es que te limita a que los campos que puedes inyectar deben de ser estáticos. Las dependencias por ejemplo me gustaría poder definirlas como parámetros en el constructor. De forma que quede claro que para crear un objeto de la clase MyDependentServiceImpl hace falta un objeto del tipo MyService. Además, utilizar las dependencias mediante constructor facilita hacer tests unitarios.Únicamente es necesario llamar al constructor y pasar como parámetros stubs o mocks de las dependencias. De esta forma no estamos obligados a configurar un inyector.
-
-&lt;/p&gt;
-&lt;p&gt;En la documentación del módulo no vi ninguna referencia a cómo hacer esto. Encontré un artículo que explicaba cómo hacerlo utilizando un Provider:
-
-&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;http://ericlefevre.net/wordpress/2011/05/08/play-framework-and-guice-use-providers-in-guice-modules/&quot;&gt;http://ericlefevre.net/wordpress/2011/05/08/play-framework-and-guice-use-providers-in-guice-modules/&lt;/a&gt;&lt;/a&gt;
-
-&lt;/p&gt;
-&lt;p&gt;Esta forma funciona correctamente pero más tarde encontré una pregunta en stackoverflow que me dio otra pista:
-
-&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;http://stackoverflow.com/questions/8435686/does-injector-getinstance-always-call-a-constructor&quot;&gt;http://stackoverflow.com/questions/8435686/does-injector-getinstance-always-call-a-constructor&lt;/a&gt;&lt;/a&gt;
-
-&lt;/p&gt;
-&lt;p&gt;En el &lt;em&gt;Edit&lt;/em&gt; pone que se olvidó de anotar con @Inject el constructor. Probé a hacer lo mismo y funcionó:
-
-&lt;/p&gt;
-&lt;p&gt;services.MyDependentServiceImpl.java
-&lt;/p&gt;
+&lt;p&gt;Se inicializa primero MyService y luego MyDependentService&lt;/p&gt;
+&lt;p&gt;Una de las cosas que no me gusta del módulo es que te limita a que los campos que puedes inyectar deben de ser estáticos. Las dependencias por ejemplo me gustaría poder definirlas como parámetros en el constructor. De forma que quede claro que para crear un objeto de la clase MyDependentServiceImpl hace falta un objeto del tipo MyService. Además, utilizar las dependencias mediante constructor facilita hacer tests unitarios.Únicamente es necesario llamar al constructor y pasar como parámetros stubs o mocks de las dependencias. De esta forma no estamos obligados a configurar un inyector.&lt;/p&gt;
+&lt;p&gt;En la documentación del módulo no vi ninguna referencia a cómo hacer esto. Encontré un artículo que explicaba cómo hacerlo utilizando un Provider:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;http://ericlefevre.net/wordpress/2011/05/08/play-framework-and-guice-use-providers-in-guice-modules/&quot;&gt;http://ericlefevre.net/wordpress/2011/05/08/play-framework-and-guice-use-providers-in-guice-modules/&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Esta forma funciona correctamente pero más tarde encontré una pregunta en stackoverflow que me dio otra pista:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;http://stackoverflow.com/questions/8435686/does-injector-getinstance-always-call-a-constructor&quot;&gt;http://stackoverflow.com/questions/8435686/does-injector-getinstance-always-call-a-constructor&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;En el &lt;em&gt;Edit&lt;/em&gt; pone que se olvidó de anotar con @Inject el constructor. Probé a hacer lo mismo y funcionó:&lt;/p&gt;
+&lt;p&gt;services.MyDependentServiceImpl.java&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MyDependentServiceImpl&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MyDependentService&lt;/span&gt; {&lt;/span&gt;
 
     &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; MyService myService;
@@ -1294,43 +1162,26 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
         play.Logger.info(&lt;span class=&quot;string&quot;&gt;&quot;Inicializando MyDependentServiceImpl&quot;&lt;/span&gt;);
     }
     ...&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Me faltaba un pequeño detalle para tener google guice configurado perfectamente. En el log se puede ver como los servicios se inicializan cuando se inicia la aplicación.
-
-
-&lt;/p&gt;
+&lt;p&gt;Me faltaba un pequeño detalle para tener google guice configurado perfectamente. En el log se puede ver como los servicios se inicializan cuando se inicia la aplicación.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;21:38:11,801 INFO  ~ Inicializando MyServiceImpl
 21:38:11,805 INFO  ~ Inicializando MyDependentServiceImpl
 21:38:11,805 INFO  ~ Application &lt;span class=&quot;string&quot;&gt;'lazySingleton'&lt;/span&gt; is now started !&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Cuando la aplicación está en modo producción está bien, es el comportamiento adecuado. Los servicios se deberían instanciar al arrancar la aplicación. Pero cuando estoy en modo desarrollo prefiero que los Singletons se inicialicen bajo demanda (lazy). Puede que haya servicios que tarden en iniciarse y quiero que el tiempo que tarda la aplicación en arrancar en modo desarrollo sea lo más rápido posible.
-
-&lt;/p&gt;
-&lt;p&gt;Buscando en la documentación de google guice veo que está preparado para hacer justamente lo que quiero:
-
-&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;http://code.google.com/p/google-guice/wiki/Scopes&quot;&gt;http://code.google.com/p/google-guice/wiki/Scopes&lt;/a&gt;&lt;/a&gt;
-
-&lt;/p&gt;
-&lt;p&gt;Lo único que hay que hacer es que configurar es el STAGE para indicarle a Guice si estamos en modo desarrollo o en modo producción:
-
-&lt;/p&gt;
+&lt;p&gt;Cuando la aplicación está en modo producción está bien, es el comportamiento adecuado. Los servicios se deberían instanciar al arrancar la aplicación. Pero cuando estoy en modo desarrollo prefiero que los Singletons se inicialicen bajo demanda (lazy). Puede que haya servicios que tarden en iniciarse y quiero que el tiempo que tarda la aplicación en arrancar en modo desarrollo sea lo más rápido posible.&lt;/p&gt;
+&lt;p&gt;Buscando en la documentación de google guice veo que está preparado para hacer justamente lo que quiero:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;http://code.google.com/p/google-guice/wiki/Scopes&quot;&gt;http://code.google.com/p/google-guice/wiki/Scopes&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Lo único que hay que hacer es que configurar es el STAGE para indicarle a Guice si estamos en modo desarrollo o en modo producción:&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;java&quot;&gt;Stage stage = Play.mode.isDev()?Stage.DEVELOPMENT : Stage.PRODUCTION;
 &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; Guice.createInjector(stage, &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; AbstractModule() {
     ...&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Al volver a ejecutar el test
-
-
-&lt;/p&gt;
+&lt;p&gt;Al volver a ejecutar el test&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;22:00:03,353 WARN  ~ You&lt;span class=&quot;string&quot;&gt;'re running Play! in DEV mode
 22:00:04,615 INFO  ~ Connected to jdbc:h2:mem:play;MODE=MYSQL;LOCK_MODE=0
 22:00:04,811 INFO  ~ Guice injector created: config.GuiceConfig
 22:00:04,819 INFO  ~ Inicializando MyServiceImpl
 22:00:04,824 INFO  ~ Inicializando MyDependentServiceImpl
-22:00:04,824 INFO  ~ Application '&lt;/span&gt;lazySingleton&lt;span class=&quot;string&quot;&gt;' is now started !&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Vaya, se volvieron a instanciar los singletons al iniciar la aplicación. ¿Será que el Stage no sirve para lo que creo? Vamos a probar con un test:
-
-&lt;/p&gt;
-&lt;p&gt;StageTest.java
-&lt;/p&gt;
+22:00:04,824 INFO  ~ Application '&lt;/span&gt;lazySingleton&lt;span class=&quot;string&quot;&gt;' is now started !&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Vaya, se volvieron a instanciar los singletons al iniciar la aplicación. ¿Será que el Stage no sirve para lo que creo? Vamos a probar con un test:&lt;/p&gt;
+&lt;p&gt;StageTest.java&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;StageTest&lt;/span&gt; {&lt;/span&gt;
 
     &lt;span class=&quot;annotation&quot;&gt;@Test&lt;/span&gt;
@@ -1359,9 +1210,7 @@ Desde hace tiempo vengo leyendo sobre las bondades de IntelliJ. Artículos en lo
         &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; injector;
     }
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Y el resultado es:
-
-&lt;/p&gt;
+&lt;p&gt;Y el resultado es:&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;INFO: development - antes del getInstance
 INFO: Inicializando MyServiceImpl
 INFO: development - después del getInstance
@@ -1369,43 +1218,22 @@ INFO: development - después del getInstance
 INFO: Inicializando MyServiceImpl
 INFO: production - antes del getInstance
 INFO: production - después del getInstance&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Como pone en la documentación, cuando se está en modo DEVELOPMENT los Singleton se inicializan de forma lazy.
-
-&lt;/p&gt;
-&lt;p&gt;¿Si esto funciona así, por qué cuando lo probé con el módulo de play no funcionó?
-
-&lt;/p&gt;
-&lt;p&gt;Revisando el código:
-
-&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;https://github.com/pk11/play-guice-module/blob/master/src/play/modules/guice/GuicePlugin.java&quot;&gt;https://github.com/pk11/play-guice-module/blob/master/src/play/modules/guice/GuicePlugin.java&lt;/a&gt;&lt;/a&gt;
-
-&lt;/p&gt;
-&lt;p&gt;Encontré que lo que se hace en el @OnApplicationStart es buscar todas las clases que están anotadas con @InjectSupport las dependencias. Para inyectarlas hace un getBean de cada una. Aquí esta el problema, al hacer el getBean se instancia.
-
-&lt;/p&gt;
-&lt;p&gt;Buscando en internet encontré una solución a este problema:
-
-&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;https://groups.google.com/d/msg/google-guice/405HVgnCzsQ/fBUuueP6NfsJ&quot;&gt;https://groups.google.com/d/msg/google-guice/405HVgnCzsQ/fBUuueP6NfsJ&lt;/a&gt;&lt;/a&gt;
-
-&lt;/p&gt;
-&lt;p&gt;El código para permitir LazySingleton
-
-&lt;/p&gt;
+&lt;p&gt;Como pone en la documentación, cuando se está en modo DEVELOPMENT los Singleton se inicializan de forma lazy.&lt;/p&gt;
+&lt;p&gt;¿Si esto funciona así, por qué cuando lo probé con el módulo de play no funcionó?&lt;/p&gt;
+&lt;p&gt;Revisando el código:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;https://github.com/pk11/play-guice-module/blob/master/src/play/modules/guice/GuicePlugin.java&quot;&gt;https://github.com/pk11/play-guice-module/blob/master/src/play/modules/guice/GuicePlugin.java&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Encontré que lo que se hace en el @OnApplicationStart es buscar todas las clases que están anotadas con @InjectSupport las dependencias. Para inyectarlas hace un getBean de cada una. Aquí esta el problema, al hacer el getBean se instancia.&lt;/p&gt;
+&lt;p&gt;Buscando en internet encontré una solución a este problema:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;a href=&quot;https://groups.google.com/d/msg/google-guice/405HVgnCzsQ/fBUuueP6NfsJ&quot;&gt;https://groups.google.com/d/msg/google-guice/405HVgnCzsQ/fBUuueP6NfsJ&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;El código para permitir LazySingleton&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/wiregit/wirecode/blob/master/components/common/src/main/java/org/limewire/inject/LazySingleton.java&quot;&gt;@LazySingleton&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/wiregit/wirecode/blob/master/components/common/src/main/java/org/limewire/inject/MoreScopes.java&quot;&gt;MoreScopes&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/wiregit/wirecode/blob/master/components/common/src/main/java/org/limewire/inject/LazyBinder.java&quot;&gt;LazyBinder&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Estas clases lo que hacen es que cuando se crea el inyector, crea un proxy para cada una de las clases que están anotadas como @LazySingleton. De forma que cuando inyecta los objetos lo que se inyecta en realidad es el proxy. La primera vez que se invoque un método de alguna de estas clases, el proxy se va a encargar de inicializar la clase.
-
-&lt;/p&gt;
-&lt;p&gt;La configuración del inyector quedaría así:
-
-&lt;/p&gt;
-&lt;p&gt;GuiceConfig.java
-&lt;/p&gt;
+&lt;p&gt;Estas clases lo que hacen es que cuando se crea el inyector, crea un proxy para cada una de las clases que están anotadas como @LazySingleton. De forma que cuando inyecta los objetos lo que se inyecta en realidad es el proxy. La primera vez que se invoque un método de alguna de estas clases, el proxy se va a encargar de inicializar la clase.&lt;/p&gt;
+&lt;p&gt;La configuración del inyector quedaría así:&lt;/p&gt;
+&lt;p&gt;GuiceConfig.java&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;GuiceConfig&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;GuiceSupport&lt;/span&gt; {&lt;/span&gt;
     &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
     &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; Injector configure() {
@@ -1430,32 +1258,22 @@ INFO: production - después del getInstance&lt;/code&gt;&lt;/pre&gt;
         });
     }
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Cuando la aplicación está en modo desarrollo, las clases se instanciarán la primera vez que se llame a un método. Cuando usemos el modo producción, las clases se instanciarán cuando se inicie la aplicación.
-
-&lt;/p&gt;
+&lt;p&gt;Cuando la aplicación está en modo desarrollo, las clases se instanciarán la primera vez que se llame a un método. Cuando usemos el modo producción, las clases se instanciarán cuando se inicie la aplicación.&lt;/p&gt;
 &lt;p&gt;Me queda pendiente añadir estas clases al fork para poder tener un módulo completo que se pueda reutilizar en todos los proyectos.&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>knockout.js (Ejemplo completo)</title>
-            <link href="http://axelhzf.com/blog/2011-09-26-knockout-dot-js-ejemplo-completo.html"/>
-            <updated>2011-09-26T21:05:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2011-09-26-knockout-dot-js-ejemplo-completo.html</id>
-            <content type="html">&lt;p&gt;En el anterior post hice un pequeña &lt;a href=&quot;http://axelhzf.tumblr.com/post/10638045853/knockout&quot;&gt;introducción a la librería knockout.js&lt;/a&gt;.  Este post, continuación del anterior, tiene un ejemplo más completo en el cual espero que se vea mejor la utilidad de la librería. En el ejemplo crearemos una tabla de Posts, donde mostraremos el título y el texto. Le añadiremos a la tabla filtrado y edición inline. Con esto veremos cómo utilizar variables observables, dependentObservables y observableArrays.
-También haremos uso de jquery tmpl para renderizar la vista.
-
-&lt;/p&gt;
-&lt;p&gt;Este post también forma parte del curso de desarrollo de aplicaciones web con Play.
-
-&lt;/p&gt;
-&lt;p&gt;Prueba el ejemplo completo en &lt;a href=&quot;http://jsfiddle.net/9mSBY/&quot;&gt;&lt;a href=&quot;http://jsfiddle.net/9mSBY/&quot;&gt;http://jsfiddle.net/9mSBY/&lt;/a&gt;&lt;/a&gt;
-
-&lt;/p&gt;
+		</entry>
+	
+		<entry>
+			<title>knockout.js (Ejemplo completo)</title>
+			<link href="http://axelhzf.com/blog/2011-09-26-knockout-dot-js-ejemplo-completo.html"/>
+			<updated>2011-09-26T21:05:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2011-09-26-knockout-dot-js-ejemplo-completo.html</id>
+			<content type="html">&lt;p&gt;En el anterior post hice un pequeña &lt;a href=&quot;http://axelhzf.tumblr.com/post/10638045853/knockout&quot;&gt;introducción a la librería knockout.js&lt;/a&gt;.  Este post, continuación del anterior, tiene un ejemplo más completo en el cual espero que se vea mejor la utilidad de la librería. En el ejemplo crearemos una tabla de Posts, donde mostraremos el título y el texto. Le añadiremos a la tabla filtrado y edición inline. Con esto veremos cómo utilizar variables observables, dependentObservables y observableArrays.
+También haremos uso de jquery tmpl para renderizar la vista.&lt;/p&gt;
+&lt;p&gt;Este post también forma parte del curso de desarrollo de aplicaciones web con Play.&lt;/p&gt;
+&lt;p&gt;Prueba el ejemplo completo en &lt;a href=&quot;http://jsfiddle.net/9mSBY/&quot;&gt;&lt;a href=&quot;http://jsfiddle.net/9mSBY/&quot;&gt;http://jsfiddle.net/9mSBY/&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h3&gt;Esqueleto de la página&lt;/h3&gt;
-&lt;p&gt;Enlazamos los css y js que vamos a utilizar:
-
-&lt;/p&gt;
+&lt;p&gt;Enlazamos los css y js que vamos a utilizar:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Twitter Bootstrap (Para el aspecto de la página)&lt;/li&gt;
 &lt;li&gt;jQuery&lt;/li&gt;
@@ -1477,9 +1295,7 @@ También haremos uso de jquery tmpl para renderizar la vista.
 &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;body&lt;/span&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;html&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;Tabla&lt;/h3&gt;
-&lt;p&gt;Añadimos la tabla donde mostraremos el listado de Post en 3 columnas. La primera de selección, la segunda el título y luego el texto.
-
-&lt;/p&gt;
+&lt;p&gt;Añadimos la tabla donde mostraremos el listado de Post en 3 columnas. La primera de selección, la segunda el título y luego el texto.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;container&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;table&lt;/span&gt;&amp;gt;&lt;/span&gt;
         &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;thead&lt;/span&gt;&amp;gt;&lt;/span&gt;
@@ -1493,9 +1309,7 @@ También haremos uso de jquery tmpl para renderizar la vista.
     &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;table&lt;/span&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;ViewModel&lt;/h3&gt;
-&lt;p&gt;El viewModel contará con un listado de post que se mostrarán en la tabla
-
-&lt;/p&gt;
+&lt;p&gt;El viewModel contará con un listado de post que se mostrarán en la tabla&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;javascript&quot;&gt;
      &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;containsIgnoreCase&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(s, q)&lt;/span&gt;{&lt;/span&gt;
         &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; s.toLowerCase().indexOf(q.toLowerCase()) != -&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
@@ -1521,38 +1335,23 @@ También haremos uso de jquery tmpl para renderizar la vista.
 
      ko.applyBindings(viewModel);
 &lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;En la clase Post se han definido los 3 campos como variables observables, para que los cambios que se hagan en esas variables se actualicen automáticamente. En el viewModel hemos definido un observableArray con el listado de post. Añadimos a esta lista dos posts de ejemplo.
-
-&lt;/p&gt;
-&lt;p&gt;Para mostrar los posts en la tabla. Creamos una nueva plantilla que mostrará el contenido de cada fila.
-
-&lt;/p&gt;
-&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;parser3&quot;&gt;&lt;span class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;type&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;text/html&quot;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;id&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;postRow&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;javascript&quot;&gt;
+&lt;p&gt;En la clase Post se han definido los 3 campos como variables observables, para que los cambios que se hagan en esas variables se actualicen automáticamente. En el viewModel hemos definido un observableArray con el listado de post. Añadimos a esta lista dos posts de ejemplo.&lt;/p&gt;
+&lt;p&gt;Para mostrar los posts en la tabla. Creamos una nueva plantilla que mostrará el contenido de cada fila.&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;type&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;text/html&quot;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;id&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;postRow&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;javascript&quot;&gt;
     &amp;lt;tr&amp;gt;
         &lt;span class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;input&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;type&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;checkbox&quot;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;data-bind&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;checked: selected&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;${title}&lt;/span&gt;&lt;span class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;${text}&lt;/span&gt;&lt;span class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;${title}&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;${text}&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;tr&lt;/span&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Y añadimos en binding en la tabla para que renderice la plantilla &quot;postRow&quot; con el listado de &quot;posts&quot;.
-
-&lt;/p&gt;
-&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;haskell&quot;&gt;&amp;lt;tbody &lt;span class=&quot;typedef&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;data&lt;/span&gt;-bind=&quot;template : &lt;span class=&quot;container&quot;&gt;{&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt; : '&lt;span class=&quot;title&quot;&gt;postRow'&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;foreach&lt;/span&gt;: &lt;span class=&quot;title&quot;&gt;posts&lt;/span&gt;}&lt;/span&gt;&quot; /&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Con este código ya tenemos sincronizada la tabla con la lista de Posts. Para hacer una prueba podemos abrir la consola javascript y añadir un nuevos post.
-
-&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Y añadimos en binding en la tabla para que renderice la plantilla &amp;quot;postRow&amp;quot; con el listado de &amp;quot;posts&amp;quot;.&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;tbody&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;data-bind&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;template : {name : 'postRow', foreach: posts}&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Con este código ya tenemos sincronizada la tabla con la lista de Posts. Para hacer una prueba podemos abrir la consola javascript y añadir un nuevos post.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;viewModel.posts.push(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Post(&lt;span class=&quot;string&quot;&gt;'prueba'&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'desde la consola de javascript!'&lt;/span&gt;);&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;La tabla se tiene que haber actualizado automáticamanete con la nueva fila añadida.
-
-
-&lt;/p&gt;
+&lt;p&gt;La tabla se tiene que haber actualizado automáticamanete con la nueva fila añadida.&lt;/p&gt;
 &lt;h3&gt;Filtrado&lt;/h3&gt;
-&lt;p&gt;Para añadir filtrado de la tabla vamos a almacenar dos arrays, uno con la lista de posts completos y otro con la lista de posts filtrados.
-
-&lt;/p&gt;
-&lt;p&gt;Añadimos un campo de texto donde vamos a escribir el filtro. El evento por defecto que actualiza el viewModel es cuando pierde foco. Para hacer un filtrado en tiempo real podemos cambiar el evento de actualización a 'afterkeydown'.
-
-&lt;/p&gt;
+&lt;p&gt;Para añadir filtrado de la tabla vamos a almacenar dos arrays, uno con la lista de posts completos y otro con la lista de posts filtrados.&lt;/p&gt;
+&lt;p&gt;Añadimos un campo de texto donde vamos a escribir el filtro. El evento por defecto que actualiza el viewModel es cuando pierde foco. Para hacer un filtrado en tiempo real podemos cambiar el evento de actualización a &amp;#39;afterkeydown&amp;#39;.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;container&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;
     ...
 
@@ -1562,39 +1361,31 @@ También haremos uso de jquery tmpl para renderizar la vista.
     &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;form&lt;/span&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Modificamos el viewModel para añadir el texto por el que se filtra y la lista de posts filtrados. Definimos la variable filteredPost como dependentObservable, de esta forma, cada vez que se actualice la lista de post, se volverá a evaluar la lista de post filtrados. En el caso de que el filtro esté vacio, mostramos la lista de todos los posts.
-
-&lt;/p&gt;
-&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;actionscript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; viewModel = {
+&lt;p&gt;Modificamos el viewModel para añadir el texto por el que se filtra y la lista de posts filtrados. Definimos la variable filteredPost como dependentObservable, de esta forma, cada vez que se actualice la lista de post, se volverá a evaluar la lista de post filtrados. En el caso de que el filtro esté vacio, mostramos la lista de todos los posts.&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;xml&quot;&gt;var viewModel = {
     posts : ko.observableArray([]),
-    filterQuery : ko.observable(&lt;span class=&quot;string&quot;&gt;''&lt;/span&gt;)
+    filterQuery : ko.observable('')
 }
 
-viewModel.filteredPosts = ko.dependentObservable(&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(){
-    &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; query = &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.filterQuery();
-    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(query){
-        &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; filtered = [];
-        $.&lt;span class=&quot;keyword&quot;&gt;each&lt;/span&gt;(viewModel.posts(), &lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(i, post){
-            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(post.containsText(query)){
+viewModel.filteredPosts = ko.dependentObservable(function(){
+    var query = this.filterQuery();
+    if(query){
+        var filtered = [];
+        $.each(viewModel.posts(), function(i, post){
+            if(post.containsText(query)){
                 filtered.push(post);
             }
         });
-        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; filtered;
+        return filtered;
     }
-    &lt;span class=&quot;comment&quot;&gt;//Not filtering&lt;/span&gt;
-    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; viewModel.posts();
+    //Not filtering
+    return viewModel.posts();
 }, viewModel);&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Modificamos el binding de la tabla para mostrar la lista de posts filtrados.
-
-&lt;/p&gt;
-&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;haskell&quot;&gt;&amp;lt;tbody &lt;span class=&quot;typedef&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;data&lt;/span&gt;-bind=&quot;template : &lt;span class=&quot;container&quot;&gt;{&lt;span class=&quot;title&quot;&gt;name&lt;/span&gt; : '&lt;span class=&quot;title&quot;&gt;postRow'&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;foreach&lt;/span&gt;: &lt;span class=&quot;title&quot;&gt;filteredPosts&lt;/span&gt;}&lt;/span&gt;&quot; /&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Modificamos el binding de la tabla para mostrar la lista de posts filtrados.&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;tbody&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;data-bind&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;template : {name : 'postRow', foreach: filteredPosts}&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;Edición inline&lt;/h3&gt;
-&lt;p&gt;Para permitir la edición inline vamos a añadir una nueva variable que nos indique si estamos en modo edición. En el modo de edición, en la tabla aparecerán campos de texto donde el usuario podrá modificar las filas. También añadiremos un botón de nuevo y un botón para borrar las filas seleccionados.
-
-&lt;/p&gt;
-&lt;p&gt;Botones para realizar las acciones.
-
-&lt;/p&gt;
+&lt;p&gt;Para permitir la edición inline vamos a añadir una nueva variable que nos indique si estamos en modo edición. En el modo de edición, en la tabla aparecerán campos de texto donde el usuario podrá modificar las filas. También añadiremos un botón de nuevo y un botón para borrar las filas seleccionados.&lt;/p&gt;
+&lt;p&gt;Botones para realizar las acciones.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;container&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;
     ...
 
@@ -1606,25 +1397,20 @@ viewModel.filteredPosts = ko.dependentObservable(&lt;span class=&quot;keyword&qu
             &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;href&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;#&quot;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;btn danger&quot;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;data-bind&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;click : deletePosts&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;Delete&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;a&lt;/span&gt;&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;
      ...&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;La plantilla muestra el texto o un input dependiendo del campo editMode.
-
-
-&lt;/p&gt;
-&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;parser3&quot;&gt;&lt;span class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;type&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;text/html&quot;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;id&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;postRow&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;javascript&quot;&gt;
+&lt;p&gt;La plantilla muestra el texto o un input dependiendo del campo editMode.&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;type&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;text/html&quot;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;id&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;postRow&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;javascript&quot;&gt;
     &amp;lt;tr&amp;gt;
         &lt;span class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;input&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;type&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;checkbox&quot;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;data-bind&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;checked: selected&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;
         {{if viewModel.editMode()}}
             &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;input&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;type&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;text&quot;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;data-bind&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;value : title&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;
             &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;input&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;type&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;text&quot;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;data-bind&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;value : text&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;
         {{else}}
-            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;${title}&lt;/span&gt;&lt;span class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;${text}&lt;/span&gt;&lt;span class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;${title}&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;${text}&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;td&lt;/span&gt;&amp;gt;&lt;/span&gt;
         {{/if}}
     &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;tr&lt;/span&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Añadimos las acciones al modelo.
-
-&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Añadimos las acciones al modelo.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; viewModel = {
     posts : ko.observableArray([]),
     filterQuery : ko.observable(&lt;span class=&quot;string&quot;&gt;''&lt;/span&gt;),
@@ -1653,33 +1439,23 @@ viewModel.newPost = &lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(
 viewModel.deletePosts = &lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(){
     viewModel.posts.removeAll(viewModel.selectedPosts());
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Declarando la variable selectedPosts como dependentObservable nos aseguramos que esté sincronizada con la lista de posts. A la hora de borrar los posts de la lista utilizamos la función removeAll y le pasamos la lista completa de posts seleccionados.
-
-&lt;/p&gt;
+&lt;p&gt;Declarando la variable selectedPosts como dependentObservable nos aseguramos que esté sincronizada con la lista de posts. A la hora de borrar los posts de la lista utilizamos la función removeAll y le pasamos la lista completa de posts seleccionados.&lt;/p&gt;
 &lt;h3&gt;Conclusiones&lt;/h3&gt;
-&lt;p&gt;En el ejemplo hemos visto como podemos utilizar knockout.js para tener sincronizada la interfaz de usuario con el modelo. Haciendo uso de variables dependientes y bindings hemos conseguido darle comportamiento dinámico a una tabla estática. En pocas lineas de código hemos conseguido que nuestra tabla sea completamente editable y filtrable.
-
-&lt;/p&gt;
-&lt;p&gt;Falta ver como sincronizar nuestro modelo con el servidor por medio de llamadas ajax. Lo dejo pendiente para un futuro artículo.
-
-&lt;/p&gt;
+&lt;p&gt;En el ejemplo hemos visto como podemos utilizar knockout.js para tener sincronizada la interfaz de usuario con el modelo. Haciendo uso de variables dependientes y bindings hemos conseguido darle comportamiento dinámico a una tabla estática. En pocas lineas de código hemos conseguido que nuestra tabla sea completamente editable y filtrable.&lt;/p&gt;
+&lt;p&gt;Falta ver como sincronizar nuestro modelo con el servidor por medio de llamadas ajax. Lo dejo pendiente para un futuro artículo.&lt;/p&gt;
 &lt;p&gt;Puedes ver el código completo en &lt;a href=&quot;http://jsfiddle.net/9mSBY/&quot;&gt;&lt;a href=&quot;http://jsfiddle.net/9mSBY/&quot;&gt;http://jsfiddle.net/9mSBY/&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>knockout.js</title>
-            <link href="http://axelhzf.com/blog/2011-09-25-knockout-dot-js.html"/>
-            <updated>2011-09-25T21:01:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2011-09-25-knockout-dot-js.html</id>
-            <content type="html">&lt;p&gt;&lt;a href=&quot;http://knockoutjs.com/&quot;&gt;knockout.js&lt;/a&gt; es una librería javascript que implementa el patrón Model View View-Model.
-
-&lt;/p&gt;
+		</entry>
+	
+		<entry>
+			<title>knockout.js</title>
+			<link href="http://axelhzf.com/blog/2011-09-25-knockout-dot-js.html"/>
+			<updated>2011-09-25T21:01:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2011-09-25-knockout-dot-js.html</id>
+			<content type="html">&lt;p&gt;&lt;a href=&quot;http://knockoutjs.com/&quot;&gt;knockout.js&lt;/a&gt; es una librería javascript que implementa el patrón Model View View-Model.&lt;/p&gt;
 &lt;h3&gt;Patrón Model View View-Model&lt;/h3&gt;
 &lt;p&gt;Patrón Model View View-Model (MVVM) es un patrón diseñado para construir interfaces de usuario.
-Describe cómo mantener de una forma simple una interfaz de usuario sofisticada dividiéndola en tres partes:
-
-&lt;/p&gt;
+Describe cómo mantener de una forma simple una interfaz de usuario sofisticada dividiéndola en tres partes:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Model: Los datos de la aplicación.&lt;/li&gt;
 &lt;li&gt;View-Model : Representación de los datos y las operaciones de la interfaz gráfica. No es la interfaz de usuario en sí, no tiene los conceptos de botones o estilos.&lt;/li&gt;
@@ -1692,62 +1468,46 @@ Describe cómo mantener de una forma simple una interfaz de usuario sofisticada 
 &lt;li&gt;Vista : Código HTML con &amp;quot;bindings&amp;quot; declarativos para enlazar el view-model. También se pueden utilizar templates para generar el código html.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;Ejemplo&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&quot;http://jsfiddle.net/h7tgN/&quot;&gt;&lt;a href=&quot;http://jsfiddle.net/h7tgN/&quot;&gt;http://jsfiddle.net/h7tgN/&lt;/a&gt;&lt;/a&gt;
-
-&lt;/p&gt;
-&lt;p&gt;En el ejemplo tenemos un campo de texto donde estamos escribiendo en la variable valor. La variable se esta actualizando automáticamente cuando se presiona una tecla. Después tenemos una etiqueta span donde estamos mostrando el contenido de la variable. Vemos que a medida que vamos escribiendo en el campo de texto se va actualizando la etiqueta.
-
-&lt;/p&gt;
-&lt;p&gt;Recomiendo que pruebes los tutoriales de knockout.js &lt;a href=&quot;http://learn.knockoutjs.com/&quot;&gt;&lt;a href=&quot;http://learn.knockoutjs.com/&quot;&gt;http://learn.knockoutjs.com/&lt;/a&gt;&lt;/a&gt;. Están bastante trabajados y tienen una web donde puedes ir probando el código en la página web directamente y viendo los resultados.
-
-&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://jsfiddle.net/h7tgN/&quot;&gt;&lt;a href=&quot;http://jsfiddle.net/h7tgN/&quot;&gt;http://jsfiddle.net/h7tgN/&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;En el ejemplo tenemos un campo de texto donde estamos escribiendo en la variable valor. La variable se esta actualizando automáticamente cuando se presiona una tecla. Después tenemos una etiqueta span donde estamos mostrando el contenido de la variable. Vemos que a medida que vamos escribiendo en el campo de texto se va actualizando la etiqueta.&lt;/p&gt;
+&lt;p&gt;Recomiendo que pruebes los tutoriales de knockout.js &lt;a href=&quot;http://learn.knockoutjs.com/&quot;&gt;&lt;a href=&quot;http://learn.knockoutjs.com/&quot;&gt;http://learn.knockoutjs.com/&lt;/a&gt;&lt;/a&gt;. Están bastante trabajados y tienen una web donde puedes ir probando el código en la página web directamente y viendo los resultados.&lt;/p&gt;
 &lt;p&gt;Nota : El contenido de este post pertenece a un curso de desarrollo de aplicaciones web con Play Framework que daré del 3 al 7 de octubre.&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>Vim dentro de Eclipse</title>
-            <link href="http://axelhzf.com/blog/2011-09-10-vim-dentro-de-eclipse.html"/>
-            <updated>2011-09-10T20:54:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2011-09-10-vim-dentro-de-eclipse.html</id>
-            <content type="html">&lt;p&gt;A raíz de un artículo &amp;quot;&lt;a href=&quot;http://yannesposito.com/Scratch/en/blog/Learn-Vim-Progressively/&quot;&gt;Learn Vim Progressively&lt;/a&gt;&amp;quot;
+		</entry>
+	
+		<entry>
+			<title>Vim dentro de Eclipse</title>
+			<link href="http://axelhzf.com/blog/2011-09-10-vim-dentro-de-eclipse.html"/>
+			<updated>2011-09-10T20:54:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2011-09-10-vim-dentro-de-eclipse.html</id>
+			<content type="html">&lt;p&gt;A raíz de un artículo &amp;quot;&lt;a href=&quot;http://yannesposito.com/Scratch/en/blog/Learn-Vim-Progressively/&quot;&gt;Learn Vim Progressively&lt;/a&gt;&amp;quot;
 recordé la potencia que tenía vim y los tiempos en los que lo utilizaba a diario
 (esos tiempos donde no dejaban utilizar un IDE para las prácticas de la universidad).
 El problema es que ahora me he vuelto IDEdependiente y en concreto Eclipse dependiente
-(aunque a esto último le intento poner remedio: Idea? ;)
-
-&lt;/p&gt;
+(aunque a esto último le intento poner remedio: Idea? ;)&lt;/p&gt;
 &lt;p&gt;Así que buscando un poco por internet llegue como suele ser habitual a
 &lt;a href=&quot;http://stackoverflow.com/questions/28793/vim-commands-in-eclipse&quot;&gt;StackOverflow&lt;/a&gt; donde recomendaban
 una serie de plugins para simular algunas características de vim dentro de Eclipse.
 Me decidí por &lt;a href=&quot;http://marketplace.eclipse.org/content/viable-vim-eclipse&quot;&gt;Viable&lt;/a&gt;
-(me pareció la opción más viable, jojojo)
-
-&lt;/p&gt;
+(me pareció la opción más viable, jojojo)&lt;/p&gt;
 &lt;p&gt;El plugin es de pago, pero bueno, es Java, no hay que ser ningún crack
 para hacerle un &lt;a href=&quot;http://java.decompiler.free.fr/&quot;&gt;apaño&lt;/a&gt;.&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>Creando una presentación con HTML+CSS+JS</title>
-            <link href="http://axelhzf.com/blog/2011-06-19-creando-una-presentacion-con-html-plus-css-plus-js.html"/>
-            <updated>2011-06-19T19:58:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2011-06-19-creando-una-presentacion-con-html-plus-css-plus-js.html</id>
-            <content type="html">&lt;p&gt;Me encanta la presentación &lt;a href=&quot;http://slides.html5rocks.com/&quot;&gt;html5rocks&lt;/a&gt;. Es interactiva,
+		</entry>
+	
+		<entry>
+			<title>Creando una presentación con HTML+CSS+JS</title>
+			<link href="http://axelhzf.com/blog/2011-06-19-creando-una-presentacion-con-html-plus-css-plus-js.html"/>
+			<updated>2011-06-19T19:58:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2011-06-19-creando-una-presentacion-con-html-plus-css-plus-js.html</id>
+			<content type="html">&lt;p&gt;Me encanta la presentación &lt;a href=&quot;http://slides.html5rocks.com/&quot;&gt;html5rocks&lt;/a&gt;. Es interactiva,
 puedes ir probando todo lo que va explicando. Incluso dibujar un Doraemon en la diapositiva 47.
-Lo mejor de todo es que crearon un generador de diapositivas y nosotros mismos podemos crear diapositivas de este tipo.
-
-&lt;/p&gt;
+Lo mejor de todo es que crearon un generador de diapositivas y nosotros mismos podemos crear diapositivas de este tipo.&lt;/p&gt;
 &lt;h2&gt;Proyecto&lt;/h2&gt;
 &lt;p&gt;El proyecto se llama &lt;strong&gt;landslide&lt;/strong&gt; y se puede descargar de
-&lt;a href=&quot;https://github.com/n1k0/landslide&quot;&gt;&lt;a href=&quot;https://github.com/n1k0/landslide&quot;&gt;https://github.com/n1k0/landslide&lt;/a&gt;&lt;/a&gt;
-
-&lt;/p&gt;
+&lt;a href=&quot;https://github.com/n1k0/landslide&quot;&gt;&lt;a href=&quot;https://github.com/n1k0/landslide&quot;&gt;https://github.com/n1k0/landslide&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;Instalación&lt;/h2&gt;
-&lt;p&gt;En la página principal están las instrucciones de instalación. Hay varias opciones, la que yo seguí fue clonar el repositorio e instalar
-
-&lt;/p&gt;
+&lt;p&gt;En la página principal están las instrucciones de instalación. Hay varias opciones, la que yo seguí fue clonar el repositorio e instalar&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;bash&quot;&gt;git clone git://github.com/n1k0/landslide.git
 cd landslide
 python setup.py build
@@ -1755,100 +1515,76 @@ sudo python setup.py install&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;Creando la presentación&lt;/h2&gt;
 &lt;p&gt;Las presentaciones se escriben con &lt;a href=&quot;http://daringfireball.net/projects/markdown/syntax&quot;&gt;markdown&lt;/a&gt;.
 Este formato se está popularizando bastante, por ejemplo tumblr ya tiene soporte y es el formato con el
-que estoy escribiendo el post.
+que estoy escribiendo el post.&lt;/p&gt;
+&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;xml&quot;&gt;
+# Título de la presentación
+---
+## Primera diapositiva
 
-&lt;/p&gt;
-&lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;brainfuck&quot;&gt;
-&lt;span class=&quot;comment&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;Título&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;de&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;la&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;presentación&lt;/span&gt;
-&lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;
-&lt;span class=&quot;comment&quot;&gt;##&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;Primera&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;diapositiva&lt;/span&gt;
+Contenido de la diapositiva
 
-&lt;span class=&quot;comment&quot;&gt;Contenido&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;de&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;la&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;diapositiva&lt;/span&gt;
+---
+## Segunda diapositiva
 
-&lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;
-&lt;span class=&quot;comment&quot;&gt;##&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;Segunda&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;diapositiva&lt;/span&gt;
-
-&lt;span class=&quot;comment&quot;&gt;Contenido&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;de&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;la&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;**segunda**&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;diapositiva&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Esta es una presentación bastante simple. Cada diapositiva va separada con --- y el título de la diapositiva con ##
-
-&lt;/p&gt;
+Contenido de la **segunda** diapositiva&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Esta es una presentación bastante simple. Cada diapositiva va separada con --- y el título de la diapositiva con ##&lt;/p&gt;
 &lt;h2&gt;Compilando la presentación&lt;/h2&gt;
-&lt;p&gt;Para poder ver la presentación tenemos que compilarla para que se cree el html.
-
-&lt;/p&gt;
+&lt;p&gt;Para poder ver la presentación tenemos que compilarla para que se cree el html.&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;nginx&quot;&gt;&lt;span class=&quot;title&quot;&gt;landslide&lt;/span&gt; presentacion.md&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Esto genera un archivo presentation.html, lo abrimos con el navegador y ya tenemos nuestra presentación.
-
-&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/posts/landslide.png&quot; alt=&quot;landslice&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Esto genera un archivo presentation.html, lo abrimos con el navegador y ya tenemos nuestra presentación.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/landslide.png&quot; alt=&quot;landslice&quot;&gt;&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>Eclipse Color Themes</title>
-            <link href="http://axelhzf.com/blog/2011-05-22-eclipse-color-themes.html"/>
-            <updated>2011-05-22T19:48:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2011-05-22-eclipse-color-themes.html</id>
-            <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/eclipseColorThemes.jpeg&quot; alt=&quot;Eclipse Color Themes&quot;&gt;
-
-&lt;/p&gt;
+		</entry>
+	
+		<entry>
+			<title>Eclipse Color Themes</title>
+			<link href="http://axelhzf.com/blog/2011-05-22-eclipse-color-themes.html"/>
+			<updated>2011-05-22T19:48:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2011-05-22-eclipse-color-themes.html</id>
+			<content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/eclipseColorThemes.jpeg&quot; alt=&quot;Eclipse Color Themes&quot;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://www.eclipsecolorthemes.org/&quot;&gt;Eclipse Color Themes&lt;/a&gt; era algo que siempre había querido: Temas de colores oscuros en Eclipse.
 Algo fácil de instalar, nada de estar importando &lt;a href=&quot;http://blog.codefront.net/2006/09/28/vibrant-ink-textmate-theme-for-eclipse/&quot;&gt;preferencias completas&lt;/a&gt;.
 Este plugin para Eclipse viene por defecto con un par de temas que no están nada mal
 (Ahora mismo estoy utilizando &lt;a href=&quot;http://www.eclipsecolorthemes.org/?view=theme&amp;amp;id=21&quot;&gt;Obsidian&lt;/a&gt;)
 y también puedes crearte tu propio tema desde su &lt;a href=&quot;http://www.eclipsecolorthemes.org/?view=firsttheme&quot;&gt;página web&lt;/a&gt;.&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>FireQuery</title>
-            <link href="http://axelhzf.com/blog/2010-09-02-firequery.html"/>
-            <updated>2010-09-02T19:39:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2010-09-02-firequery.html</id>
-            <content type="html">&lt;p&gt;&lt;a href=&quot;http://firequery.binaryage.com/&quot;&gt;FireQuery&lt;/a&gt; es un plugin para Firefox que se integra con Firebug.
+		</entry>
+	
+		<entry>
+			<title>FireQuery</title>
+			<link href="http://axelhzf.com/blog/2010-09-02-firequery.html"/>
+			<updated>2010-09-02T19:39:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2010-09-02-firequery.html</id>
+			<content type="html">&lt;p&gt;&lt;a href=&quot;http://firequery.binaryage.com/&quot;&gt;FireQuery&lt;/a&gt; es un plugin para Firefox que se integra con Firebug.
 Permite inyectar jquery en cualquier página web, tiene muchas otras &lt;a href=&quot;http://firequery.binaryage.com/#features&quot;&gt;características&lt;/a&gt;
-, pero esta era justo la que estaba buscando cuando encontré el plugin.
-
-&lt;/p&gt;
+, pero esta era justo la que estaba buscando cuando encontré el plugin.&lt;/p&gt;
 &lt;p&gt;Un uso práctico de este plugin sería extraer todos los links de megaupload de una página.
 Pongamos que queremos bajarnos &lt;a href=&quot;http://www.imdb.com/title/tt0369179/&quot;&gt;Dos hombre y medio&lt;/a&gt; desde esta página
 &lt;a href=&quot;http://www.vagos.es/showthread.php?t=842744&quot;&gt;&lt;a href=&quot;http://www.vagos.es/showthread.php?t=842744&quot;&gt;http://www.vagos.es/showthread.php?t=842744&lt;/a&gt;&lt;/a&gt;.
 Lo único que tenemos que hacer es abrir la consola de Firebug e inyectar jquery dándole al botón “jQuerify”.
-Con un poquito de magia de jQuery podemos extraer todos los enlaces de megaupload de la página:
-
-&lt;/p&gt;
+Con un poquito de magia de jQuery podemos extraer todos los enlaces de megaupload de la página:&lt;/p&gt;
 &lt;pre class=&quot;highlighted&quot;&gt;&lt;code class=&quot;javascript&quot;&gt;$(&lt;span class=&quot;string&quot;&gt;'a:contains(&quot;megaupload&quot;)'&lt;/span&gt;).each(&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(i, e){
     console.log($(e).attr(&lt;span class=&quot;string&quot;&gt;'href'&lt;/span&gt;));
 });&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&quot;/images/posts/firequery.png&quot; alt=&quot;FireQuery&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/firequery.png&quot; alt=&quot;FireQuery&quot;&gt;&lt;/p&gt;
 </content>
-        </entry>
-    
-        <entry>
-            <title>seriesmonkey</title>
-            <link href="http://axelhzf.com/blog/2010-08-23-seriesmonkey.html"/>
-            <updated>2010-08-23T19:27:00.000Z</updated>
-            <id>http://axelhzf.com/blog/2010-08-23-seriesmonkey.html</id>
-            <content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/seriesmonkey.png&quot; alt=&quot;SeriesMonkey&quot;&gt;
-
-&lt;/p&gt;
+		</entry>
+	
+		<entry>
+			<title>seriesmonkey</title>
+			<link href="http://axelhzf.com/blog/2010-08-23-seriesmonkey.html"/>
+			<updated>2010-08-23T19:27:00.000Z</updated>
+			<id>http://axelhzf.com/blog/2010-08-23-seriesmonkey.html</id>
+			<content type="html">&lt;p&gt;&lt;img src=&quot;/images/posts/seriesmonkey.png&quot; alt=&quot;SeriesMonkey&quot;&gt;&lt;/p&gt;
 &lt;p&gt;Esta última semana he estado aprendiendo &lt;a href=&quot;http://www.jquery.com&quot;&gt;jQuery&lt;/a&gt; gracias al libro &lt;a href=&quot;http://jqfundamentals.com/book/index.html&quot;&gt;jQuery Fundamentals&lt;/a&gt;
-(en el enlace al github lo tienen en varios formatos epub, pdf, …).
-
-&lt;/p&gt;
+(en el enlace al github lo tienen en varios formatos epub, pdf, …).&lt;/p&gt;
 &lt;p&gt;De nada sirve leer y leer tutoriales si no pones en práctica lo que vas aprendiendo,
-así que me animé a hacer un script de greasemonkey. El plugin en cuestión sustituye la interfaz de seriesyonkis por una más simple y más accesible.
-
-&lt;/p&gt;
-&lt;p&gt;Si quieren probarla (y hacer de betatester) pueden descargarla desde el &lt;a href=&quot;http://github.com/downloads/axelhzf/seriesyonkisGreasemonkey/seriesyonkisgreasemonkey.user.js&quot;&gt;repositorio&lt;/a&gt;.
-
-&lt;/p&gt;
+así que me animé a hacer un script de greasemonkey. El plugin en cuestión sustituye la interfaz de seriesyonkis por una más simple y más accesible.&lt;/p&gt;
+&lt;p&gt;Si quieren probarla (y hacer de betatester) pueden descargarla desde el &lt;a href=&quot;http://github.com/downloads/axelhzf/seriesyonkisGreasemonkey/seriesyonkisgreasemonkey.user.js&quot;&gt;repositorio&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Por ahora la he probado únicamente en Firefox (con el plugin de greasemonkey).
-Creo que Chrome también tiene soporte para estos scripts, pero tengo que investigar un poco más.
-
-&lt;/p&gt;
+Creo que Chrome también tiene soporte para estos scripts, pero tengo que investigar un poco más.&lt;/p&gt;
 &lt;p&gt;Cualquier comentario o sugerencia será bienvenida :)&lt;/p&gt;
 </content>
-        </entry>
-    
+		</entry>
+	
 </feed>

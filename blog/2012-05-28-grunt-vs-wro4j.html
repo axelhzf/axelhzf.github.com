@@ -1,28 +1,32 @@
-
+<!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <!-- Standard Meta -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width" />
+	<!-- Standard Meta -->
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width" />
 
-    <!-- Site Properities -->
-    <title>Grunt vs Wro4j | axelhzf</title>
-    <meta name="description" content="Axelhzf" />
-    <meta name="keywords" content="axelhzf, ios, javascript, programming, iphone" />
+	<!-- Site Properities -->
+	<title>Grunt vs Wro4j | axelhzf</title>
+	<meta name="description" content="Axelhzf" />
+	<meta name="keywords" content="axelhzf, ios, javascript, programming, iphone" />
     <link rel="author" href="/humans.txt" />
 
-    <!-- DocPad Meta -->
-    <meta http-equiv="X-Powered-By" content="DocPad" />
+	<!-- DocPad Meta -->
+	<meta name="generator" content="DocPad v6.53.4" />
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="/assets/styles/main.css" /><link rel="stylesheet" href="/assets/styles/highlight/github.css" />
+	<!-- Styles -->
+	<style >html.wait {
+	cursor: wait !important;
+	opacity: 0;
+	transition: opacity 0.5s ease;
+}</style><link  rel="stylesheet" href="/assets/styles/main.css" /><link  rel="stylesheet" href="/assets/styles/highlight/github.css" />
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="/favicon.ico" />
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="/favicon.ico" />
 
 
     <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
@@ -52,18 +56,11 @@
 
         <div id="content" class="container">
             <h1>Grunt vs Wro4j</h1>
-<p>En el post anterior hice la siguiente afirmación sin dar ningún dato:
-
-
-</p>
+<p>En el post anterior hice la siguiente afirmación sin dar ningún dato:</p>
 <blockquote>
-<p>He probado algunas otras herramientas que tienen el mismo objetivo, como por ejemplo wro4j, pero grunt es mucho más rápido.
-
-</p>
+<p>He probado algunas otras herramientas que tienen el mismo objetivo, como por ejemplo wro4j, pero grunt es mucho más rápido.</p>
 </blockquote>
-<p>En realidad no había hecho ninguna prueba, fue la sensación que tuve al utilizar las dos herramientas. <a href="http://www.twitter.com/alexobjelean">Alex Objelean</a>, el creador de wro4j, escribió un comentario preguntando si había hecho alguna prueba de rendimiento. Para ser justos me decidí a hacer una comparativa.
-
-</p>
+<p>En realidad no había hecho ninguna prueba, fue la sensación que tuve al utilizar las dos herramientas. <a href="http://www.twitter.com/alexobjelean">Alex Objelean</a>, el creador de wro4j, escribió un comentario preguntando si había hecho alguna prueba de rendimiento. Para ser justos me decidí a hacer una comparativa.</p>
 <h2>Máquina de pruebas</h2>
 <ul>
 <li>Intel Core 2 Duo 2,66 GHz</li>
@@ -71,9 +68,7 @@
 <li>OS X Lion 10.7.4</li>
 </ul>
 <h2>Pruebas</h2>
-<p>La prueba consistió en compilar :
-
-</p>
+<p>La prueba consistió en compilar :</p>
 <ul>
 <li><a href="http://code.jquery.com/jquery-1.7.2.js">jquery 1.7.2</a></li>
 <li><a href="http://underscorejs.org/underscore.js">underscore 1.3.3</a></li>
@@ -86,14 +81,12 @@
 ├── grunt<span class="variable">.js</span>
 └── src
     ├── js
-    │&amp;nbsp;&amp;nbsp; ├── backbone<span class="variable">.js</span>
-    │&amp;nbsp;&amp;nbsp; ├── jquery-<span class="number">1.7</span><span class="number">.2</span><span class="variable">.js</span>
-    │&amp;nbsp;&amp;nbsp; └── underscore<span class="variable">.js</span>
+    │   ├── backbone<span class="variable">.js</span>
+    │   ├── jquery-<span class="number">1.7</span><span class="number">.2</span><span class="variable">.js</span>
+    │   └── underscore<span class="variable">.js</span>
     └── less
         ├── *bootstrap<span class="variable">.less</span></code></pre>
-<p>grunt.js
-
-</p>
+<p>grunt.js</p>
 <pre class="highlighted"><code class="javascript">module.exports = <span class="function"><span class="keyword">function</span> <span class="params">(grunt)</span> {</span>
     grunt.initConfig({
         concat : {
@@ -130,13 +123,12 @@
 ├── wro<span class="variable">.properties</span>
 └── src
     ├── js
-    │&amp;nbsp;&amp;nbsp; ├── backbone<span class="variable">.js</span>
-    │&amp;nbsp;&amp;nbsp; ├── jquery-<span class="number">1.7</span><span class="number">.2</span><span class="variable">.js</span>
-    │&amp;nbsp;&amp;nbsp; └── underscore<span class="variable">.js</span>
+    │   ├── backbone<span class="variable">.js</span>
+    │   ├── jquery-<span class="number">1.7</span><span class="number">.2</span><span class="variable">.js</span>
+    │   └── underscore<span class="variable">.js</span>
     └── less
         ├── *bootstrap<span class="variable">.less</span></code></pre>
-<p>pom.xml
-</p>
+<p>pom.xml</p>
 <pre class="highlighted"><code class="xml"><span class="tag">&lt;<span class="title">project</span> <span class="attribute">xmlns</span>=<span class="value">"http://maven.apache.org/POM/4.0.0"</span>
          <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
          <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://maven.apache.org/POM/4.0.0
@@ -180,8 +172,7 @@
         <span class="tag">&lt;/<span class="title">plugins</span>&gt;</span>
     <span class="tag">&lt;/<span class="title">build</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">project</span>&gt;</span></code></pre>
-<p>wro.xml
-</p>
+<p>wro.xml</p>
 <pre class="highlighted"><code class="xml"><span class="tag">&lt;<span class="title">groups</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.isdc.ro/wro"</span>&gt;</span>
     <span class="tag">&lt;<span class="title">group</span> <span class="attribute">name</span>=<span class="value">"all"</span>&gt;</span>
         <span class="tag">&lt;<span class="title">css</span>&gt;</span>/src/less/bootstrap.less<span class="tag">&lt;/<span class="title">css</span>&gt;</span>
@@ -189,13 +180,11 @@
         <span class="tag">&lt;<span class="title">js</span>&gt;</span>/src/js/backbone.js<span class="tag">&lt;/<span class="title">js</span>&gt;</span>
     <span class="tag">&lt;/<span class="title">group</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">groups</span>&gt;</span></code></pre>
-<p>wro.properties
-</p>
+<p>wro.properties</p>
 <pre class="highlighted"><code class="javascript">preProcessors=cssImport
 postProcessors=lessCss, uglifyJs</code></pre>
 <h2>Ejecución</h2>
-<p>grunt
-</p>
+<p>grunt</p>
 <pre class="highlighted"><code class="bash">axel:grunt axelhzf$ time grunt
 Running <span class="string">"concat:dist"</span> (concat) task
 File <span class="string">"dist/built.js"</span> created.
@@ -215,8 +204,7 @@ Done, without errors.
 real    0m5.620s
 user    0m4.534s
 sys    0m0.177s</code></pre>
-<p>wro4j
-</p>
+<p>wro4j</p>
 <pre class="highlighted"><code class="bash">axel:wro4j axelhzf$ mvn compile
 [INFO] Scanning <span class="keyword">for</span> projects...
 [INFO]                                                                         
@@ -289,7 +277,7 @@ sys    0m0.177s</code></pre>
         <div class="container">
             <div class="row license">
                 This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
-                <br />
+                <br/>
                 Axel Hernández Ferrea
             </div>
         </div>

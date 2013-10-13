@@ -1,28 +1,32 @@
-
+<!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <!-- Standard Meta -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width" />
+	<!-- Standard Meta -->
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width" />
 
-    <!-- Site Properities -->
-    <title>Creando una presentación con HTML+CSS+JS | axelhzf</title>
-    <meta name="description" content="Axelhzf" />
-    <meta name="keywords" content="axelhzf, ios, javascript, programming, iphone" />
+	<!-- Site Properities -->
+	<title>Creando una presentación con HTML+CSS+JS | axelhzf</title>
+	<meta name="description" content="Axelhzf" />
+	<meta name="keywords" content="axelhzf, ios, javascript, programming, iphone" />
     <link rel="author" href="/humans.txt" />
 
-    <!-- DocPad Meta -->
-    <meta http-equiv="X-Powered-By" content="DocPad" />
+	<!-- DocPad Meta -->
+	<meta name="generator" content="DocPad v6.53.4" />
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="/assets/styles/main.css" /><link rel="stylesheet" href="/assets/styles/highlight/github.css" />
+	<!-- Styles -->
+	<style >html.wait {
+	cursor: wait !important;
+	opacity: 0;
+	transition: opacity 0.5s ease;
+}</style><link  rel="stylesheet" href="/assets/styles/main.css" /><link  rel="stylesheet" href="/assets/styles/highlight/github.css" />
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="/favicon.ico" />
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="/favicon.ico" />
 
 
     <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
@@ -54,18 +58,12 @@
             <h1>Creando una presentación con HTML+CSS+JS</h1>
 <p>Me encanta la presentación <a href="http://slides.html5rocks.com/">html5rocks</a>. Es interactiva,
 puedes ir probando todo lo que va explicando. Incluso dibujar un Doraemon en la diapositiva 47.
-Lo mejor de todo es que crearon un generador de diapositivas y nosotros mismos podemos crear diapositivas de este tipo.
-
-</p>
+Lo mejor de todo es que crearon un generador de diapositivas y nosotros mismos podemos crear diapositivas de este tipo.</p>
 <h2>Proyecto</h2>
 <p>El proyecto se llama <strong>landslide</strong> y se puede descargar de
-<a href="https://github.com/n1k0/landslide"><a href="https://github.com/n1k0/landslide">https://github.com/n1k0/landslide</a></a>
-
-</p>
+<a href="https://github.com/n1k0/landslide"><a href="https://github.com/n1k0/landslide">https://github.com/n1k0/landslide</a></a></p>
 <h2>Instalación</h2>
-<p>En la página principal están las instrucciones de instalación. Hay varias opciones, la que yo seguí fue clonar el repositorio e instalar
-
-</p>
+<p>En la página principal están las instrucciones de instalación. Hay varias opciones, la que yo seguí fue clonar el repositorio e instalar</p>
 <pre class="highlighted"><code class="bash">git clone git://github.com/n1k0/landslide.git
 cd landslide
 python setup.py build
@@ -73,32 +71,24 @@ sudo python setup.py install</code></pre>
 <h2>Creando la presentación</h2>
 <p>Las presentaciones se escriben con <a href="http://daringfireball.net/projects/markdown/syntax">markdown</a>.
 Este formato se está popularizando bastante, por ejemplo tumblr ya tiene soporte y es el formato con el
-que estoy escribiendo el post.
+que estoy escribiendo el post.</p>
+<pre class="highlighted"><code class="xml">
+# Título de la presentación
+---
+## Primera diapositiva
 
-</p>
-<pre class="highlighted"><code class="brainfuck">
-<span class="comment">#</span> <span class="comment">Título</span> <span class="comment">de</span> <span class="comment">la</span> <span class="comment">presentación</span>
-<span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>
-<span class="comment">##</span> <span class="comment">Primera</span> <span class="comment">diapositiva</span>
+Contenido de la diapositiva
 
-<span class="comment">Contenido</span> <span class="comment">de</span> <span class="comment">la</span> <span class="comment">diapositiva</span>
+---
+## Segunda diapositiva
 
-<span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>
-<span class="comment">##</span> <span class="comment">Segunda</span> <span class="comment">diapositiva</span>
-
-<span class="comment">Contenido</span> <span class="comment">de</span> <span class="comment">la</span> <span class="comment">**segunda**</span> <span class="comment">diapositiva</span></code></pre>
-<p>Esta es una presentación bastante simple. Cada diapositiva va separada con --- y el título de la diapositiva con ##
-
-</p>
+Contenido de la **segunda** diapositiva</code></pre>
+<p>Esta es una presentación bastante simple. Cada diapositiva va separada con --- y el título de la diapositiva con ##</p>
 <h2>Compilando la presentación</h2>
-<p>Para poder ver la presentación tenemos que compilarla para que se cree el html.
-
-</p>
+<p>Para poder ver la presentación tenemos que compilarla para que se cree el html.</p>
 <pre class="highlighted"><code class="nginx"><span class="title">landslide</span> presentacion.md</code></pre>
-<p>Esto genera un archivo presentation.html, lo abrimos con el navegador y ya tenemos nuestra presentación.
-
-</p>
-<p><img src="/images/posts/landslide.png" alt="landslice" /></p>
+<p>Esto genera un archivo presentation.html, lo abrimos con el navegador y ya tenemos nuestra presentación.</p>
+<p><img src="/images/posts/landslide.png" alt="landslice"></p>
 
 
 <h2>Comments</h2>
@@ -129,7 +119,7 @@ que estoy escribiendo el post.
         <div class="container">
             <div class="row license">
                 This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
-                <br />
+                <br/>
                 Axel Hernández Ferrea
             </div>
         </div>

@@ -1,28 +1,32 @@
-
+<!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <!-- Standard Meta -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width" />
+	<!-- Standard Meta -->
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width" />
 
-    <!-- Site Properities -->
-    <title>CocoaPods | axelhzf</title>
-    <meta name="description" content="Axelhzf" />
-    <meta name="keywords" content="axelhzf, ios, javascript, programming, iphone" />
+	<!-- Site Properities -->
+	<title>CocoaPods | axelhzf</title>
+	<meta name="description" content="Axelhzf" />
+	<meta name="keywords" content="axelhzf, ios, javascript, programming, iphone" />
     <link rel="author" href="/humans.txt" />
 
-    <!-- DocPad Meta -->
-    <meta http-equiv="X-Powered-By" content="DocPad" />
+	<!-- DocPad Meta -->
+	<meta name="generator" content="DocPad v6.53.4" />
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="/assets/styles/main.css" /><link rel="stylesheet" href="/assets/styles/highlight/github.css" />
+	<!-- Styles -->
+	<style >html.wait {
+	cursor: wait !important;
+	opacity: 0;
+	transition: opacity 0.5s ease;
+}</style><link  rel="stylesheet" href="/assets/styles/main.css" /><link  rel="stylesheet" href="/assets/styles/highlight/github.css" />
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="/favicon.ico" />
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="/favicon.ico" />
 
 
     <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
@@ -52,20 +56,12 @@
 
         <div id="content" class="container">
             <h1>CocoaPods</h1>
-<p><img src="/images/posts/cocoapods.png" alt="CocoaPods" />
-
-</p>
-<p><a href="http://cocoapods.org/">CocoaPods</a> es una librería para la gestión de dependencias de proyectos de XCode. Se encarga de resolver las dependencias, descargar los fuentes y de gestionar el workspace. Esto simplifica mucho utilizar librerías de terceros en nuestro proyecto.
-
-</p>
-<p>CocoaPods se distribuye como una gema de ruby, para instalarlo:
-
-</p>
+<p><img src="/images/posts/cocoapods.png" alt="CocoaPods"></p>
+<p><a href="http://cocoapods.org/">CocoaPods</a> es una librería para la gestión de dependencias de proyectos de XCode. Se encarga de resolver las dependencias, descargar los fuentes y de gestionar el workspace. Esto simplifica mucho utilizar librerías de terceros en nuestro proyecto.</p>
+<p>CocoaPods se distribuye como una gema de ruby, para instalarlo:</p>
 <pre class="highlighted"><code class="haskell"><span class="title">gem</span> install cocoapods
 <span class="title">pod</span> setup</code></pre>
-<p>Una vez instalado tenemos que indicar las dependencias que tiene nuestro proyecto. Para ello creamos el fichero <strong>Podfile</strong>. Este fichero es el equivalente al pom.xml en Maven. La sintaxis de este fichero es la siguiente:
-
-</p>
+<p>Una vez instalado tenemos que indicar las dependencias que tiene nuestro proyecto. Para ello creamos el fichero <strong>Podfile</strong>. Este fichero es el equivalente al pom.xml en Maven. La sintaxis de este fichero es la siguiente:</p>
 <pre class="highlighted"><code class="haskell"><span class="title">platform</span> :ios
 <span class="title">pod</span><span class="string"> 'MagicalRecord'</span>,<span class="string"> '~&gt; 2.0.6'</span>
 <span class="title">pod</span><span class="string"> 'SVProgressHUD'</span>,<span class="string"> '~&gt; 0.8'</span>
@@ -74,12 +70,8 @@
 <span class="title">target</span> :test, :exclusive =&gt; true <span class="keyword">do</span>
    pod<span class="string"> 'OCMock'</span>,<span class="string"> '~&gt; 2.0.1'</span> 
 <span class="title">end</span></code></pre>
-<p>En este fichero de configuración se especifica que el proyecto depende de las librerias <em>MagicalRecord</em>, <em>SVProgressHUD</em> y <em>Underscore.m</em>. En el target <em>test</em> se especifica las dependencias que sólo estarán disponibles para la ejecución de los tests. En la página de <a href="http://cocoapods.org/">CocoaPods</a> hay un buscador donde puedes encontrar las librerías disponibles.
-
-</p>
-<p>Cada vez que se modifique el fichero Podfile es necesario actualizar las dependencias. Para ello se utiliza el comando:
-
-</p>
+<p>En este fichero de configuración se especifica que el proyecto depende de las librerias <em>MagicalRecord</em>, <em>SVProgressHUD</em> y <em>Underscore.m</em>. En el target <em>test</em> se especifica las dependencias que sólo estarán disponibles para la ejecución de los tests. En la página de <a href="http://cocoapods.org/">CocoaPods</a> hay un buscador donde puedes encontrar las librerías disponibles.</p>
+<p>Cada vez que se modifique el fichero Podfile es necesario actualizar las dependencias. Para ello se utiliza el comando:</p>
 <pre class="highlighted"><code class="nginx"><span class="title">pod</span> install</code></pre>
 <p>CocoaPods creará un workspace (fichero que termina con la extensión .xcworkspace). Este es el fichero que tenemos que abrir con XCode a partir de ahora. Este workspace está compuesto por dos proyectos, uno que contiene aplicación y el otro que está gestionado por CocoaPods que es donde se encuentran los fuentes de todas las librerías que se han descargado.</p>
 
@@ -112,7 +104,7 @@
         <div class="container">
             <div class="row license">
                 This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
-                <br />
+                <br/>
                 Axel Hernández Ferrea
             </div>
         </div>

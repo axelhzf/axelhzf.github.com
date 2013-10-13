@@ -1,28 +1,32 @@
-
+<!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <!-- Standard Meta -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width" />
+	<!-- Standard Meta -->
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width" />
 
-    <!-- Site Properities -->
-    <title>Ampliando el módulo de Google Guice | axelhzf</title>
-    <meta name="description" content="Axelhzf" />
-    <meta name="keywords" content="axelhzf, ios, javascript, programming, iphone" />
+	<!-- Site Properities -->
+	<title>Ampliando el módulo de Google Guice | axelhzf</title>
+	<meta name="description" content="Axelhzf" />
+	<meta name="keywords" content="axelhzf, ios, javascript, programming, iphone" />
     <link rel="author" href="/humans.txt" />
 
-    <!-- DocPad Meta -->
-    <meta http-equiv="X-Powered-By" content="DocPad" />
+	<!-- DocPad Meta -->
+	<meta name="generator" content="DocPad v6.53.4" />
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="/assets/styles/main.css" /><link rel="stylesheet" href="/assets/styles/highlight/github.css" />
+	<!-- Styles -->
+	<style >html.wait {
+	cursor: wait !important;
+	opacity: 0;
+	transition: opacity 0.5s ease;
+}</style><link  rel="stylesheet" href="/assets/styles/main.css" /><link  rel="stylesheet" href="/assets/styles/highlight/github.css" />
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="/favicon.ico" />
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="/favicon.ico" />
 
 
     <script type="text/javascript" src="//use.typekit.net/ixj6oqk.js"></script>
@@ -52,20 +56,11 @@
 
         <div id="content" class="container">
             <h1>Ampliando el módulo de Google Guice</h1>
-<p>Como comenté al final de mi <a href="http://axelhzf.tumblr.com/post/16930248351/play-framework-google-guice">post</a> anterior mi intención era añadir al módulo de play las clases que añaden el scope LazySingleton.
-
-</p>
-<p>Los cambios están en este <a href="https://github.com/axelhzf/play-guice-module/commit/30af78bb96c7561a529ac578ff93d2b49a1e5492">commit</a>.
-
-</p>
-<p>Añadí a la clase <em>GuiceSupport</em> una variable con el stage en función del modo en el que se está ejecutando play y creé la clase <em>PlayAbstractModule</em> que incluye el método <em>bindLazySingletonOnDev</em>.
-
-</p>
-<p>Para utilizarlo:
-
-</p>
-<p>conf/dependencies.yml
-</p>
+<p>Como comenté al final de mi <a href="http://axelhzf.tumblr.com/post/16930248351/play-framework-google-guice">post</a> anterior mi intención era añadir al módulo de play las clases que añaden el scope LazySingleton.</p>
+<p>Los cambios están en este <a href="https://github.com/axelhzf/play-guice-module/commit/30af78bb96c7561a529ac578ff93d2b49a1e5492">commit</a>.</p>
+<p>Añadí a la clase <em>GuiceSupport</em> una variable con el stage en función del modo en el que se está ejecutando play y creé la clase <em>PlayAbstractModule</em> que incluye el método <em>bindLazySingletonOnDev</em>.</p>
+<p>Para utilizarlo:</p>
+<p>conf/dependencies.yml</p>
 <pre class="highlighted"><code class="brainfuck"><span class="comment">require:</span>
     <span class="literal">-</span> <span class="comment">play</span>
     <span class="literal">-</span> <span class="comment">axelhzf</span> <span class="literal">-</span>&gt; <span class="comment">guice</span> <span class="comment">1</span>.<span class="comment">3</span>
@@ -75,12 +70,9 @@
         <span class="comment">type:</span> <span class="comment">http</span>
         <span class="comment">artifact:</span> <span class="comment">"http://cloud</span>.<span class="comment">github</span>.<span class="comment">com/downloads/axelhzf/play</span>-<span class="comment">guice</span>-<span class="comment">module/guice</span>-<span class="title">[</span><span class="comment">revision</span>]<span class="string">.</span><span class="comment">zip"</span>
         <span class="comment">contains:</span>
-            <span class="literal">-</span> <span class="comment">axelhzf</span> <span class="literal">-</span>&gt; <span class="comment">guice</span></code></pre>
-<p>Configurar el inyector
-
-</p>
-<p>GuiceConfig.java
-</p>
+            <span class="literal">-</span> <span class="comment">axelhzf</span> <span class="literal">-</span>&gt; <span class="comment">guice</code></pre>
+<p>Configurar el inyector</p>
+<p>GuiceConfig.java</p>
 <pre class="highlighted"><code class="java">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GuiceConfig</span> <span class="keyword">extends</span> <span class="title">GuiceSupport</span> {</span>
         <span class="annotation">@Override</span>
         <span class="keyword">protected</span> Injector configure() {
@@ -123,7 +115,7 @@
         <div class="container">
             <div class="row license">
                 This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
-                <br />
+                <br/>
                 Axel Hernández Ferrea
             </div>
         </div>
