@@ -104,7 +104,7 @@ Ya con esto está el servicio inyectado en el controlador.
 Mi siguiente paso fue crear un test y es aquí cuando me encontré una sorpresa:
 
 ```bash
-	play test
+    play test
 ```
 
 [http://localhost:9000/@tests]()

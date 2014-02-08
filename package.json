@@ -1,47 +1,26 @@
 {
-  "name": "html5-boilerplate.docpad",
-  "version": "0.1.0",
+  "name": "axelhzf.com",
+  "version": "2.0.0",
   "private": true,
-  "description": "HTML5 Boilerplate skeleton for DocPad. Bare essentials for building a modern website with best practices.",
-  "homepage": "https://github.com/docpad/html5-boilerplate.docpad",
-  "keywords": [
-    "docpad-skeleton",
-    "docpad",
-    "website",
-    "skeleton",
-    "html5 boilerplate",
-    "h5bp"
-  ],
-  "author": "Bevry Pty Ltd <us@bevry.me> (http://bevry.me)",
-  "maintainers": [
-    "Benjamin Lupton <b@lupton.cc> (http://balupton.com)"
-  ],
-  "contributors": [
-    "Benjamin Lupton <b@lupton.cc> (http://balupton.com)"
-  ],
-  "bugs": {
-    "url": "https://github.com/docpad/html5-boilerplate.docpad/issues"
-  },
+  "description": "",
+  "homepage": "https://www.axelhzf.com",
+  "keywords": [],
+  "author": "Axel Hernández Ferrera <axelhzf@gmail.com> (http://www.axelhzf.com)",
   "repository": {
     "type": "git",
     "url": "http://github.com/docpad/html5-boilerplate.docpad.git"
   },
-  "engines": {
-    "node": "0.8.x",
-    "npm": "1.1.x"
-  },
+  "engines": {},
   "dependencies": {
-    "docpad": "6.x",
-    "docpad-plugin-coffeescript": "2.x",
-    "docpad-plugin-eco": "2.x",
-    "docpad-plugin-marked": "2.x",
-    "docpad-plugin-partials": "~2.2.0",
-    "docpad-plugin-text": "2.x",
-    "docpad-plugin-highlightjs": "~2.0.1",
-    "docpad-plugin-less": "~2.1.1"
+    "gulp": "~3.5.0",
+    "gulp-markdown": "~0.1.2",
+    "gulp-jade": "~0.4.0",
+    "gulp-util": "~2.2.13",
+    "through2": "~0.4.1",
+    "underscore": "~1.5.2",
+    "js-yaml": "~3.0.1",
+    "gulp-less": "~1.2.1",
+    "gulp-clean": "~0.2.4"
   },
-  "devDependencies": {
-    "docpad-plugin-livereload": "2.x"
-  },
-  "main": "node_modules/docpad/bin/docpad-server"
+  "devDependencies": {}
 }

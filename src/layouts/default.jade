@@ -1,0 +1,35 @@
+doctype html
+
+block vars
+head
+  meta(charset="utf-8")
+  meta(name="viewport", content="width=device-width")
+  title #{title} | axelhzf.com
+
+  link(rel="stylesheet", href="/assets/styles/main.css")
+  link(rel="stylesheet", href="/assets/styles/highlight/github.css")
+
+body
+  hgroup.header
+    .logo
+      .a(href="/") axelhzf
+
+  .wrapper
+    nav(role="navigation")
+      ul.main-navigation
+        li: a(href="/blog/archives") Blog
+        li: a(href="/tutoriales") Tutorials
+        li: a(href="/talks") Talks
+        li: a(href="/experiments") Experiments
+        li: a(href="/experiments", rel="subscribe-rss", title="subscribe via RSS", target="_blank") Experiments
+
+    #content.container
+      block content
+
+  footer
+    .container
+      .row.license
+        | This work is licensed under a
+        a(rel='license', href='http://creativecommons.org/licenses/by/3.0/') Creative Commons Attribution 3.0 Unported License
+        | .
+        br

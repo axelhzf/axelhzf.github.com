@@ -31,16 +31,16 @@ Configurar el inyector
 
 GuiceConfig.java
 ```java
-	public class GuiceConfig extends GuiceSupport {
-		@Override
-		protected Injector configure() {
-			return Guice.createInjector(stage, new PlayAbstractModule() {
-				@Override
-				protected void configure() {
-					bindLazySingletonOnDev(MyService.class, MyServiceImpl.class);
-					bindLazySingletonOnDev(MyDependentService.class, MyDependentServiceImpl.class);
-				}
-			});
-		}
-	}
+    public class GuiceConfig extends GuiceSupport {
+        @Override
+        protected Injector configure() {
+            return Guice.createInjector(stage, new PlayAbstractModule() {
+                @Override
+                protected void configure() {
+                    bindLazySingletonOnDev(MyService.class, MyServiceImpl.class);
+                    bindLazySingletonOnDev(MyDependentService.class, MyDependentServiceImpl.class);
+                }
+            });
+        }
+    }
 ```

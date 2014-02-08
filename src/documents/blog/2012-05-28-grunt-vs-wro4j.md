@@ -10,7 +10,7 @@ En el post anterior hice la siguiente afirmación sin dar ningún dato:
 
 
 > He probado algunas otras herramientas que tienen el mismo objetivo, como por ejemplo wro4j, pero grunt es mucho más rápido.
-	
+    
 En realidad no había hecho ninguna prueba, fue la sensación que tuve al utilizar las dos herramientas. [Alex Objelean](http://www.twitter.com/alexobjelean), el creador de wro4j, escribió un comentario preguntando si había hecho alguna prueba de rendimiento. Para ser justos me decidí a hacer una comparativa.
 
 ## Máquina de pruebas
@@ -32,15 +32,15 @@ La prueba consistió en compilar :
 
 ### Grunt
 
-	.
-	├── grunt.js
-	└── src
-	    ├── js
-	    │   ├── backbone.js
-	    │   ├── jquery-1.7.2.js
-	    │   └── underscore.js
-	    └── less
-	        ├── *bootstrap.less
+    .
+    ├── grunt.js
+    └── src
+        ├── js
+        │   ├── backbone.js
+        │   ├── jquery-1.7.2.js
+        │   └── underscore.js
+        └── less
+            ├── *bootstrap.less
 
 
 grunt.js
@@ -79,17 +79,17 @@ module.exports = function (grunt) {
 
 ### Wro4j
 
-	.
-	├── pom.xml
-	├── wro.xml
-	├── wro.properties
-	└── src
-	    ├── js
-	    │   ├── backbone.js
-	    │   ├── jquery-1.7.2.js
-	    │   └── underscore.js
-	    └── less
-	        ├── *bootstrap.less
+    .
+    ├── pom.xml
+    ├── wro.xml
+    ├── wro.properties
+    └── src
+        ├── js
+        │   ├── backbone.js
+        │   ├── jquery-1.7.2.js
+        │   └── underscore.js
+        └── less
+            ├── *bootstrap.less
 
 
 pom.xml
@@ -176,9 +176,9 @@ Compressed size: 13496 bytes gzipped (81938 bytes minified).
 
 Done, without errors.
 
-real	0m5.620s
-user	0m4.534s
-sys	0m0.177s
+real    0m5.620s
+user    0m4.534s
+sys    0m0.177s
 ```
 wro4j
 ```bash
